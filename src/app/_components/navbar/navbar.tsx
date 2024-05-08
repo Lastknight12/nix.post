@@ -19,10 +19,8 @@ export default function Navigation({ session }: { session: Session | null }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Admin",
-    "Log Out",
+    {name: "Profile", href: "/#"},
+    {name: "Profile", href: "/api/auth/signout"},
   ];
 
   return (
@@ -49,7 +47,7 @@ export default function Navigation({ session }: { session: Session | null }) {
       </NavbarContent>
       <NavbarMenu className=" bg-transparent">
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem key={`${item.name}`}>
             <Link
               color={
                 index === 2
@@ -59,9 +57,8 @@ export default function Navigation({ session }: { session: Session | null }) {
                     : "foreground"
               }
               className="w-full"
-              href="#"
+              href={item.href}
             >
-              {item}
             </Link>
           </NavbarMenuItem>
         ))}

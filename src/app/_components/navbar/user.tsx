@@ -38,7 +38,7 @@ export default function UserInfo({ session }: props) {
           />
         </Link>
       </div>
-      <Button onClick={logoutModal.onOpen} variant="shadow" color="default">
+      <Button onClick={logoutModal.onOpen} variant="shadow" color="default" className=" max-sm:hidden">
         Logout
       </Button>
 
