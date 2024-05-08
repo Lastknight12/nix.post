@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import toast, { Toaster } from "react-hot-toast";
 
 interface props {
   postId: string;
@@ -57,14 +58,22 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
       setComment("");
       router.refresh();
     },
+    onError: (error) => {
+      toast.error(error.message)
+    }
   });
 
   function handleClick() {
+    console.log(comment)
+    if(comment == "") {
+      toast.error("Comment must be at least 5 characters")
+    }
     createPost.mutate({ postID: postId, content: comment });
   }
 
   return (
     <>
+    <Toaster />
       <div className="mb-10 px-4">
         <div className=" mx-auto max-w-[1024px]">
           <div className=" mb-4 flex items-center justify-center gap-4">

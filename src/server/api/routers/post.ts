@@ -91,8 +91,4 @@ export const postRouter = createTRPCRouter({
     });
     return post;
   }),
-
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
 });
