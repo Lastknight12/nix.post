@@ -7,6 +7,8 @@ import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast, { Toaster } from "react-hot-toast";
+import { addCommentSchema } from "~/app/types/types";
+import { ZodError } from "zod";
 
 interface props {
   postId: string;
@@ -65,8 +67,14 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
 
   function handleClick() {
     console.log(comment)
-    if(comment == "") {
-      toast.error("Comment must be at least 5 characters")
+    try {
+      addCommentSchema.parse({ postId, content: comment });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        error.errors.map((error) => toast.error(error.message));
+      } else {
+        throw new Error(String(error));
+      }
     }
     createPost.mutate({ postID: postId, content: comment });
   }
