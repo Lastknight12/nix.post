@@ -46,7 +46,7 @@ export const postRouter = createTRPCRouter({
         id: true,
         title: true,
         content: true,
-        comments: true,
+        createdAt: true,
         createdBy: {
           select: {
             name: true,

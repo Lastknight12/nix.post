@@ -30,7 +30,7 @@ interface props {
 
 function formatDate(date: Date) {
     const now = new Date();
-    const diff = now - date;
+    const diff = now.getTime() - date.getTime(); // Difference in milliseconds
     const diffMinutes = Math.floor(diff / 60000);
   
     if (diffMinutes < 1) {

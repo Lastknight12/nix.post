@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Input, Textarea } from "@nextui-org/input";
 import { Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
-import { ZodError, z } from "zod";
+import { ZodError} from "zod";
 import { addPostSchema } from "../../types/types";
 
 interface props {

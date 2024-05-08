@@ -6,7 +6,7 @@ import Post from "./post";
 }
 
 interface post {
-  id: number;
+  id: string;
   title: string;
   content: string;
   createdAt: Date;
@@ -32,7 +32,7 @@ export default async function Posts() {
       <div className="max-w-[1024px] p-6">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {latestPost.length !== 0 ? (
-            latestPost.map((post: post) => {
+            latestPost.map((post: post, _index: number) => {
               post.content = truncateString(post.content, 200);
               return <Post post={post} key={post.id}></Post>;
             })
