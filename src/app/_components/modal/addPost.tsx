@@ -61,6 +61,7 @@ export function CreatePostModal({ isOpen, onOpenChange, onClose }: props) {
                 type="text"
                 label="title (min 5 characters)"
                 size="md"
+                required={true}
                 value={title}
                 classNames={{
                   input: "!text-white",
@@ -74,6 +75,7 @@ export function CreatePostModal({ isOpen, onOpenChange, onClose }: props) {
               <Textarea
                 placeholder="Enter your description (min 20)"
                 value={content}
+                required={true}
                 onChange={(e) => setContent(e.target.value)}
                 classNames={{
                   inputWrapper:
