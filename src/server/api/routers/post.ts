@@ -58,7 +58,7 @@ export const postRouter = createTRPCRouter({
     return post;
   }),
 
-  getIndividualPost: protectedProcedure
+  getIndividualPost: publicProcedure
   .input(z.object({id: z.string()}))
   .query(async ({ctx, input}) => {
     const post = await ctx.db.post.findFirst({
