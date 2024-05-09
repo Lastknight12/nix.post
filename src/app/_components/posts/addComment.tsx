@@ -59,13 +59,19 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
     onSuccess: () => {
       setComment("");
       router.refresh();
-    },
-    onError: (error) => {
-      error.map((error) => toast.error(error.message))
     }
   });
 
   function handleClick() {
+    try {
+      addCommentSchema.parse({ postId, content: comment });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        error.errors.map((error) => toast.error(error.message));
+      } else {
+        throw new Error(String(error));
+      }
+    }
     createPost.mutate({ postID: postId, content: comment });
   }
 
