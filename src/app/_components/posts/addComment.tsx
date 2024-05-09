@@ -61,7 +61,7 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
       router.refresh();
     },
     onError: (error) => {
-      toast.error(error.message)
+      toast.error.map((error) => toast.error(error.message))
     }
   });
 
