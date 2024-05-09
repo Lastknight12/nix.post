@@ -59,19 +59,17 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
     onSuccess: () => {
       setComment("");
       router.refresh();
-    },
-    onError: (error) => {
-      toast.error(error.message)
     }
   });
 
   function handleClick() {
-    console.log(comment)
     try {
-      addCommentSchema.parse({ postId, content: comment });
+      addCommentSchema.parse({ postID: postId, content: comment });
     } catch (error) {
       if (error instanceof ZodError) {
         error.errors.map((error) => toast.error(error.message));
+      } else {
+        throw new Error(String(error));
       }
     }
     createPost.mutate({ postID: postId, content: comment });
@@ -85,7 +83,6 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
           <div className=" mb-4 flex items-center justify-center gap-4">
             <Textarea
               placeholder="Enter your comment"
-              required={true}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               classNames={{
