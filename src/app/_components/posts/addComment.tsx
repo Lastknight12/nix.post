@@ -66,8 +66,6 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
   });
 
   function handleClick() {
-    console.log(comment)
-    try {
     createPost.mutate({ postID: postId, content: comment });
   }
 
