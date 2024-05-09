@@ -64,7 +64,7 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
 
   function handleClick() {
     try {
-      addCommentSchema.parse({ postId, content: comment });
+      addCommentSchema.parse({ postID: postId, content: comment });
     } catch (error) {
       if (error instanceof ZodError) {
         error.errors.map((error) => toast.error(error.message));
