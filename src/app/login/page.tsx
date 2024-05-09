@@ -10,7 +10,7 @@ export default function Sigin() {
     <div className=" flex h-full w-full items-center justify-center">
       <Button
         variant="flat"
-        onClick={() => signIn("discord", { redirect: true, callbackUrl: process.env.NEXTAUTH_URL })}
+        onClick={() => signIn("discord", { redirect: true, callbackUrl: `http://${process.env.NEXTAUTH_URL}` })}
         color="primary"
       >
         Login with Discord <FaDiscord />
