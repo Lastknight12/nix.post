@@ -6,12 +6,10 @@ import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
 import LogoutModal from "../modal/Logout";
 import { CreatePostModal } from "../modal/addPost";
+import { getServerAuthSession } from "~/server/auth";
 
-interface props {
-  session: Session | null;
-}
-
-export default function UserInfo({ session }: props) {
+export default async function UserInfo() {
+  const session = await getServerAuthSession()
   const logoutModal = useDisclosure();
   const addPost = useDisclosure();
 
