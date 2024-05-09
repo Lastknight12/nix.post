@@ -1,3 +1,4 @@
+import type { Session } from "next-auth";
 import { Button, useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,10 +6,12 @@ import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
 import LogoutModal from "../modal/Logout";
 import { CreatePostModal } from "../modal/addPost";
-import { getServerAuthSession } from "~/server/auth";
 
-export default async function UserInfo() {
-  const session = await getServerAuthSession()
+interface props {
+  session: Session | null;
+}
+
+export default function UserInfo({ session }: props) {
   const logoutModal = useDisclosure();
   const addPost = useDisclosure();
 

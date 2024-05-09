@@ -41,7 +41,7 @@ export default function Navigation({ session }: { session: Session | null }) {
               Sign Up
             </Button>
           ) : (
-            <UserInfo></UserInfo>
+            <UserInfo session={session}></UserInfo>
           )}
         </NavbarItem>
       </NavbarContent>
