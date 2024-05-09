@@ -14,13 +14,13 @@ import Link from "next/link";
 import React from "react";
 import type { Session } from "next-auth";
 import UserInfo from "./user";
+import { signOut } from "next-auth/react";
 
 export default function Navigation({ session }: { session: Session | null }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
     {name: "Profile", href: "/#"},
-    {name: "Profile", href: "/api/auth/signout"},
   ];
 
   return (
@@ -47,21 +47,16 @@ export default function Navigation({ session }: { session: Session | null }) {
       </NavbarContent>
       <NavbarMenu className=" bg-transparent">
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item.name}`}>
+          <NavbarMenuItem key={index}>
             <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-              }
               className="w-full"
               href={item.href}
             >
+              {item.name}
             </Link>
           </NavbarMenuItem>
         ))}
+        { session?.user ? <Button color="danger" variant="flat" className=" max-w-6" onClick={() => signOut()}>Logout</Button> : undefined}
       </NavbarMenu>
     </Navbar>
   );
