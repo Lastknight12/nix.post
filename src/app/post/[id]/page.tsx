@@ -40,7 +40,7 @@ export default async function PostInfo(req: requestId) {
         <div className="flex items-center justify-center">
           <div className=" max-w-[1024px]">
             <div className=" fex gap-7">
-              <pre className=" text-xl text-gray-400 text-wrap font-[inherit]">{post.content}</pre>
+              <pre className=" text-xl text-[#bdc1c8] text-wrap font-[inherit]">{post.content}</pre>
             </div>
           </div>
         </div>
