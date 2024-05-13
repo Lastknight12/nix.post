@@ -7,14 +7,6 @@ import {
 } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   createPost: protectedProcedure
     .input(z.object({ title: z.string().min(5), content: z.string().min(20) }))
     .mutation(async ({ ctx, input }) => {
@@ -49,7 +41,8 @@ export const postRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const { limit, cursor } = input;
-      const items = await ctx.db.post.findMany({
+      try {
+        const items = await ctx.db.post.findMany({
         take: limit + 1,
         where: cursor ? { id: { lt: cursor + 1 } } : undefined,
         orderBy: {
@@ -69,6 +62,11 @@ export const postRouter = createTRPCRouter({
           },
         },
       });
+        return {
+          items,
+          nextCursor: 6
+        }
+      } catch(error) {return {items: error, nextCursor: undefined}}
       let nextCursor: number | undefined;
       if (items.length > limit) {
         const nextItem = items.pop();
