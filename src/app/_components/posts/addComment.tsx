@@ -11,7 +11,7 @@ import { addCommentSchema } from "~/app/types/types";
 import { ZodError } from "zod";
 
 interface props {
-  postId: string;
+  postId: number;
   post: {
     comments: {
       content: string;
