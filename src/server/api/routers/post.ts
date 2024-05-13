@@ -45,7 +45,7 @@ export const postRouter = createTRPCRouter({
         take: limit + 1,
         where: cursor ? { id: { lt: cursor + 1 } } : undefined,
         orderBy: {
-          id: "desc"
+          id: "desc",
         },
         select: {
           id: true,
@@ -56,17 +56,19 @@ export const postRouter = createTRPCRouter({
           createdBy: {
             select: {
               name: true,
-              image: true
-            }
+              image: true,
+            },
           },
         },
       });
-      if(!items) {
+
+      if (!items) {
         return {
           items: [],
-          nextCursor: undefined
-        }
+          nextCursor: undefined 
+        };
       }
+
       let nextCursor: number | undefined;
       if (items.length > limit) {
         const nextItem = items.pop();
@@ -78,7 +80,6 @@ export const postRouter = createTRPCRouter({
         nextCursor,
       };
     }),
-
   getLastPosts: publicProcedure.query(async ({ ctx }) => {
     let count = await ctx.db.post.count();
     if (count <= 3) {
