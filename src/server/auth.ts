@@ -5,8 +5,9 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
+import type { JWT } from "next-auth/jwt";
 import DiscordProvider from "next-auth/providers/discord";
-import GoogleProvider from "next-auth/providers/google"
+import GoogleProvider from "next-auth/providers/google";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
@@ -17,19 +18,25 @@ import { db } from "~/server/db";
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
+
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
       // ...other properties
-      // role: UserRole;
+      role: "User" | "Admin";
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    role: "User" | "Admin";
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    role: "User" | "Admin";
+  }
 }
 
 /**
@@ -40,15 +47,32 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
-    signOut: "/"
+    signOut: "/",
   },
   session: { strategy: "jwt", maxAge: 99999 },
   callbacks: {
+    jwt: async ({ token }): Promise<JWT> => {
+      const dbuser = await db.user.findUnique({
+        where: {
+          id: token.sub,
+        },
+      });
+
+      if (!dbuser) {
+        return token;
+      }
+
+      return {
+        ...token,
+        role: `${dbuser.role}`,
+      };
+    },
     session: ({ session, token }) => ({
       ...session,
       user: {
         ...session.user,
         id: token.sub,
+        role: token.role,
       },
     }),
   },
@@ -60,8 +84,8 @@ export const authOptions: NextAuthOptions = {
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET
-    })
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
     /**
      * ...add more providers here.
      *

@@ -7,7 +7,7 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
     images: {
-        domains: ['cdn.discordapp.com', 'lh3.googleusercontent.com'],
+        domains: ['cdn.discordapp.com', 'lh3.googleusercontent.com', 'nix-post.vercel.app'],
       }
 };
 

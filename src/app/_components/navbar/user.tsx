@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { FaPlus } from "react-icons/fa";
+import { MdAdminPanelSettings } from "react-icons/md";
+
 import LogoutModal from "../modal/Logout";
 import { CreatePostModal } from "../modal/addPost";
 
@@ -17,6 +19,8 @@ export default function UserInfo({ session }: props) {
 
   return (
     <div className=" flex items-center gap-3 max-sm:gap-1">
+      {session?.user.role == "Admin" ? <Link href="/admin"><MdAdminPanelSettings size={40} color="#fff"/></Link> : null}
+
       <Button onClick={addPost.onOpen} variant="flat" size="sm" color="default">
         <FaPlus color="white" width={50} />
       </Button>
@@ -38,7 +42,12 @@ export default function UserInfo({ session }: props) {
           />
         </Link>
       </div>
-      <Button onClick={logoutModal.onOpen} variant="shadow" color="default" className=" max-sm:hidden">
+      <Button
+        onClick={logoutModal.onOpen}
+        variant="shadow"
+        color="default"
+        className=" max-sm:hidden"
+      >
         Logout
       </Button>
 

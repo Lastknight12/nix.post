@@ -1,7 +1,6 @@
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api } from "~/trpc/react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Input, Textarea } from "@nextui-org/input";
 import { Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
@@ -15,18 +14,20 @@ interface props {
 }
 
 export function CreatePostModal({ isOpen, onOpenChange, onClose }: props) {
-  const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-
+  const utils = api.useUtils()
+  
   const createPost = api.post.createPost.useMutation({
-    onSuccess: () => {
+    onSuccess: async () =>  {
       setTitle("");
       setContent("");
-      onClose();
-      router.refresh();
+      toast.success("Post added");
+      onClose()
+      await utils.post.invalidate()
     },
   });
+
 
   const handleSubmit = () => {
     try {
@@ -99,7 +100,6 @@ export function CreatePostModal({ isOpen, onOpenChange, onClose }: props) {
             </ModalFooter>
           </>
         </ModalContent>
-        <Toaster />
       </Modal>
     </div>
   );

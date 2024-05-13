@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import { NextUI } from "./providers/NextUI";
 import NextAuthProvider from "./providers/NextAuth";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,10 +19,11 @@ export const metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} h-full !bg-black text-gray-200 bg-gradient-to-r from-[#0f0f0f] via-[#12275653] to-[#0f0f0f]`}>
+      <body className={`font-sans ${inter.variable} dark h-full !bg-black text-gray-200 bg-gradient-to-r from-[#0f0f0f] via-[#12275653] to-[#0f0f0f]`}>
         <TRPCReactProvider>
           <NextUI>
             <NextAuthProvider>
+            <Toaster />
               {children}
             </NextAuthProvider>
           </NextUI>

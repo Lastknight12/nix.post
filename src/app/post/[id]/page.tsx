@@ -7,12 +7,11 @@ import Comments from "~/app/_components/posts/addComment";
 interface requestId {
   params: {
     id: string;
-  };
-  searchParams: string;
+  }
 }
 
 export default async function PostInfo(req: requestId) {
-  const post = await api.post.getIndividualPost({ id: req.params.id });
+  const post = await api.post.getIndividualPost({id: parseInt(req.params.id)});
 
   if (!post) {
     return notFound();
@@ -22,7 +21,7 @@ export default async function PostInfo(req: requestId) {
     <>
       <ScrollAnimation />
       <div className="mt-4 w-full border-b-1 border-gray-500 py-6 px-2">
-        <div className=" mx-auto max-w-[1000px]">
+        <div className=" mx-auto max-w-screen-lg">
           <div className=" flex items-center gap-2">
             <Image
               src={post.createdBy.image}
@@ -49,3 +48,4 @@ export default async function PostInfo(req: requestId) {
     </>
   );
 }
+

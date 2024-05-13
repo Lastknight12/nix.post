@@ -11,20 +11,21 @@ import {
 } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
-import React from "react";
 import type { Session } from "next-auth";
 import UserInfo from "./user";
-import { signOut } from "next-auth/react";
+import { useState } from "react";
 
 export default function Navigation({ session }: { session: Session | null }) {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuItems = [
-    {name: "Profile", href: "/#"},
-  ];
+  const menuItems = [{ name: "Profile", href: "/#" }];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} className=" bg-transparent border-b-[#ffffff0e] border-b-1" isBlurred>
+    <Navbar
+      onMenuOpenChange={setIsMenuOpen}
+      className=" border-b-1 border-b-[#ffffff0e] bg-transparent"
+      isBlurred
+    >
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -41,22 +42,18 @@ export default function Navigation({ session }: { session: Session | null }) {
               Sign Up
             </Button>
           ) : (
-            <UserInfo session={session}></UserInfo>
+            <UserInfo session={session} />
           )}
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu className=" bg-transparent">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link
-              className="w-full"
-              href={item.href}
-            >
+            <Link className="w-full" href={item.href}>
               {item.name}
             </Link>
           </NavbarMenuItem>
         ))}
-        { session?.user ? <Button color="danger" variant="flat" className=" max-w-6" onClick={() => signOut()}>Logout</Button> : undefined}
       </NavbarMenu>
     </Navbar>
   );
