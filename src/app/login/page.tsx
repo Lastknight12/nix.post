@@ -10,14 +10,14 @@ export default function Sigin() {
     <div className=" flex flex-col gap-2 h-full w-full items-center justify-center">
       <Button
         variant="flat"
-        onClick={() => signIn("discord", { redirect: true, callbackUrl: `http://${process.env.NEXTAUTH_URL}` })}
+        onClick={() => signIn("discord", { redirect: true, callbackUrl: `https://${process.env.NEXTAUTH_URL}` })}
         color="primary"
       >
         Login with Discord <FaDiscord />
       </Button>
       <Button
         variant="flat"
-        onClick={() => signIn("google", { redirect: true, callbackUrl: `http://${process.env.NEXTAUTH_URL}` })}
+        onClick={() => signIn("google", { redirect: true, callbackUrl: `https://${process.env.NEXTAUTH_URL}` })}
         color="primary"
       >
         Login with Google <FaGoogle />
