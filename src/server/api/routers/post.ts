@@ -41,8 +41,7 @@ export const postRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const { limit, cursor } = input;
-      try {
-        const items = await ctx.db.post.findMany({
+      const items = await ctx.db.post.findMany({
         take: limit + 1,
         where: cursor ? { id: { lt: cursor + 1 } } : undefined,
         orderBy: {
@@ -62,11 +61,12 @@ export const postRouter = createTRPCRouter({
           },
         },
       });
+      if(!items) {
         return {
-          items,
-          nextCursor: 6
+          items: [],
+          nextCursor: undefined
         }
-      } catch(error) {return {items: error, nextCursor: undefined}}
+      }
       let nextCursor: number | undefined;
       if (items.length > limit) {
         const nextItem = items.pop();
