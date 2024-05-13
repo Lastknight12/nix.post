@@ -87,7 +87,6 @@ export const postRouter = createTRPCRouter({
         nextCursor,
       };
     }),
-
   getLastPosts: publicProcedure.query(async ({ ctx }) => {
     const count = await ctx.db.post.count();
     const post = ctx.db.post.findMany({
