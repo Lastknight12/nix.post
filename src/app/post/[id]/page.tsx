@@ -6,12 +6,13 @@ import Comments from "~/app/_components/posts/addComment";
 
 interface requestId {
   params: {
-    id: number;
+    id: string;
   }
 }
 
 export default async function PostInfo(req: requestId) {
-  const post = await api.post.getIndividualPost({id: req.params.id});
+  console.log(typeof(req.params.id))
+  const post = await api.post.getIndividualPost({id: parseInt(req.params.id)});
 
   if (!post) {
     return notFound();
@@ -44,7 +45,7 @@ export default async function PostInfo(req: requestId) {
           </div>
         </div>
       </div>
-      <Comments postId={req.params.id} post={post} />
+      <Comments postId={parseInt(req.params.id)} post={post} />
     </>
   );
 }
