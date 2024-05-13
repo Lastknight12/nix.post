@@ -6,6 +6,5 @@ export const addPostSchema = z.object({
 });
 
 export const addCommentSchema = z.object({
-  postID: z.string().min(1, "postID cant be null"),
-  content: z.string().min(1, "content cant be null"),
+  content: z.string().min(1, "comment can't be null").max(120, "comment length 120"),
 });

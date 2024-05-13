@@ -28,7 +28,7 @@ export const postRouter = createTRPCRouter({
     }),
 
   createComment: protectedProcedure
-    .input(z.object({ postID: z.number(), content: z.string().min(1) }))
+    .input(z.object({ postID: z.number(), content: z.string().min(1).max(120) }))
     .mutation(async ({ ctx, input }) => {
       const comment = await ctx.db.comments.create({
         data: {

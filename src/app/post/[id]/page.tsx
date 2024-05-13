@@ -45,7 +45,7 @@ export default async function PostInfo(req: requestId) {
           </div>
         </div>
       </div>
-      <Comments postId={parseInt(req.params.id)} post={post} />
+      <Comments postId={req.params.id} post={post} />
     </>
   );
 }

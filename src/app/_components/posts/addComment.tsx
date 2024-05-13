@@ -11,7 +11,7 @@ import { addCommentSchema } from "~/app/types/types";
 import { ZodError } from "zod";
 
 interface props {
-  postId: number;
+  postId: string;
   post: {
     comments: {
       content: string;
@@ -64,7 +64,7 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
 
   function handleClick() {
     try {
-      addCommentSchema.parse({ postID: postId, content: comment });
+      addCommentSchema.parse({ content: comment });
     } catch (error) {
       if (error instanceof ZodError) {
         error.errors.map((error) => toast.error(error.message));
@@ -72,7 +72,7 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
         throw new Error(String(error));
       }
     }
-    createPost.mutate({ postID: postId, content: comment });
+    createPost.mutate({ postID: parseInt(postId), content: comment });
   }
 
   return (
@@ -95,6 +95,7 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
             <Button
               variant="shadow"
               color="success"
+              isLoading={createPost.isPending}
               onClick={() => handleClick()}
             >
               Comment
