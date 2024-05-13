@@ -7,16 +7,13 @@ import {
 } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   createPost: protectedProcedure
-    .input(z.object({ title: z.string().min(5), content: z.string().min(20) }))
+    .input(
+      z.object({
+        title: z.string().min(5).max(20),
+        content: z.string().min(20),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.post.create({
         data: {
@@ -28,7 +25,9 @@ export const postRouter = createTRPCRouter({
     }),
 
   createComment: protectedProcedure
-    .input(z.object({ postID: z.number(), content: z.string().min(1).max(120) }))
+    .input(
+      z.object({ postID: z.number(), content: z.string().min(1).max(120) }),
+    )
     .mutation(async ({ ctx, input }) => {
       const comment = await ctx.db.comments.create({
         data: {
@@ -53,7 +52,7 @@ export const postRouter = createTRPCRouter({
         take: limit + 1,
         where: cursor ? { id: { lt: cursor + 1 } } : undefined,
         orderBy: {
-          id: "desc"
+          id: "desc",
         },
         select: {
           id: true,
@@ -64,11 +63,19 @@ export const postRouter = createTRPCRouter({
           createdBy: {
             select: {
               name: true,
-              image: true
-            }
+              image: true,
+            },
           },
         },
       });
+
+      if (!items) {
+        return {
+          items: [],
+          nextCursor: undefined 
+        };
+      }
+
       let nextCursor: number | undefined;
       if (items.length > limit) {
         const nextItem = items.pop();
@@ -82,15 +89,10 @@ export const postRouter = createTRPCRouter({
     }),
 
   getLastPosts: publicProcedure.query(async ({ ctx }) => {
-    let count = await ctx.db.post.count();
-    if (count <= 3) {
-      count = 1;
-    } else {
-      count = count - 2;
-    }
+    const count = await ctx.db.post.count();
     const post = ctx.db.post.findMany({
       cursor: {
-        id: count,
+        id: count <= 3 ? 1 : count - 2,
       },
       take: 3,
       select: {

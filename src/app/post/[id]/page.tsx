@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { api } from "~/trpc/server";
 import Image from "next/image";
 import ScrollAnimation from "~/app/_components/animation/scrollAnimation";
-import Comments from "~/app/_components/posts/addComment";
+import Comments from "~/app/_components/comment/addComment";
 
 interface requestId {
   params: {

@@ -20,7 +20,6 @@ export default function SkeletonTemplate() {
       initialCursor: undefined
     },
   );
-  console.log(data)
   
   useEffect(() => {
     if (isInView && hasNextPage) {
@@ -36,7 +35,6 @@ export default function SkeletonTemplate() {
       handleFetchNextPage();
     }
   }, [isInView, fetchNextPage, hasNextPage]);
-  console.log(data)
   
   return (
     <>
