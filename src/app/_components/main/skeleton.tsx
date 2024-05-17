@@ -20,18 +20,19 @@ export default function SkeletonTemplate() {
       initialCursor: undefined
     },
   );
+
+  const handleFetchNextPage = () => {
+    fetchNextPage()
+      .then((data) => {
+        return data
+      })
+      .catch((error) => {
+        console.error("error when getting posts:", error);
+      });
+  };
   
   useEffect(() => {
     if (isInView && hasNextPage) {
-      const handleFetchNextPage = () => {
-        fetchNextPage()
-          .then((data) => {
-            return data
-          })
-          .catch((error) => {
-            console.error("error when getting posts:", error);
-          });
-      };
       handleFetchNextPage();
     }
   }, [isInView, fetchNextPage, hasNextPage]);
