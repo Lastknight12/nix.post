@@ -72,6 +72,7 @@ export function CreatePostModal({ isOpen, onOpenChange, onClose }: props) {
                 variant="underlined"
                 color="secondary"
                 onChange={(e) => setTitle(e.target.value)}
+                alt="content title"
               />
               <Textarea
                 placeholder="Enter your description (min 20)"
@@ -84,6 +85,7 @@ export function CreatePostModal({ isOpen, onOpenChange, onClose }: props) {
                 }}
                 color="secondary"
                 variant="underlined"
+                alt="post main content input"
               />
             </ModalBody>
             <ModalFooter>
@@ -94,6 +96,7 @@ export function CreatePostModal({ isOpen, onOpenChange, onClose }: props) {
                 onClick={handleSubmit}
                 disabled={createPost.isPending}
                 isLoading={createPost.isPending}
+                aria-label="Add Post"
               >
                 Add
               </Button>

@@ -32,7 +32,7 @@ export default function Post({ post }: post) {
         <Image src={post.createdBy.image} alt="User profile picture" width={30} height={30} className=" rounded-full mb-1"/>
         <h1 className=" text-[#ffffffa2]">{post.createdBy.name}</h1>
         </div>
-        <p className=" text-3xl text-[#ffffffc2]"> post.title</p>
+        <p className=" text-3xl text-[#ffffffc2]">{post.title}</p>
       </CardHeader>
       <CardBody className="py-0">
         <p className=" text-gray-400 mb-2">{truncateString(120, post.content)}</p>

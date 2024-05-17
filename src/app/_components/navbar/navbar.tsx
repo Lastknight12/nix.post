@@ -38,7 +38,7 @@ export default function Navigation({ session }: { session: Session | null }) {
       <NavbarContent justify="end">
         <NavbarItem>
           {!session ? (
-            <Button as={Link} color="primary" href="/login" variant="shadow">
+            <Button as={Link} color="primary" href="/login" variant="shadow" aria-label='SignUp'>
               Sign Up
             </Button>
           ) : (
@@ -49,7 +49,7 @@ export default function Navigation({ session }: { session: Session | null }) {
       <NavbarMenu className=" bg-transparent">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link className="w-full" href={item.href}>
+            <Link className="w-full" href={item.href} aria-label='Menu Item'>
               {item.name}
             </Link>
           </NavbarMenuItem>

@@ -19,9 +19,9 @@ export default function UserInfo({ session }: props) {
 
   return (
     <div className=" flex items-center gap-3 max-sm:gap-1">
-      {session?.user.role == "Admin" ? <Link href="/admin"><MdAdminPanelSettings size={40} color="#fff"/></Link> : null}
+      {session?.user.role == "Admin" ? <Link href="/admin"><MdAdminPanelSettings size={40} color="#fff" aria-label="admin page link"/></Link> : null}
 
-      <Button onClick={addPost.onOpen} variant="flat" size="sm" color="default">
+      <Button onClick={addPost.onOpen} variant="flat" size="sm" color="default" aria-label="open add post modal menu">
         <FaPlus color="white" width={50} />
       </Button>
 
@@ -47,6 +47,7 @@ export default function UserInfo({ session }: props) {
         variant="shadow"
         color="default"
         className=" max-sm:hidden"
+        aria-label="Logout from account"
       >
         Logout
       </Button>
