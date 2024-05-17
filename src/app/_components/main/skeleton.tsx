@@ -22,18 +22,8 @@ export default function SkeletonTemplate() {
       },
     );
 
-  const handleFetchNextPage = () => {
-    fetchNextPage()
-      .then((data) => {
-        return data;
-      })
-      .catch((error) => {
-        console.error("error when getting posts:", error);
-      });
-  };
-
   if (isInView && hasNextPage) {
-    handleFetchNextPage();
+    fetchNextPage();
   }
 
   return (
