@@ -1,11 +1,12 @@
 "use client";
 
-import { Button } from "@nextui-org/react";
+import { Button, Textarea } from "@nextui-org/react";
 import type { Session } from "next-auth";
 import Image from "next/image";
 import { useState, useEffect, type ChangeEvent } from "react";
 import toast from "react-hot-toast";
 import { api } from "~/trpc/react";
+import { RiEditFill } from "react-icons/ri";
 
 interface ProfileUser {
   user: {
@@ -35,7 +36,7 @@ export function UserDescription({ user, session }: ProfileUser) {
     }
   }, [user?.description]);
 
-  const onChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const onChangeDescription = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setDescription(e.target.value);
     setChanged(true);
@@ -62,10 +63,16 @@ export function UserDescription({ user, session }: ProfileUser) {
       </h1>
       {session?.user.id === user?.id ? (
         <>
-          <textarea
+          <Textarea
             value={description}
+            color="secondary"
+            minRows={1}
             onChange={(e) => onChangeDescription(e)}
-            className="bg-transparent text-2xl dark:text-white"
+            endContent={<RiEditFill size={25} />}
+            classNames={{
+              inputWrapper: "mb-2",
+              input: "text-2xl",
+            }}
           />
           <Button
             className={`${!changed && "hidden"}`}

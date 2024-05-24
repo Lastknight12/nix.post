@@ -202,9 +202,7 @@ export const postRouter = createTRPCRouter({
           .string()
           .min(5, "Title must be at least 5 characters long")
           .max(20, "Title must be no more than 20 characters long"),
-        content: z
-          .string()
-          .min(20, "Content must be at least 20 characters long"),
+        content: z.any(),
         createdAt: z.date(),
       }),
     )
@@ -213,6 +211,7 @@ export const postRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           title: input.title,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           content: input.content,
           createdAt: input.createdAt,
         },

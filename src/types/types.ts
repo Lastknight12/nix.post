@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Prisma } from "@prisma/client";
 import type { Session } from "next-auth";
 import { z } from "zod";
 
@@ -57,7 +58,7 @@ export interface UserInfo {
 export interface AdminPosts {
   id: number;
   title: string;
-  content: string;
+  content: Prisma.JsonValue;
   createdAt: Date;
   updatedAt: Date;
   createdBy: {
