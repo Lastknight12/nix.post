@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import type { Session } from "next-auth";
+import type { ColDef } from "ag-grid-community";
 import { z } from "zod";
 
 export const addPostSchema = z.object({
@@ -121,3 +122,5 @@ export type Node =
   | BlockquoteNode
   | DocumentNode
   | CodeNode;
+
+export type ColDefHelper<T> = ColDef<T>[];

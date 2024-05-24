@@ -5,31 +5,34 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from "react";
-import type { CellValueChangedEvent } from "ag-grid-community";
+import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
 import toast from "react-hot-toast";
-import type { AdminPosts } from "~/types/types";
+import type { AdminPosts, ColDefHelper } from "~/types/types";
 import { updatePost } from "~/actions/mutation/mutaiton";
 
 export default function Posts() {
   const [rowData, setRowData] = useState<AdminPosts[]>([]);
-  const [colDefs] = useState([
+  const [colDefs] = useState<ColDefHelper<AdminPosts>>([
     { field: "id", editable: false },
     { field: "title", editable: true },
     { field: "content", editable: true },
     { field: "createdAt" },
     { field: "updatedAt" },
     { headerName: "createdBy", field: "createdBy.name" },
-  ]);
+  ] as ColDef<AdminPosts>[]);
 
-  const updateSinglePost = updatePost("Success", "field cann't be null");
+  const updateSinglePost = updatePost("Success", "field can't be null");
 
   const { data, isFetched, isLoading } = api.admin.getAllPosts.useQuery();
 
   function CellValueChanged(event: CellValueChangedEvent<AdminPosts>) {
+    // Ensure the content is a string
+    const updatedContent = event.data.content ? String(event.data.content) : "";
+
     return updateSinglePost.mutate({
       id: event.data.id,
       title: event.data.title,
-      content: event.data.content,
+      content: updatedContent,
       createdAt: event.data.createdAt,
     });
   }
