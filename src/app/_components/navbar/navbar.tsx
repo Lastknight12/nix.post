@@ -11,19 +11,26 @@ import {
 } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
-import type { Session } from "next-auth";
-import UserInfo from "./user";
+import UserInfo from "./User";
 import { useState } from "react";
+import type { NavUser } from "~/types/types";
+import { useTheme } from "next-themes";
+import { RiColorFilterLine } from "react-icons/ri";
+import LoginDropdown from "../modal/Logout";
+import { FiEdit3 } from "react-icons/fi";
 
-export default function Navigation({ session }: { session: Session | null }) {
+export default function Navigation({ session }: NavUser) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
-  const menuItems = [{ name: "Profile", href: "/#" }];
+  const menuItems = [
+    { name: "Profile", href: `/profile/${session?.user.name}` },
+  ];
 
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
-      className=" border-b-1 border-b-[#ffffff0e] bg-transparent"
+      className=" border-b-2 light light:border-none light:bg-transparent light:text-black dark:border-b-[#4f4f4fc9] dark:text-white"
       isBlurred
     >
       <NavbarContent>
@@ -32,28 +39,58 @@ export default function Navigation({ session }: { session: Session | null }) {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <p className="font-bold text-inherit">NIX.POST</p>
+          <Link href="/">
+            <p className="font-bold text-inherit">NIX.POST</p>
+          </Link>
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
-          {!session ? (
-            <Button as={Link} color="primary" href="/login" variant="shadow" aria-label='SignUp'>
-              Sign Up
+          <Button
+            size="sm"
+            onClick={() => setTheme(theme == "dark" ? "light" : "dark")}
+            className="light light:bg-[#52525b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
+          >
+            <RiColorFilterLine size={20} />
+          </Button>
+        </NavbarItem>
+        <NavbarItem>
+          <Link href="/post/create">
+            <Button
+              size="sm"
+              className="light light:bg-[#52525b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
+            >
+              Write <FiEdit3 size={20} className=" inline-block" />
             </Button>
-          ) : (
-            <UserInfo session={session} />
-          )}
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          {!session ? <LoginDropdown /> : <UserInfo session={session} />}
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu className=" bg-transparent">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link className="w-full" href={item.href} aria-label='Menu Item'>
+            <Link
+              className="w-full light light:text-[#000] dark:text-white"
+              href={item.href}
+              aria-label="Menu Item "
+            >
               {item.name}
             </Link>
           </NavbarMenuItem>
         ))}
+        <NavbarMenuItem>
+          {session?.user.role == "Admin" && (
+            <Link
+              className="w-full light light:text-[#000] dark:text-white"
+              href={"/admin"}
+              aria-label="Menu Item"
+            >
+              Admin Dahsboard
+            </Link>
+          )}
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );

@@ -1,27 +1,44 @@
 import { notFound } from "next/navigation";
 import { api } from "~/trpc/server";
 import Image from "next/image";
-import ScrollAnimation from "~/app/_components/animation/scrollAnimation";
-import Comments from "~/app/_components/comment/addComment";
+import Comments from "~/app/_components/comment/AddComment";
+import type { SinglePost } from "~/types/types";
+import { parseTiptapJsonToHtml } from "~/utils/utils"; // Убедитесь, что путь правильный
+import { Spinner } from "@nextui-org/spinner";
 
-interface requestId {
-  params: {
-    id: string;
-  }
-}
-
-export default async function PostInfo(req: requestId) {
-  console.log(typeof(req.params.id))
-  const post = await api.post.getIndividualPost({id: parseInt(req.params.id)});
+export default async function PostInfo(req: SinglePost) {
+  const post = await api.post.getIndividualPost({
+    id: +req.params.id,
+  });
 
   if (!post) {
     return notFound();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isValidNode = (node: unknown): node is Node => {
+    if (typeof node !== "object" || node === null || !("type" in node)) {
+      return false;
+    }
+
+    const nodeType = (node as { type: string }).type;
+
+    return (
+      nodeType === "doc" ||
+      nodeType === "paragraph" ||
+      nodeType === "blockquote" ||
+      nodeType === "text" ||
+      nodeType === "codeBlock"
+    );
+  };
+
+  const html = isValidNode(post.content)
+    ? parseTiptapJsonToHtml(post.content)
+    : "";
+
   return (
     <>
-      <ScrollAnimation />
-      <div className="mt-4 w-full border-b-1 border-gray-500 py-6 px-2">
+      <div className="mt-4 w-full px-2 py-6">
         <div className=" mx-auto max-w-screen-lg">
           <div className=" flex items-center gap-2">
             <Image
@@ -31,16 +48,24 @@ export default async function PostInfo(req: requestId) {
               width={50}
               height={50}
             />
-            <p className=" text-xl">{post.createdBy.name}</p>
+            <p className=" text-xl light light:text-[#595959] dark:text-[#ffffff]">
+              {post.createdBy.name}
+            </p>
           </div>
         </div>
       </div>
-      <div className=" mb-4 border-b-1 border-gray-500 p-4 pb-10 max-md:bg-[#48494a3b]">
-        <p className=" mb-3 text-center text-4xl">{post.title}</p>
-        <div className="flex items-center justify-center">
+      <div className=" mx-auto mb-2 max-w-screen-lg p-4 pb-10 ">
+        <div className="flex flex-col justify-center">
+          <p className=" mb-6 text-center text-4xl font-bold light light:text-black dark:text-[#ffffffc2] dark:text-white">
+            {post.title}
+          </p>
           <div className=" max-w-[1024px]">
             <div className=" fex gap-7">
-              <pre className=" text-xl text-[#bdc1c8] text-wrap font-[inherit]">{post.content}</pre>
+              <div
+                className="tiptap"
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                dangerouslySetInnerHTML={{ __html: html }}
+              />
             </div>
           </div>
         </div>
@@ -49,4 +74,3 @@ export default async function PostInfo(req: requestId) {
     </>
   );
 }
-

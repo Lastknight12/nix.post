@@ -1,43 +1,73 @@
 "use client";
 
-import { api } from "../../../trpc/react"
+import { api } from "~/trpc/react";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import { useEffect, useState } from "react";
+import type { CellValueChangedEvent } from "ag-grid-community";
+import toast from "react-hot-toast";
+import type { AdminUsers } from "~/types/types";
+import { updateUser } from "~/actions/mutation/mutaiton";
 
 export default function Posts() {
+  const [rowData, setRowData] = useState<AdminUsers[]>([]);
+  const [colDefs] = useState([
+    { field: "id", editable: false },
+    { field: "name", editable: true },
+    { field: "email", editable: true },
+    { field: "image", editable: true },
+    { field: "role" },
+  ]);
 
-  const { data } = api.post.getAllUsers.useQuery()
+  const updateSinglePost = updateUser("Success", "field cann't be null");
+
+  const { data, isFetched, isLoading } = api.admin.getAllUsers.useQuery();
+
+  function CellValueChanged(event: CellValueChangedEvent<AdminUsers>) {
+    console.log(event.data);
+    return updateSinglePost.mutate({
+      id: event.data.id,
+      name: event.data.name,
+      email: event.data.email,
+      image: event.data.image,
+      role: event.data.role,
+    });
+  }
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Loading...");
+    }
+    if (data) {
+      setRowData([...data.flatMap((page) => page)]);
+      toast.dismiss();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetched]);
 
   return (
-    <div className="overflow-x-auto mt-6">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-transparent">
-          <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider border-r-1 border-[#ffffff40]">id</th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider border-r-1 border-[#ffffff40]">name</th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider border-r-1 border-[#ffffff40]">email</th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider border-r-1 border-[#ffffff40]">image</th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider border-r-1 border-[#ffffff40]">role</th>
-          </tr>
-        </thead>
-        <tbody className="bg-transparent divide-y divide-gray-200">
-          {data
-            ? data.map((user) => { return (
-                <tr key={user.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{user.id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{user.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{user.email}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{user.image}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{user.role}</td>
-                </tr>
-            )})
-            : (
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-white" colSpan={2}>Loading...</td>
-              </tr>
-            )
-          }
-        </tbody>
-      </table>
+    <div className="mt-6 overflow-x-auto">
+      <div className="ag-theme-quartz-dark" style={{ height: 500 }}>
+        <AgGridReact
+          rowData={rowData}
+          pagination={true}
+          paginationPageSize={10}
+          cacheBlockSize={10}
+          columnDefs={colDefs}
+          paginationPageSizeSelector={[10, 15, 20, 50, 100, 200]}
+          defaultColDef={{
+            flex: 1,
+            minWidth: 100,
+            editable: true,
+            resizable: true,
+            sortable: true,
+          }}
+          onCellValueChanged={(event) => {
+            CellValueChanged(event);
+          }}
+        />
+      </div>
     </div>
   );
 }
-

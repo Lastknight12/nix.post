@@ -6,9 +6,10 @@ import React, { useState } from "react";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import toast, { Toaster } from "react-hot-toast";
-import { addCommentSchema } from "~/app/types/types";
+import toast from "react-hot-toast";
+import { addCommentSchema } from "~/types/types";
 import { ZodError } from "zod";
+import type { Prisma } from "@prisma/client";
 
 interface props {
   postId: string;
@@ -23,7 +24,7 @@ interface props {
       };
     }[];
     title: string;
-    content: string;
+    content: Prisma.JsonValue;
     createdBy: {
       name: string;
       image: string;
@@ -32,24 +33,28 @@ interface props {
 }
 
 function formatDate(date: Date) {
-    const now = new Date();
-    const diff = now.getTime() - date.getTime(); // Difference in milliseconds
-    const diffMinutes = Math.floor(diff / 60000);
-  
-    if (diffMinutes < 1) {
-      return 'тільки що';
-    } else if (diffMinutes < 60) {
-      return `${diffMinutes} хвилин тому`;
-    } else if (diffMinutes < 1440) {
-      return `${Math.floor(diffMinutes / 60)} годин тому`;
-    } else if (diffMinutes < 2880) {
-      return 'вчора';
-    } else if (diffMinutes < 10080) {
-      return date.toLocaleString('uk-UA', { weekday: 'short' });
-    } else {
-      return date.toLocaleDateString('uk-UA', { year: 'numeric', month: 'short', day: 'numeric' });
-    }
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+  const diffMinutes = Math.floor(diff / 60000);
+
+  if (diffMinutes < 1) {
+    return "тільки що";
+  } else if (diffMinutes < 60) {
+    return `${diffMinutes} хвилин тому`;
+  } else if (diffMinutes < 1440) {
+    return `${Math.floor(diffMinutes / 60)} годин тому`;
+  } else if (diffMinutes < 2880) {
+    return "вчора";
+  } else if (diffMinutes < 10080) {
+    return date.toLocaleString("uk-UA", { weekday: "short" });
+  } else {
+    return date.toLocaleDateString("uk-UA", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   }
+}
 
 const Comments: React.FC<props> = ({ postId, post }: props) => {
   const router = useRouter();
@@ -59,7 +64,7 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
     onSuccess: () => {
       setComment("");
       router.refresh();
-    }
+    },
   });
 
   function handleClick() {
@@ -67,7 +72,7 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
       addCommentSchema.parse({ content: comment });
     } catch (error) {
       if (error instanceof ZodError) {
-        error.errors.map((error) => toast.error(error.message));
+        toast.error(error.errors[0]!.message);
       } else {
         throw new Error(String(error));
       }
@@ -77,7 +82,6 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
 
   return (
     <>
-    <Toaster />
       <div className="mb-10 px-4">
         <div className=" mx-auto max-w-[1024px]">
           <div className=" mb-4 flex items-center justify-center gap-4">
@@ -87,9 +91,9 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
               onChange={(e) => setComment(e.target.value)}
               classNames={{
                 inputWrapper:
-                  " bg-transparent text-white border-[#ffffff9e] hover:border-[#ffffff9e]",
+                  " bg-transparent text-white dark:border-[#646464] light light:border-[#000] light:hover:border-[#000] dark:hover:border-[#646464]",
               }}
-              color="primary"
+              color="secondary"
               variant="underlined"
             />
             <Button
@@ -103,11 +107,10 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
           </div>
           <div className=" mt-5 flex w-full max-w-[400px] flex-col justify-center gap-5 max-md:mx-auto">
             {post.comments.map((comment) => {
-            
               return (
                 <div
                   key={comment.id}
-                  className=" flex flex-col rounded bg-[#80808080] p-4"
+                  className=" flex flex-col rounded bg-[#202020] p-4"
                 >
                   <div className=" flex items-center gap-2">
                     <div>

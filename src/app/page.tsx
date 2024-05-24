@@ -1,14 +1,9 @@
-import { getServerAuthSession } from "~/server/auth";
-import Navigation from "./_components/navbar/navbar";
-import Posts from "./_components/main/allPosts";
+import PostsList from "./_components/main/PostsList";
 
 export default async function Main() {
-  const session = await getServerAuthSession();
-
   return (
     <>
-      <Navigation session={session} />
-      <Posts />
+      <PostsList />
     </>
   );
 }

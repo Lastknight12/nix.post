@@ -1,49 +1,49 @@
-import { Button } from "@nextui-org/button";
-import { Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/modal";
-import { signOut } from "next-auth/react";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react";
+import { signIn } from "next-auth/react";
+import { FaDiscord, FaGoogle } from "react-icons/fa";
 
-interface props {
-    isOpen: boolean | undefined,
-    onOpenChange: ((isOpen: boolean) => void) | undefined
-}
-
-export default function LogoutModal ({isOpen, onOpenChange}: props) {
-    return (
-        <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        classNames={{
-          body: "py-6",
-          backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-          base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
-          footer: "border-t-[1px] border-[#292f46]",
-          closeButton: "hover:bg-white/5 active:bg-white/10",
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalBody>
-                <p>Are you sure you want logout?</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button
-                  color="danger"
-                  onClick={async () => {
-                    await signOut()
-                    onClose();
-                  }}
-                  variant="ghost"
-                >
-                  Logout
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    )
+export default function LoginDropdown() {
+  return (
+    <Dropdown>
+      <DropdownTrigger>
+        <Button variant="shadow" color="primary">
+          Login
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu aria-label="Static Actions">
+        <DropdownItem key="new">
+          <Button
+            color="secondary"
+            onClick={() =>
+              signIn("discord", {
+                redirect: true,
+                callbackUrl: `https://${process.env.NEXTAUTH_URL}`,
+              })
+            }
+          >
+            Login with Discord <FaDiscord />
+          </Button>
+        </DropdownItem>
+        <DropdownItem key="new">
+          <Button
+            color="secondary"
+            onClick={() =>
+              signIn("google", {
+                redirect: true,
+                callbackUrl: `https://${process.env.NEXTAUTH_URL}`,
+              })
+            }
+          >
+            Login with Google <FaGoogle />
+          </Button>
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  );
 }

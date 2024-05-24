@@ -10,14 +10,18 @@ export const postRouter = createTRPCRouter({
   createPost: protectedProcedure
     .input(
       z.object({
-        title: z.string().min(5).max(20),
-        content: z.string().min(20),
+        title: z
+          .string()
+          .min(5, "Title must be at least 5 characters long")
+          .max(20, "Title must be no more than 20 characters long"),
+        content: z.any(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.post.create({
         data: {
           title: input.title,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           content: input.content,
           createdBy: { connect: { id: ctx.session.user.id } },
         },
@@ -26,7 +30,13 @@ export const postRouter = createTRPCRouter({
 
   createComment: protectedProcedure
     .input(
-      z.object({ postID: z.number(), content: z.string().min(1).max(120) }),
+      z.object({
+        postID: z.number(),
+        content: z
+          .string()
+          .min(1, "Comment cannot be empty")
+          .max(120, "Comment must be no more than 120 characters long"),
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const comment = await ctx.db.comments.create({
@@ -42,7 +52,10 @@ export const postRouter = createTRPCRouter({
   getBatch: publicProcedure
     .input(
       z.object({
-        limit: z.number(),
+        limit: z
+          .number()
+          .min(1, "Limit must be at least 1")
+          .max(100, "Limit must be no more than 100"),
         cursor: z.number().nullish(),
       }),
     )
@@ -72,7 +85,7 @@ export const postRouter = createTRPCRouter({
       if (!items) {
         return {
           items: [],
-          nextCursor: undefined 
+          nextCursor: undefined,
         };
       }
 
@@ -87,29 +100,127 @@ export const postRouter = createTRPCRouter({
         nextCursor,
       };
     }),
-  getLastPosts: publicProcedure.query(async ({ ctx }) => {
-    const count = await ctx.db.post.count();
-    const post = ctx.db.post.findMany({
-      cursor: {
-        id: count <= 3 ? 1 : count - 2,
-      },
-      take: 3,
-      select: {
-        id: true,
-        title: true,
-        createdAt: true,
-      },
-    });
-    return post;
+
+  getAllPosts: publicProcedure.query(async ({ ctx }) => {
+    const posts = await ctx.db.post.findMany();
+    return posts;
   }),
 
-  getAllUsers: protectedProcedure.query(async ({ ctx }) => {
-    const users = await ctx.db.user.findMany();
-    return users;
-  }),
+  getAllUserPosts: publicProcedure
+    .input(
+      z.object({
+        userName: z.string().min(1, "User name cannot be empty"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const posts = await ctx.db.post.findMany({
+        where: { createdBy: { name: input.userName } },
+        orderBy: {
+          id: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          createdAt: true,
+          createdBy: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      });
+      return posts;
+    }),
+
+  getUserInfo: publicProcedure
+    .input(
+      z.object({ userName: z.string().min(1, "User name cannot be empty") }),
+    )
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: {
+          name: input.userName,
+        },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          description: true,
+        },
+      });
+
+      return user;
+    }),
+
+  updateUserDescription: publicProcedure
+    .input(
+      z.object({
+        userId: z.string().min(1, "User ID cannot be empty"),
+        description: z.string().min(1, "Description cannot be empty"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        where: {
+          id: input.userId,
+        },
+        data: {
+          description: input.description,
+        },
+      });
+
+      return "Successfully updated description";
+    }),
+
+  updateSingleUser: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1, "ID cannot be empty"),
+        name: z.string().min(1, "Name cannot be empty"),
+        email: z.string().email("Invalid email address"),
+        image: z.string().url("Invalid URL"),
+        role: z.string().min(1, "Role cannot be empty"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          email: input.email,
+          image: input.image,
+        },
+      });
+    }),
+
+  updateSinglePost: protectedProcedure
+    .input(
+      z.object({
+        id: z.number().min(1, "ID must be a positive number"),
+        title: z
+          .string()
+          .min(5, "Title must be at least 5 characters long")
+          .max(20, "Title must be no more than 20 characters long"),
+        content: z
+          .string()
+          .min(20, "Content must be at least 20 characters long"),
+        createdAt: z.date(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.post.update({
+        where: { id: input.id },
+        data: {
+          title: input.title,
+          content: input.content,
+          createdAt: input.createdAt,
+        },
+      });
+    }),
 
   getIndividualPost: publicProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.number().min(1, "ID must be a positive number") }))
     .query(async ({ ctx, input }) => {
       const post = await ctx.db.post.findFirst({
         where: {
