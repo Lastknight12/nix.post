@@ -5,7 +5,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from "react";
-import type { CellValueChangedEvent } from "ag-grid-community";
+import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
 import toast from "react-hot-toast";
 import type { AdminUsers } from "~/types/types";
 import { updateUser } from "~/actions/mutation/mutaiton";
@@ -18,7 +18,7 @@ export default function Posts() {
     { field: "email", editable: true },
     { field: "image", editable: true },
     { field: "role" },
-  ]);
+  ] as ColDef<AdminUsers>[]);
 
   const updateSinglePost = updateUser("Success", "field cann't be null");
 
