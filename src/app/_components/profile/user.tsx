@@ -1,11 +1,10 @@
 "use client";
 
-import { Button, Textarea } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import type { Session } from "next-auth";
 import Image from "next/image";
 import { useState, useEffect, type ChangeEvent } from "react";
 import toast from "react-hot-toast";
-import { AiOutlineEdit } from "react-icons/ai";
 import { api } from "~/trpc/react";
 
 interface ProfileUser {
@@ -36,7 +35,7 @@ export function UserDescription({ user, session }: ProfileUser) {
     }
   }, [user?.description]);
 
-  const onChangeDescription = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     setDescription(e.target.value);
     setChanged(true);
@@ -52,7 +51,7 @@ export function UserDescription({ user, session }: ProfileUser) {
   return (
     <div className="sticky top-20">
       <Image
-        src={user?.image}
+        src={user!.image}
         width={65}
         height={65}
         alt="user avatar"
