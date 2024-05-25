@@ -26,9 +26,6 @@ export default function Tiptap() {
       toast.success("Seccess!");
       router.push("/");
     },
-    onError: (error) => {
-      toast.error(error.message);
-    },
   });
 
   if (!editor) {
