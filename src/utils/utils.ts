@@ -40,6 +40,12 @@ export function parseTiptapJsonToHtml(node: Node | undefined): string {
         : "";
       return `<pre${languageClass}><code>${node.content.map(parseTiptapJsonToHtml).join("")}</code></pre>`;
 
+    case "orderedList":
+      return `<ol>${node.content ? node.content.map(parseTiptapJsonToHtml).join("") : ""}</ol>`;
+
+    case "listItem":
+      return `<li>${node.content ? node.content.map(parseTiptapJsonToHtml).join("") : ""}</li>`;
+
     case "paragraph":
       const content = node.content
         ? node.content.map(parseTiptapJsonToHtml).join("")

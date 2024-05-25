@@ -127,11 +127,26 @@ export interface CodeNode {
   content: Array<TextNode>;
 }
 
+export interface listItem {
+  type: "listItem";
+  content: Array<Node>;
+}
+
+export interface orderedList {
+  type: "orderedList";
+  attrs: {
+    start: number;
+  };
+  content: Array<Node>;
+}
+
 export type Node =
   | TextNode
   | ParagraphNode
   | BlockquoteNode
   | DocumentNode
-  | CodeNode;
+  | CodeNode
+  | orderedList
+  | listItem;
 
 export type ColDefHelper<T> = ColDef<T>[];
