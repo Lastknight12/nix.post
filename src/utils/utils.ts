@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import type { Node } from "~/types/types";
+import type { JsonValue, Node } from "~/types/types";
 
 export function truncateString(maxLength: number, str: string): string {
   if (str.length <= maxLength) {
@@ -9,7 +8,23 @@ export function truncateString(maxLength: number, str: string): string {
   }
 }
 
-export function parseTiptapJsonToHtml(node: Node): string {
+export const isValidNode = (node: JsonValue): node is Node => {
+  if (typeof node !== "object" || node === null || !("type" in node)) {
+    return false;
+  }
+
+  const nodeType = (node as { type: string }).type;
+
+  return (
+    nodeType === "doc" ||
+    nodeType === "paragraph" ||
+    nodeType === "blockquote" ||
+    nodeType === "text" ||
+    nodeType === "codeBlock"
+  );
+};
+
+export function parseTiptapJsonToHtml(node: Node | undefined): string {
   if (!node) return "";
 
   switch (node.type) {
@@ -26,13 +41,15 @@ export function parseTiptapJsonToHtml(node: Node): string {
       return `<pre${languageClass}><code>${node.content.map(parseTiptapJsonToHtml).join("")}</code></pre>`;
 
     case "paragraph":
-      return `<p>${node.content ? node.content.map(parseTiptapJsonToHtml).join("") : ""}</p>`;
+      const content = node.content
+        ? node.content.map(parseTiptapJsonToHtml).join("")
+        : "";
+      const classAttr = content.trim() === "" ? ' class="empty-paragraph"' : "";
+      return `<p${classAttr}>${content}</p>`;
 
     case "text":
       return node.text;
     default:
       return "";
   }
-
-  return "";
 }

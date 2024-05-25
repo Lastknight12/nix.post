@@ -88,6 +88,17 @@ export interface Profile {
   };
 }
 
+export type JsonObject = { [Key in string]?: JsonValue };
+export type JsonArray = JsonValue[];
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | JsonObject
+  | JsonArray
+  | null
+  | Node;
+
 export interface TextNode {
   type: "text";
   text: string;

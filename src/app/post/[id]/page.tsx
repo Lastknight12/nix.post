@@ -2,9 +2,8 @@ import { notFound } from "next/navigation";
 import { api } from "~/trpc/server";
 import Image from "next/image";
 import Comments from "~/app/_components/comment/AddComment";
-import type { SinglePost } from "~/types/types";
-import { parseTiptapJsonToHtml } from "~/utils/utils"; // Убедитесь, что путь правильный
-import { Spinner } from "@nextui-org/spinner";
+import type { JsonValue, Node, SinglePost } from "~/types/types";
+import { isValidNode, parseTiptapJsonToHtml } from "~/utils/utils"; // Убедитесь, что путь правильный
 
 export default async function PostInfo(req: SinglePost) {
   const post = await api.post.getIndividualPost({
@@ -15,25 +14,9 @@ export default async function PostInfo(req: SinglePost) {
     return notFound();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const isValidNode = (node: unknown): node is Node => {
-    if (typeof node !== "object" || node === null || !("type" in node)) {
-      return false;
-    }
-
-    const nodeType = (node as { type: string }).type;
-
-    return (
-      nodeType === "doc" ||
-      nodeType === "paragraph" ||
-      nodeType === "blockquote" ||
-      nodeType === "text" ||
-      nodeType === "codeBlock"
-    );
-  };
-
+  const content = post.content as JsonValue;
   const html = isValidNode(post.content)
-    ? parseTiptapJsonToHtml(post.content)
+    ? parseTiptapJsonToHtml(content as Node)
     : "";
 
   return (
@@ -63,7 +46,6 @@ export default async function PostInfo(req: SinglePost) {
             <div className=" fex gap-7">
               <div
                 className="tiptap"
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 dangerouslySetInnerHTML={{ __html: html }}
               />
             </div>
