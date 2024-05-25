@@ -3,7 +3,7 @@ import { api } from "~/trpc/server";
 import Image from "next/image";
 import Comments from "~/app/_components/comment/AddComment";
 import type { JsonValue, Node, SinglePost } from "~/types/types";
-import { isValidNode, parseTiptapJsonToHtml } from "~/utils/utils"; // Убедитесь, что путь правильный
+import { isValidNode, parseTiptapJsonToHtml } from "~/utils/utils";
 
 export default async function PostInfo(req: SinglePost) {
   const post = await api.post.getIndividualPost({
