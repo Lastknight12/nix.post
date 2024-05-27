@@ -16,6 +16,8 @@ export const addCommentSchema = z.object({
   content: z.string().min(1, "Comment cannot be empty"),
 });
 
+// MAIN
+
 export interface MainPostProps {
   post: {
     id: number;
@@ -33,16 +35,18 @@ export interface MainPostsSkeleton {
   isFetched: boolean;
 }
 
-export interface ModalAddPost {
-  isOpen: boolean | undefined;
-  onOpenChange: ((isOpen: boolean) => void) | undefined;
-  onClose: () => void;
-}
+//
+
+// MODAL
 
 export interface ModalLogout {
   isOpen: boolean | undefined;
   onOpenChange: ((isOpen: boolean) => void) | undefined;
 }
+
+//
+
+// NAVBAR
 
 export interface NavNavbar {
   session: Session | null;
@@ -55,6 +59,10 @@ export interface NavUser {
 export interface UserInfo {
   session: Session | null;
 }
+
+//
+
+// ADMIN DASHBOARD
 
 export interface AdminPosts {
   id: number;
@@ -76,17 +84,52 @@ export interface AdminUsers {
   image: string;
 }
 
+//
+
 export interface SinglePost {
   params: {
     id: string;
   };
 }
 
+export interface Comment {
+  postId: string;
+  post: {
+    comments: {
+      content: string;
+      id: number;
+      createdAt: Date;
+      author: {
+        name: string;
+        image: string;
+      };
+    }[];
+    title: string;
+    content: Prisma.JsonValue;
+    createdBy: {
+      name: string;
+      image: string;
+    };
+  };
+}
+
+// PROFILE
 export interface Profile {
   params: {
     name: string;
   };
 }
+
+export interface ProfileUser {
+  user: {
+    id: string;
+    name: string;
+    image: string;
+    description: string | null;
+  } | null;
+  session: Session | null;
+}
+//
 
 export type JsonObject = { [Key in string]?: JsonValue };
 export type JsonArray = JsonValue[];

@@ -23,12 +23,11 @@ const getQueryClient = () => {
 
 export const api = createTRPCReact<AppRouter>();
 
-
 /**
  * Inference helper for inputs.
-*
-* @example type HelloInput = RouterInputs['example']['hello']
-*/
+ *
+ * @example type HelloInput = RouterInputs['example']['hello']
+ */
 export type RouterInputs = inferRouterInputs<AppRouter>;
 
 /**
@@ -57,9 +56,9 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             headers.set("x-trpc-source", "nextjs-react");
             return headers;
           },
-        })
+        }),
       ],
-    })
+    }),
   );
 
   return (

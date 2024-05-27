@@ -20,12 +20,6 @@ export default async function Profile(req: Profile) {
         <h1 className=" mb-7 text-5xl font-bold light light:text-black dark:text-white">
           {req.params.name}
         </h1>
-        <div className=" mb-7">
-          <Link className=" cursor-pointer border-r-1 border-[#000] p-2">
-            Posts
-          </Link>
-          <Link className="cursor-pointer p-2">About</Link>
-        </div>
         <div className=" flex flex-col">
           {posts.map((post) => {
             return (

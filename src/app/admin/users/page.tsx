@@ -25,13 +25,14 @@ export default function Posts() {
   const { data, isFetched, isLoading } = api.admin.getAllUsers.useQuery();
 
   function CellValueChanged(event: CellValueChangedEvent<AdminUsers>) {
-    console.log(event.data);
+    const { id, name, email, image, role } = event.data;
+
     return updateSinglePost.mutate({
-      id: event.data.id,
-      name: event.data.name,
-      email: event.data.email,
-      image: event.data.image,
-      role: event.data.role,
+      id,
+      name,
+      email,
+      image,
+      role,
     });
   }
 

@@ -28,12 +28,13 @@ export default function Posts() {
   function CellValueChanged(event: CellValueChangedEvent<AdminPosts>) {
     // Ensure the content is a string
     const updatedContent = event.data.content ? String(event.data.content) : "";
+    const { id, title, createdAt } = event.data;
 
     return updateSinglePost.mutate({
-      id: event.data.id,
-      title: event.data.title,
+      id,
+      title,
       content: updatedContent,
-      createdAt: event.data.createdAt,
+      createdAt,
     });
   }
 
@@ -42,7 +43,20 @@ export default function Posts() {
       toast.loading("Loading...");
     }
     if (data) {
-      setRowData([...data.flatMap((page) => page)]);
+      setRowData([
+        ...data.flatMap((page) => {
+          const { id, content, title, createdAt, createdBy, updatedAt } = page;
+
+          return {
+            id,
+            title,
+            content: JSON.stringify(content),
+            createdAt,
+            updatedAt,
+            createdBy,
+          };
+        }),
+      ]);
       toast.dismiss();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

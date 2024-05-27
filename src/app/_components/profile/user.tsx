@@ -1,22 +1,12 @@
 "use client";
 
 import { Button, Textarea } from "@nextui-org/react";
-import type { Session } from "next-auth";
 import Image from "next/image";
 import { useState, useEffect, type ChangeEvent } from "react";
 import toast from "react-hot-toast";
 import { api } from "~/trpc/react";
 import { RiEditFill } from "react-icons/ri";
-
-interface ProfileUser {
-  user: {
-    id: string;
-    name: string;
-    image: string;
-    description: string | null;
-  } | null;
-  session: Session | null;
-}
+import type { ProfileUser } from "~/types/types";
 
 export function UserDescription({ user, session }: ProfileUser) {
   const [description, setDescription] = useState(user?.description ?? "No Bio");

@@ -7,30 +7,8 @@ import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { addCommentSchema } from "~/types/types";
+import { type Comment, addCommentSchema } from "~/types/types";
 import { ZodError } from "zod";
-import type { Prisma } from "@prisma/client";
-
-interface props {
-  postId: string;
-  post: {
-    comments: {
-      content: string;
-      id: number;
-      createdAt: Date;
-      author: {
-        name: string;
-        image: string;
-      };
-    }[];
-    title: string;
-    content: Prisma.JsonValue;
-    createdBy: {
-      name: string;
-      image: string;
-    };
-  };
-}
 
 function formatDate(date: Date) {
   const now = new Date();
@@ -38,17 +16,17 @@ function formatDate(date: Date) {
   const diffMinutes = Math.floor(diff / 60000);
 
   if (diffMinutes < 1) {
-    return "тільки що";
+    return "now";
   } else if (diffMinutes < 60) {
-    return `${diffMinutes} хвилин тому`;
+    return `${diffMinutes} min ago`;
   } else if (diffMinutes < 1440) {
-    return `${Math.floor(diffMinutes / 60)} годин тому`;
+    return `${Math.floor(diffMinutes / 60)} hours ago`;
   } else if (diffMinutes < 2880) {
-    return "вчора";
+    return "yesterday";
   } else if (diffMinutes < 10080) {
-    return date.toLocaleString("uk-UA", { weekday: "short" });
+    return date.toLocaleString("en-US", { weekday: "short" });
   } else {
-    return date.toLocaleDateString("uk-UA", {
+    return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -56,7 +34,7 @@ function formatDate(date: Date) {
   }
 }
 
-const Comments: React.FC<props> = ({ postId, post }: props) => {
+export default function Comments({ postId, post }: Comment) {
   const router = useRouter();
   const [comment, setComment] = useState("");
 
@@ -140,6 +118,4 @@ const Comments: React.FC<props> = ({ postId, post }: props) => {
       </div>
     </>
   );
-};
-
-export default Comments;
+}
