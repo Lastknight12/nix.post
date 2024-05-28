@@ -1,8 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { MainPostProps } from "~/types/types";
+import { useEffect } from "react";
+import { api } from "~/trpc/react";
 
 export default function Post({ post }: MainPostProps) {
+  const utils = api.useUtils();
+  useEffect(() => {
+    async function prefetch() {
+      await utils.post.getIndividualPost.prefetch({ id: post.id });
+    }
+    void prefetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className=" cursor-pointe flex justify-center">
       <Link

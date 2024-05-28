@@ -18,10 +18,13 @@ import { useTheme } from "next-themes";
 import { RiColorFilterLine } from "react-icons/ri";
 import LoginDropdown from "../modal/Logout";
 import { FiEdit3 } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Navigation({ session }: NavUser) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
 
   const menuItems = [
     { name: "Profile", href: `/profile/${session?.user.name}` },
@@ -55,14 +58,17 @@ export default function Navigation({ session }: NavUser) {
           </Button>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/post/create">
-            <Button
-              size="sm"
-              className="light light:bg-[#52525b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
-            >
-              Write <FiEdit3 size={20} className=" inline-block" />
-            </Button>
-          </Link>
+          <Button
+            size="sm"
+            onClick={() => {
+              session
+                ? router.push("/post/create")
+                : toast.error("Login to create posts");
+            }}
+            className="light light:bg-[#52525b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
+          >
+            Write <FiEdit3 size={20} className=" inline-block" />
+          </Button>
         </NavbarItem>
         <NavbarItem>
           {!session ? <LoginDropdown /> : <UserInfo session={session} />}
