@@ -7,32 +7,28 @@ import Link from "next/link";
 import type { JsonValue, SinglePost } from "~/types/types";
 import { isValidNode, parseTiptapJsonToHtml } from "~/utils/utils";
 import { useEffect, useState } from "react";
-import { Spinner } from "@nextui-org/react";
+import { Card, Skeleton } from "@nextui-org/react";
 
 export default function PostInfo(req: SinglePost) {
   const [html, setHtml] = useState("");
 
-  const { data: post, isLoading } = api.post.getIndividualPost.useQuery({
+  const { data: post, isPending } = api.post.getIndividualPost.useQuery({
     id: +req.params.id,
   });
 
   useEffect(() => {
-    if (!isLoading && post) {
+    if (!isPending && post) {
       const content = post.content as JsonValue;
       const parsedHtml = isValidNode(content)
         ? parseTiptapJsonToHtml(content)
         : "";
       setHtml(parsedHtml);
     }
-  }, [isLoading, post]);
+  }, [isPending, post]);
 
   return (
     <>
-      {isLoading ? (
-        <div className=" flex justify-center">
-          <Spinner color="secondary" />
-        </div>
-      ) : (
+      {!isPending ? (
         <>
           <div className="mt-4 w-full px-2 py-6">
             <div className=" mx-auto max-w-screen-lg">
@@ -69,6 +65,19 @@ export default function PostInfo(req: SinglePost) {
           </div>
           <Comments postId={req.params.id} post={post!} />
         </>
+      ) : (
+        <Card className="w-full space-y-5 rounded-3xl px-5 py-10 ">
+          <div className=" mb-3 flex items-center gap-2">
+            <Skeleton className="h-[50px] w-[50px] rounded-full bg-default-200" />
+            <Skeleton className="h-5 w-24 rounded-lg bg-default-200" />
+          </div>
+          <div className="mb-2 max-w-screen-lg p-4 pb-10 ">
+            <Skeleton className=" mx-auto mb-5 h-8 w-44 rounded-3xl" />
+            <div className=" max-w-[1024px]">
+              <Skeleton className=" h-96 w-full rounded-3xl" />
+            </div>
+          </div>
+        </Card>
       )}
     </>
   );

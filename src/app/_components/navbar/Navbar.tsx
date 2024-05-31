@@ -43,11 +43,13 @@ export default function Navigation({ session }: NavUser) {
         />
         <NavbarBrand>
           <Link href="/">
-            <p className="font-bold text-inherit">NIX.POST</p>
+            <p className="font-bold text-inherit max-[800px]:hidden">
+              NIX.POST
+            </p>
           </Link>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent justify="end">
+      <NavbarContent justify="end" className=" max-[440px]:gap-2">
         <NavbarItem>
           <Button
             size="sm"
@@ -65,7 +67,7 @@ export default function Navigation({ session }: NavUser) {
                 ? router.push("/post/create")
                 : toast.error("Login to create posts");
             }}
-            className="light light:bg-[#52525b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
+            className="light light:bg-[#62626b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
           >
             Write <FiEdit3 size={20} className=" inline-block" />
           </Button>

@@ -15,9 +15,9 @@ export default async function Profile(req: Profile) {
   const session = await getServerAuthSession();
 
   return (
-    <div className=" flex text-black">
-      <div className=" grow-[1]">
-        <h1 className=" mb-7 text-5xl font-bold light light:text-black dark:text-white">
+    <div className=" flex text-black max-[800px]:flex-col-reverse max-[800px]:items-center">
+      <div className=" grow-[1] max-[800px]:w-full">
+        <h1 className=" mb-7 text-5xl font-bold light light:text-black dark:text-white max-[800px]:hidden">
           {req.params.name}
         </h1>
         <div className=" flex flex-col">
@@ -51,7 +51,7 @@ export default async function Profile(req: Profile) {
           })}
         </div>
       </div>
-      <div className=" grow-[2] p-7">
+      <div className=" grow-[2] p-7 max-[800px]:w-full">
         <UserDescription user={user} session={session} />
       </div>
     </div>
