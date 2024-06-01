@@ -43,6 +43,9 @@ export default function Comments({ postId, post }: Comment) {
       setComment("");
       router.refresh();
     },
+    onError: (error) => {
+      toast.error(error.message)
+    }
   });
 
   function handleClick() {
@@ -55,7 +58,7 @@ export default function Comments({ postId, post }: Comment) {
         throw new Error(String(error));
       }
     }
-    createPost.mutate({ postID: parseInt(postId), content: comment });
+    createPost.mutate({ postID: postId, content: comment });
   }
 
   return (
@@ -95,17 +98,19 @@ export default function Comments({ postId, post }: Comment) {
                       <Image
                         alt="user picture"
                         src={comment.author.image}
-                        width={48}
-                        height={48}
+                        width={65}
+                        height={65}
                         className=" rounded-full"
                       />
                     </div>
                     <div className=" flex flex-col">
-                      <h1 className=" text-[#ebe2d6]">{comment.author.name}</h1>
+                      <h1 className=" font-montserrat text-[#ebe2d6]">
+                        {comment.author.name}
+                      </h1>
                       <pre className=" mb-1 text-wrap font-[inherit]">
                         {comment.content}
                       </pre>
-                      <p className=" text-gray-400">
+                      <p className=" font-montserrat text-gray-400">
                         {formatDate(comment.createdAt)}
                       </p>
                     </div>

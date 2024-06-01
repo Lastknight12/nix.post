@@ -60,6 +60,14 @@ export interface UserInfo {
   session: Session | null;
 }
 
+type BurgerItems = {
+  name: string;
+  href?: string;
+  type: "button" | "link";
+};
+
+export type Burger = BurgerItems[];
+
 //
 
 // ADMIN DASHBOARD
@@ -86,14 +94,8 @@ export interface AdminUsers {
 
 //
 
-export interface SinglePost {
-  params: {
-    id: string;
-  };
-}
-
 export interface Comment {
-  postId: string;
+  postId: number;
   post: {
     comments: {
       content: string;

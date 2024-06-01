@@ -6,14 +6,22 @@ import NextAuthProvider from "./providers/NextAuth";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { NavigationProvider } from "./providers/NavigationProvider";
+import { Montserrat } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap",
 });
 
 export const metadata = {
-  title: "last/blog",
+  title: "Nix",
   description: "Personal blog app",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
@@ -26,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans ${inter.variable} relative z-[1] h-full bg-transparent bg-gradient-to-r text-gray-200`}
+        className={`font-sans ${inter.variable} ${montserrat.variable} relative z-[1] h-full bg-transparent bg-gradient-to-r text-gray-200`}
       >
         <TRPCReactProvider>
           <NextUI>

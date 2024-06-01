@@ -11,6 +11,7 @@ import { MdAdminPanelSettings } from "react-icons/md";
 
 import { signOut } from "next-auth/react";
 import type { UserInfo } from "~/types/types";
+import { DropDown } from "../dropdown/DropDownMenu";
 
 export default function UserInfo({ session }: UserInfo) {
   return (
@@ -30,31 +31,14 @@ export default function UserInfo({ session }: UserInfo) {
           <div className=" min-h-[40px] min-w-[40px] cursor-pointer rounded-full border-2 border-[#497ee7] p-1">
             <Image
               alt="User profile picture"
-              src={`${session?.user.image}`}
+              src={`https://cdn.discordapp.com/icons/969521486291427419/ce021588b8fa6d292435e073adcdb027.webp?size=240`}
               width={40}
               height={40}
               className=" rounded-full"
             />
           </div>
         </DropdownTrigger>
-        <DropdownMenu aria-label="Static Actions">
-          <DropdownItem key="new">
-            <Link
-              href={"/profile/" + session?.user.name}
-              className=" light light:text-[#000] dark:text-[#fff]"
-            >
-              Profile
-            </Link>
-          </DropdownItem>
-          <DropdownItem
-            key="delete"
-            className="text-danger"
-            color="danger"
-            onClick={() => signOut()}
-          >
-            Log out
-          </DropdownItem>
-        </DropdownMenu>
+        <DropDown userName={session?.user.name} email={session?.user.email} image={session?.user.image}/>
       </Dropdown>
     </div>
   );
