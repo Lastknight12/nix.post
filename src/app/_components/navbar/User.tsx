@@ -23,7 +23,7 @@ export default function UserInfo({ session }: UserInfo) {
           <div className=" min-h-[40px] min-w-[40px] cursor-pointer rounded-full border-2 border-[#497ee7] p-1">
             <Image
               alt="User profile picture"
-              src={`https://cdn.discordapp.com/icons/969521486291427419/ce021588b8fa6d292435e073adcdb027.webp?size=240`}
+              src={`${session?.user.image}`}
               width={40}
               height={40}
               className=" rounded-full"
