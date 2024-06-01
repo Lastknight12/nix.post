@@ -9,9 +9,7 @@ export default async function PostInfo(req: {
 }) {
   return (
     <>
-      <Suspense fallback={<SinglePostSkeleton />}>
-        <SinglePost postId={req.params.id}></SinglePost>
-      </Suspense>
+      <SinglePostSkeleton></SinglePostSkeleton>
     </>
   );
 }
