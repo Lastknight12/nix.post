@@ -31,7 +31,7 @@ export default function Navigation({ session }: NavUser) {
   const menuItems: Burger = [
     { name: "Admin Dashboard", href: "/admin", type: "admin" },
     { name: "Profile", href: `/profile/${session?.user.name}`, type: "link" },
-    { name: "Change theme", type: "button" },
+    { name: "Handle theme", type: "button" },
   ];
 
   const handleThemeSwitch = () => {
@@ -90,45 +90,42 @@ export default function Navigation({ session }: NavUser) {
           {!session ? <LoginDropdown /> : <UserInfo session={session} />}
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu className=" bg-transparent">
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem
-            key={index}
-            className={`${
-              item.type === "button"
-                ? "mt-auto"
-                : (item.type === "link" || item.type === "admin") && session
+      <NavbarMenu className="bg-transparent">
+        {menuItems.map((item, index) => {
+          {
+            if (!session && (item.type === "link" || item.type === "admin")) {
+              return null;
+            }
+
+            if (item.type === "admin" && session?.user.role !== "Admin") {
+              return null;
+            }
+          }
+          return (
+            <NavbarMenuItem
+              key={index}
+              className={`${
+                (item.type === "link" || item.type === "admin") && session
                   ? "rounded-xl p-2 light light:bg-[#62626b] dark:bg-[#a1a1aa]"
                   : ""
-            }`}
-          >
-            {item.type === "link" && session ? (
-              <Link
-                className="w-full light light:text-white dark:text-black"
-                href={`${item.href}`}
-                aria-label="Menu Item"
-              >
-                {item.name}
-              </Link>
-            ) : item.type === "button" ? (
-              <Button
-                className="mb-2 w-full"
-                onClick={handleThemeSwitch}
-                color="secondary"
-              >
-                Change theme
-              </Button>
-            ) : item.type === "admin" && session?.user.role == "Admin" ? (
-              <Link
-                className="w-full light light:text-white dark:text-black"
-                href={`${item.href}`}
-                aria-label="Admin Dashboard"
-              >
-                {item.name}
-              </Link>
-            ) : null}
-          </NavbarMenuItem>
-        ))}
+              }`}
+            >
+              {item.type === "button" ? (
+                <Button className="w-full light light:text-white dark:text-black light:bg-[#62626b] dark:bg-[#a1a1aa]" onClick={handleThemeSwitch}>
+                  {item.name}
+                </Button>
+              ) : (
+                <Link
+                  className="w-full light light:text-white dark:text-black light:bg-[#62626b] dark:bg-[#a1a1aa]"
+                  href={item.href!}
+                  aria-label={item.name}
+                >
+                  {item.name}
+                </Link>
+              )}
+            </NavbarMenuItem>
+          );
+        })}
       </NavbarMenu>
     </Navbar>
   );
