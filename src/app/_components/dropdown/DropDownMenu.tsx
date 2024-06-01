@@ -1,16 +1,16 @@
-import { DropdownItem, DropdownMenu, image } from "@nextui-org/react";
+import { DropdownItem, DropdownMenu } from "@nextui-org/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
-export function DropDown({
+export function DropDownMenu({
   userName,
   email,
-  image
+  image,
 }: {
   userName: string | null | undefined;
   email: string | null | undefined;
-  image: string | null | undefined
+  image: string | null | undefined;
 }) {
   return (
     <>
@@ -32,7 +32,10 @@ export function DropDown({
             </div>
           </div>
         </DropdownItem>
-        <DropdownItem key="profile" className=" hover:bg-[#2c2c2c] transition-colors">
+        <DropdownItem
+          key="profile"
+          className=" transition-colors hover:bg-[#2c2c2c]"
+        >
           <Link
             href={"/profile/" + userName}
             className=" light light:text-[#000] dark:text-[#fff]"
@@ -42,7 +45,7 @@ export function DropDown({
         </DropdownItem>
         <DropdownItem
           key="delete"
-          className="text-danger hover:bg-[#2c2c2c] transition-colors"
+          className="text-danger transition-colors hover:bg-[#2c2c2c]"
           color="danger"
           onClick={() => signOut()}
         >

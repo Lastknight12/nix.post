@@ -1,17 +1,9 @@
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react";
+import { Dropdown, DropdownTrigger } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
-
 import { MdAdminPanelSettings } from "react-icons/md";
-
-import { signOut } from "next-auth/react";
 import type { UserInfo } from "~/types/types";
-import { DropDown } from "../dropdown/DropDownMenu";
+import { DropDownMenu } from "../dropdown/DropDownMenu";
 
 export default function UserInfo({ session }: UserInfo) {
   return (
@@ -38,7 +30,11 @@ export default function UserInfo({ session }: UserInfo) {
             />
           </div>
         </DropdownTrigger>
-        <DropDown userName={session?.user.name} email={session?.user.email} image={session?.user.image}/>
+        <DropDownMenu
+          userName={session?.user.name}
+          email={session?.user.email}
+          image={session?.user.image}
+        />
       </Dropdown>
     </div>
   );

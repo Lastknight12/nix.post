@@ -58,6 +58,7 @@ export default function Navigation({ session }: NavUser) {
         />
         <NavbarBrand>
           <Link href="/" className=" flex items-center">
+            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
             <Image src={logo} width={50} height={50} alt="site logo" />
             <p className=" font-montserrat font-medium max-[360px]:hidden">
               Nix
@@ -92,7 +93,7 @@ export default function Navigation({ session }: NavUser) {
         {menuItems.map((item, index) => (
           <NavbarMenuItem
             key={index}
-            className={`${item.type == "button" ? "mt-auto" : " dark:bg-[#a1a1aa] light light:bg-[#62626b] rounded-xl p-2"}`}
+            className={`${item.type == "button" ? "mt-auto" : " rounded-xl p-2 light light:bg-[#62626b] dark:bg-[#a1a1aa]"}`}
           >
             {item.type == "link" && session ? (
               <Link
@@ -108,7 +109,6 @@ export default function Navigation({ session }: NavUser) {
                 onClick={handleThemeSwitch}
                 color="secondary"
               >
-                {" "}
                 Change theme
               </Button>
             )}
