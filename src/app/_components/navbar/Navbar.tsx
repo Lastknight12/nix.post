@@ -29,6 +29,7 @@ export default function Navigation({ session }: NavUser) {
   const router = useRouter();
 
   const menuItems: Burger = [
+    { name: "Admin Dashboard", href: "/admin", type: "admin" },
     { name: "Profile", href: `/profile/${session?.user.name}`, type: "link" },
     { name: "Change theme", type: "button" },
   ];
@@ -93,38 +94,41 @@ export default function Navigation({ session }: NavUser) {
         {menuItems.map((item, index) => (
           <NavbarMenuItem
             key={index}
-            className={`${item.type == "button" ? "mt-auto" : " rounded-xl p-2 light light:bg-[#62626b] dark:bg-[#a1a1aa]"}`}
+            className={`${
+              item.type === "button"
+                ? "mt-auto"
+                : (item.type === "link" || item.type === "admin") && session
+                  ? "rounded-xl p-2 light light:bg-[#62626b] dark:bg-[#a1a1aa]"
+                  : ""
+            }`}
           >
-            {item.type == "link" && session ? (
+            {item.type === "link" && session ? (
               <Link
                 className="w-full light light:text-white dark:text-black"
-                href={item.href!}
-                aria-label="Menu Item "
+                href={`${item.href}`}
+                aria-label="Menu Item"
               >
                 {item.name}
               </Link>
-            ) : (
+            ) : item.type === "button" ? (
               <Button
-                className=" w-full"
+                className="mb-2 w-full"
                 onClick={handleThemeSwitch}
                 color="secondary"
               >
                 Change theme
               </Button>
-            )}
+            ) : item.type === "admin" && session?.user.role == "Admin" ? (
+              <Link
+                className="w-full light light:text-white dark:text-black"
+                href={`${item.href}`}
+                aria-label="Admin Dashboard"
+              >
+                {item.name}
+              </Link>
+            ) : null}
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem>
-          {session?.user.role == "Admin" && (
-            <Link
-              className="w-full light light:text-[#000] dark:text-white"
-              href={"/admin"}
-              aria-label="Menu Item"
-            >
-              Admin Dahsboard
-            </Link>
-          )}
-        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );
