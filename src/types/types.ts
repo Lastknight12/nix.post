@@ -63,7 +63,7 @@ export interface UserInfo {
 type BurgerItems = {
   name: string;
   href?: string;
-  type: "button" | "link" | "admin";
+  type: "link" | "admin";
 };
 
 export type Burger = BurgerItems[];

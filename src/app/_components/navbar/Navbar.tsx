@@ -11,11 +11,9 @@ import {
 } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
-import UserInfo from "./User";
+import UserInfo from "./UserInfo";
 import { useState } from "react";
 import type { Burger, NavUser } from "~/types/types";
-import { useTheme } from "next-themes";
-import { RiColorFilterLine } from "react-icons/ri";
 import LoginDropdown from "../modal/Logout";
 import { FiEdit3 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
@@ -25,18 +23,12 @@ import logo from "../../../../public/Direct.svg";
 
 export default function Navigation({ session }: NavUser) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
   const router = useRouter();
 
   const menuItems: Burger = [
     { name: "Admin Dashboard", href: "/admin", type: "admin" },
     { name: "Profile", href: `/profile/${session?.user.name}`, type: "link" },
-    { name: "Handle theme", type: "button" },
   ];
-
-  const handleThemeSwitch = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
 
   const handleCreatePost = () => {
     if (session) {
@@ -55,7 +47,7 @@ export default function Navigation({ session }: NavUser) {
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
+          className={`sm:hidden ${!session && "hidden"}`}
         />
         <NavbarBrand>
           <Link href="/" className=" flex items-center">
@@ -68,15 +60,6 @@ export default function Navigation({ session }: NavUser) {
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent justify="end" className=" max-[440px]:gap-2">
-        <NavbarItem className=" max-[800px]:hidden">
-          <Button
-            size="sm"
-            onClick={handleThemeSwitch}
-            className="light light:bg-[#52525b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
-          >
-            <RiColorFilterLine size={20} />
-          </Button>
-        </NavbarItem>
         <NavbarItem>
           <Button
             size="sm"
@@ -93,7 +76,7 @@ export default function Navigation({ session }: NavUser) {
       <NavbarMenu className="bg-transparent">
         {menuItems.map((item, index) => {
           {
-            if (!session && (item.type === "link" || item.type === "admin")) {
+            if (!session) {
               return null;
             }
 
@@ -104,25 +87,17 @@ export default function Navigation({ session }: NavUser) {
           return (
             <NavbarMenuItem
               key={index}
-              className={`${
-                (item.type === "link" || item.type === "admin") && session
-                  ? "rounded-xl p-2 light light:bg-[#62626b] dark:bg-[#a1a1aa]"
-                  : ""
-              }`}
+              className={
+                "rounded-xl p-2 light light:bg-[#62626b] dark:bg-[#a1a1aa]"
+              }
             >
-              {item.type === "button" ? (
-                <Button className="w-full light light:text-white dark:text-black light:bg-[#62626b] dark:bg-[#a1a1aa]" onClick={handleThemeSwitch}>
-                  {item.name}
-                </Button>
-              ) : (
-                <Link
-                  className="w-full light light:text-white dark:text-black light:bg-[#62626b] dark:bg-[#a1a1aa]"
-                  href={item.href!}
-                  aria-label={item.name}
-                >
-                  {item.name}
-                </Link>
-              )}
+              <Link
+                className="w-full light light:bg-[#62626b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
+                href={item.href!}
+                aria-label={item.name}
+              >
+                {item.name}
+              </Link>
             </NavbarMenuItem>
           );
         })}

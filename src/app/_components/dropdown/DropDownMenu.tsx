@@ -1,7 +1,10 @@
-import { DropdownItem, DropdownMenu } from "@nextui-org/react";
+"use client";
+
+import { Button, DropdownItem, DropdownMenu } from "@nextui-org/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 export function DropDownMenu({
   userName,
@@ -12,6 +15,13 @@ export function DropDownMenu({
   email: string | null | undefined;
   image: string | null | undefined;
 }) {
+  const { theme, setTheme, forcedTheme } = useTheme();
+  console.log(forcedTheme)
+
+  function handleThemeSwitch() {
+    setTheme(theme == "dark" ? "light" : "dark");
+  }
+
   return (
     <>
       <DropdownMenu aria-label="Static Actions">
@@ -19,7 +29,7 @@ export function DropDownMenu({
           <div className=" flex items-center gap-3 border-b-1 border-[#353434] pb-3">
             <Image
               className=" rounded-full"
-              src={image!}
+              src={`${image}`}
               width={50}
               height={50}
               alt="user image"
@@ -50,6 +60,11 @@ export function DropDownMenu({
           onClick={() => signOut()}
         >
           Log out
+        </DropdownItem>
+        <DropdownItem>
+          <Button className=" w-full" onClick={handleThemeSwitch}>
+            Theme: {theme}
+          </Button>
         </DropdownItem>
       </DropdownMenu>
     </>
