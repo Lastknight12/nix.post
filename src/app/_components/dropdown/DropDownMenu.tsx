@@ -44,7 +44,7 @@ export function DropDownMenu({
         </DropdownItem>
         <DropdownItem
           key="profile"
-          className=" transition-colors hover:bg-[#2c2c2c]"
+          className=" transition-colors light dark:hover:bg-[#2c2c2c] light:hover:bg-[#ece8e8]"
         >
           <Link
             href={"/profile/" + userName}
@@ -55,7 +55,7 @@ export function DropDownMenu({
         </DropdownItem>
         <DropdownItem
           key="delete"
-          className="text-danger transition-colors hover:bg-[#2c2c2c]"
+          className="text-danger transition-colors light dark:hover:bg-[#2c2c2c] light:hover:bg-[#ece8e8]"
           color="danger"
           onClick={() => signOut()}
         >
@@ -63,7 +63,7 @@ export function DropDownMenu({
         </DropdownItem>
         <DropdownItem>
           <Button className=" w-full light light:bg-[#62626b] dark:bg-[#3f3f46] text-white" onClick={handleThemeSwitch}>
-            Theme: {theme}
+            Theme: <span className=" font-semibold">{theme}</span>
           </Button>
         </DropdownItem>
       </DropdownMenu>
