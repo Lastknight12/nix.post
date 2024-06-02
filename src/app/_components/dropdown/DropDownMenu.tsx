@@ -62,7 +62,7 @@ export function DropDownMenu({
           Log out
         </DropdownItem>
         <DropdownItem>
-          <Button className=" w-full light light:bg-[#62626b] dark:bg-[#3f3f46]text-white" onClick={handleThemeSwitch}>
+          <Button className=" w-full light light:bg-[#62626b] dark:bg-[#3f3f46] text-white" onClick={handleThemeSwitch}>
             Theme: {theme}
           </Button>
         </DropdownItem>
