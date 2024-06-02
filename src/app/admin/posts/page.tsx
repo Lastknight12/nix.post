@@ -27,7 +27,7 @@ export default function Posts() {
 
   function CellValueChanged(event: CellValueChangedEvent<AdminPosts>) {
     // Ensure the content is a string
-    const updatedContent = event.data.content ? String(event.data.content) : "";
+    const updatedContent = event.data.content ? JSON.stringify(event.data.content) : "";
     const { id, title, createdAt } = event.data;
 
     return updateSinglePost.mutate({
