@@ -64,7 +64,7 @@ export default function Navigation({ session }: NavUser) {
           <Button
             size="sm"
             onClick={handleCreatePost}
-            className="light light:bg-[#62626b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
+            className="light light:bg-[#62626b] light:text-white dark:bg-[#3f3f46] dark:text-white"
           >
             Write <FiEdit3 size={20} className=" inline-block" />
           </Button>
