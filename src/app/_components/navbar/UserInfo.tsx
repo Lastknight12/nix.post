@@ -12,7 +12,7 @@ export default function UserInfo({ session }: UserInfo) {
         <Link href="/admin" className="max-[640px]:hidden">
           <MdAdminPanelSettings
             size={40}
-            className="light light:text-[#52525b] dark:text-[#a1a1aa]"
+            className="light light:text-[#52525b] dark:text-[#9f9f9f]"
             aria-label="admin page link"
           />
         </Link>

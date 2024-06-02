@@ -53,7 +53,7 @@ export default function Navigation({ session }: NavUser) {
           <Link href="/" className=" flex items-center">
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
             <Image src={logo} width={50} height={50} alt="site logo" />
-            <p className=" font-montserrat font-medium max-[360px]:hidden">
+            <p className=" font-montserrat font-medium">
               Nix
             </p>
           </Link>
@@ -88,11 +88,11 @@ export default function Navigation({ session }: NavUser) {
             <NavbarMenuItem
               key={index}
               className={
-                "rounded-xl p-2 light light:bg-[#62626b] dark:bg-[#a1a1aa]"
+                "rounded-xl p-2 light light:bg-[#2e2e2e33] dark:bg-[#ffffff1a]"
               }
             >
               <Link
-                className="w-full light light:bg-[#62626b] light:text-white dark:bg-[#a1a1aa] dark:text-black"
+                className="w-full light:text-black dark:text-white"
                 href={item.href!}
                 aria-label={item.name}
               >
