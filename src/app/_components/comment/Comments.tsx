@@ -44,8 +44,8 @@ export default function Comments({ postId, post }: Comment) {
       router.refresh();
     },
     onError: (error) => {
-      toast.error(error.message)
-    }
+      toast.error(error.message);
+    },
   });
 
   function handleClick() {
@@ -71,6 +71,7 @@ export default function Comments({ postId, post }: Comment) {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               classNames={{
+                input: "light light:text-black dark:text-white",
                 inputWrapper:
                   " bg-transparent text-white dark:border-[#646464] light light:border-[#000] light:hover:border-[#000] dark:hover:border-[#646464]",
               }}
@@ -86,33 +87,35 @@ export default function Comments({ postId, post }: Comment) {
               Comment
             </Button>
           </div>
-          <div className=" mt-5 flex w-full max-w-[400px] flex-col justify-center gap-5 max-md:mx-auto">
+          <div className=" mt-5 flex w-full flex-col justify-center gap-5">
             {post.comments.map((comment) => {
               return (
                 <div
                   key={comment.id}
                   className=" flex flex-col rounded bg-[#202020] p-4"
                 >
-                  <div className=" flex items-center gap-2">
-                    <div>
+                  <div>
+                    <div className=" flex items-center gap-2 mb-3">
                       <Image
                         alt="user picture"
                         src={comment.author.image}
-                        width={65}
-                        height={65}
+                        width={45}
+                        height={45}
                         className=" rounded-full"
                       />
+                      <div className=" flex flex-col">
+                        <h1 className=" font-montserrat text-[#ebe2d6]">
+                          {comment.author.name}
+                        </h1>
+                        <p className=" font-montserrat text-gray-400">
+                          {formatDate(comment.createdAt)}
+                        </p>
+                      </div>
                     </div>
                     <div className=" flex flex-col">
-                      <h1 className=" font-montserrat text-[#ebe2d6]">
-                        {comment.author.name}
-                      </h1>
-                      <pre className=" mb-1 text-wrap font-[inherit]">
+                      <pre className=" mb-1 text-wrap font-[inherit] break-words">
                         {comment.content}
                       </pre>
-                      <p className=" font-montserrat text-gray-400">
-                        {formatDate(comment.createdAt)}
-                      </p>
                     </div>
                   </div>
                 </div>

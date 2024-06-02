@@ -53,7 +53,7 @@ export default function Navigation({ session }: NavUser) {
           <Link href="/" className=" flex items-center">
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
             <Image src={logo} width={50} height={50} alt="site logo" />
-            <p className=" font-montserrat font-medium">
+            <p className=" font-montserrat font-medium max-[305px]:hidden">
               Nix
             </p>
           </Link>
