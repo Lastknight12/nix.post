@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 import {
@@ -202,7 +203,7 @@ export const postRouter = createTRPCRouter({
           .string()
           .min(5, "Title must be at least 5 characters long")
           .max(20, "Title must be no more than 20 characters long"),
-        content: z.any(),
+        content: z.custom<Prisma.JsonValue>(),
         createdAt: z.date(),
       }),
     )
@@ -212,7 +213,7 @@ export const postRouter = createTRPCRouter({
         data: {
           title: input.title,
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          content: input.content,
+          content: JSON.parse(input.content as string),
           createdAt: input.createdAt,
         },
       });

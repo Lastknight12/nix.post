@@ -26,14 +26,12 @@ export default function Posts() {
   const { data, isFetched, isLoading } = api.admin.getAllPosts.useQuery();
 
   function CellValueChanged(event: CellValueChangedEvent<AdminPosts>) {
-    // Ensure the content is a string
-    const updatedContent = event.data.content ? JSON.stringify(event.data.content) : "";
-    const { id, title, createdAt } = event.data;
+    const { id, title, createdAt, content } = event.data;
 
     return updateSinglePost.mutate({
       id,
       title,
-      content: updatedContent,
+      content: content,
       createdAt,
     });
   }
