@@ -1,8 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { MainPostProps } from "~/types/types";
+import { memo } from "react";
 
-export default function Post({ post }: MainPostProps) {
+/* skips rerender of previous posts by wrap Post in memo()
+example without memo():
+          console.log("render POST:", post.id) will log this:
+             render POST: 1
+
+
+             render POST: 1
+             render POST: 2
+
+             render POST: 1
+             render POST: 2
+             render POST: 3
+             etc...
+*/
+export default memo(function Post({ post }: MainPostProps) {
   return (
     <div className=" cursor-pointe flex justify-center">
       <Link
@@ -32,4 +47,4 @@ export default function Post({ post }: MainPostProps) {
       </Link>
     </div>
   );
-}
+})

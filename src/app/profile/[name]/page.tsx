@@ -7,12 +7,12 @@ import { UserDescription } from "~/app/_components/profile/user";
 
 export default async function Profile(req: Profile) {
   const userName = req.params.name;
+  const session = await getServerAuthSession();
 
   const [user, posts] = await Promise.all([
-    api.post.getUserInfo({ userName: userName }),
-    api.post.getAllUserPosts({ userName: userName }),
+    api.post.getUserInfo({ userName }),
+    api.post.getAllUserPosts({ userName }),
   ]);
-  const session = await getServerAuthSession();
 
   return (
     <div className=" flex text-black max-[800px]:flex-col-reverse max-[800px]:items-center">
