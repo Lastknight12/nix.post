@@ -14,7 +14,7 @@ import Link from "next/link";
 import UserInfo from "./UserInfo";
 import { useState } from "react";
 import type { Burger, NavUser } from "~/types/types";
-import LoginDropdown from "../modal/Logout";
+import LoginDropdown from "../dropdown/Logout";
 import { FiEdit3 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -41,7 +41,7 @@ export default function Navigation({ session }: NavUser) {
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
-      className=" border-b-2 light light:border-none light:bg-transparent light:text-black dark:border-b-[#4f4f4fc9] dark:text-white"
+      className="border-b-2 light light:border-none light:bg-transparent light:text-black dark:border-b-[#4f4f4fc9] dark:text-white"
       isBlurred
     >
       <NavbarContent>
@@ -50,23 +50,30 @@ export default function Navigation({ session }: NavUser) {
           className={`sm:hidden ${!session && "hidden"}`}
         />
         <NavbarBrand>
-          <Link href="/" className=" flex items-center">
+          <Link href="/" className="flex items-center">
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-            <Image src={logo} width={50} height={50} alt="site logo" />
-            <p className=" font-montserrat font-medium max-[305px]:hidden">
+            <Image
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              src={logo}
+              width={50}
+              height={50}
+              alt="site logo"
+              loading="lazy"
+            />
+            <p className="font-montserrat font-medium max-[305px]:hidden">
               Nix
             </p>
           </Link>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent justify="end" className=" max-[440px]:gap-2">
+      <NavbarContent justify="end" className="max-[440px]:gap-2">
         <NavbarItem>
           <Button
             size="sm"
             onClick={handleCreatePost}
             className="light light:bg-[#62626b] light:text-white dark:bg-[#3f3f46] dark:text-white"
           >
-            Write <FiEdit3 size={20} className=" inline-block" />
+            Write <FiEdit3 size={20} className="inline-block" />
           </Button>
         </NavbarItem>
         <NavbarItem>

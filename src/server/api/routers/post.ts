@@ -1,4 +1,5 @@
 import type { Prisma } from "@prisma/client";
+import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 
 import {
@@ -14,19 +15,27 @@ export const postRouter = createTRPCRouter({
         title: z
           .string()
           .min(5, "Title must be at least 5 characters long")
-          .max(20, "Title must be no more than 20 characters long"),
+          .max(150, "Title must be no more than 150 characters long"),
         content: z.any(),
+        images: z
+          .array(z.object({ name: z.string(), content: z.string() }))
+          .nullish(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.post.create({
+      
+      await ctx.db.post.create({
         data: {
           title: input.title,
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           content: input.content,
           createdBy: { connect: { id: ctx.session.user.id } },
         },
-      });
+      }).catch((error) => {
+        throw new TRPCClientError(error as string)
+      })
+
+      return "Success";
     }),
 
   createComment: protectedProcedure

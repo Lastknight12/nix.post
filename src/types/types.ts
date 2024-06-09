@@ -8,7 +8,7 @@ export const addPostSchema = z.object({
   title: z
     .string()
     .min(5, "Title must be at least 5 characters")
-    .max(20, "max title lenght 20"),
+    .max(100, "max title lenght 100"),
   content: z.string().min(10, "content must be at least 10 characters"),
 });
 
@@ -28,7 +28,9 @@ export interface MainPostProps {
       name: string;
       image: string;
     };
-  };
+  },
+  postsLength: number | undefined,
+  fetchNextFn: () => void
 }
 
 export interface MainPostsSkeleton {
@@ -37,11 +39,17 @@ export interface MainPostsSkeleton {
 
 //
 
-// MODAL
+// DROPDOWN
 
 export interface ModalLogout {
   isOpen: boolean | undefined;
   onOpenChange: ((isOpen: boolean) => void) | undefined;
+}
+
+export interface MainDropDown {
+  userName: string | null | undefined;
+  email: string | null | undefined;
+  image: string | null | undefined;
 }
 
 //
@@ -185,13 +193,23 @@ export interface orderedList {
   content: Array<Node>;
 }
 
-export type Node =
+export interface img {
+  type: "image",
+  attrs: {
+    alt: string,
+    src: string,
+    title: string
+  }
+}
+
+export type Node = 
   | TextNode
   | ParagraphNode
   | BlockquoteNode
   | DocumentNode
   | CodeNode
   | orderedList
-  | listItem;
+  | listItem
+  | img
 
 export type ColDefHelper<T> = ColDef<T>[];

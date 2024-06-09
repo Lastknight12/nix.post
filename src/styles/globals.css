@@ -2,15 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .tiptap {
   padding: 14px;
-  border-radius: 12px;
   font-size: 20px;
-  line-height: 3rem;
+  line-height: 2rem;
 
   .empty-paragraph {
-    min-height: 1em; /* або будь-яке інше значення для забезпечення висоти */
+    min-height: 1em;
     width: 100%;
+  }
+
+  .is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+
+  img {
+    margin: 10px 0 10px 0
   }
 
   pre {
@@ -18,6 +30,7 @@
     border-radius: 0.5rem;
     font-family: "JetBrainsMono", monospace;
     padding: 0.75rem 1rem;
+    line-height: normal;
 
     code {
       background: none;

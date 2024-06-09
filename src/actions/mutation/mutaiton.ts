@@ -23,7 +23,6 @@ export const updateUser = (success: string, error: string) => {
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const addPost = (successFn: () => Promise<void>) => {
   return api.post.createPost.useMutation({
     onSuccess: async () => {
