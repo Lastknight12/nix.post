@@ -1,36 +1,45 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Prisma } from "@prisma/client";
 import type { Session } from "next-auth";
 import type { ColDef } from "ag-grid-community";
-import { z } from "zod";
 
-export const addPostSchema = z.object({
-  title: z
-    .string()
-    .min(5, "Title must be at least 5 characters")
-    .max(100, "max title lenght 100"),
-  content: z.string().min(10, "content must be at least 10 characters"),
-});
-
-export const addCommentSchema = z.object({
-  content: z.string().min(1, "Comment cannot be empty"),
-});
+// TODO describe types and sort imports in components
 
 // MAIN
 
-export interface MainPostProps {
-  post: {
+export interface Post {
+  id: number;
+  publicId: string;
+  perviewSrc: string | null;
+  title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createdAt: Date;
+  likes: number;
+  tags: JsonValue[];
+  createdBy: {
+    name: string;
+    image: string;
+  };
+}
+
+export interface PostWithComments {
+  id: number;
+  title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: any;
+  createdAt: Date;
+  createdBy: {
+    name: string;
+    image: string;
+  };
+  comments: {
     id: number;
-    title: string;
-    content: any;
+    content: string;
     createdAt: Date;
-    createdBy: {
+    author: {
       name: string;
       image: string;
     };
-  },
-  postsLength: number | undefined,
-  fetchNextFn: () => void
+  }[];
 }
 
 export interface MainPostsSkeleton {
@@ -194,15 +203,15 @@ export interface orderedList {
 }
 
 export interface img {
-  type: "image",
+  type: "image";
   attrs: {
-    alt: string,
-    src: string,
-    title: string
-  }
+    alt: string;
+    src: string;
+    title: string;
+  };
 }
 
-export type Node = 
+export type Node =
   | TextNode
   | ParagraphNode
   | BlockquoteNode
@@ -210,6 +219,6 @@ export type Node =
   | CodeNode
   | orderedList
   | listItem
-  | img
+  | img;
 
 export type ColDefHelper<T> = ColDef<T>[];

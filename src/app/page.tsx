@@ -1,5 +1,60 @@
-import PostsList from "./_components/main/PostsList";
+"use client";
 
-export default async function Main() {
-  return <PostsList />;
+import Post from "./_components/main/Post";
+import { api } from "~/trpc/react";
+import { useEffect } from "react";
+import PostListSkeleton from "./_components/skeleton/PostListSkeleton";
+import { showError } from "~/utils/utils";
+
+export default function PostsList() {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchNextPageError,
+    isError,
+    error,
+  } = api.post.getPosts.useInfiniteQuery(
+    {
+      limit: 17,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      initialCursor: undefined,
+    },
+  );
+
+  useEffect(() => {
+    if (isFetchNextPageError) {
+      showError("Error when fetching next posts");
+    } else if (isError) {
+      showError(error.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetchNextPageError, isError]);
+
+  return (
+    <>
+      {data ? (
+        data?.pages.map((page) =>
+          page.items.map((post) => {
+            return (
+              <Post
+                key={post.id}
+                post={post}
+                fetchNextPage={fetchNextPage}
+                fetchNextTargetId={
+                  hasNextPage && page.items[page.items.length - 18]?.id
+                    ? page.items[page.items.length - 18]!.id
+                    : undefined
+                }
+              />
+            );
+          }),
+        )
+      ) : (
+        <PostListSkeleton />
+      )}
+    </>
+  );
 }

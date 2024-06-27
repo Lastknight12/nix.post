@@ -15,24 +15,35 @@ datasource db {
 }
 
 model Post {
-    id              Int        @id @default(autoincrement())
+    id              Int        @id @unique @default(autoincrement())
+    publicId        String     @unique @default(cuid())
     title           String
     content         Json
+    perviewSrc      String?
     createdAt       DateTime   @default(now())
     updatedAt       DateTime   @updatedAt
     comments        Comments[]
+    likes           Int        @default(0)
     createdBy       User       @relation(fields: [createdByUserId], references: [id])
     createdByUserId String
+    tags            Tags[]
+}
+
+model Tags {
+    id          Int    @id @default(autoincrement())
+    displayName String @unique
+    posts       Post[]
 }
 
 model Comments {
-    id        Int      @id @default(autoincrement())
-    content   String
-    createdAt DateTime @default(now())
-    author    User     @relation(fields: [authorId], references: [id])
-    authorId  String
-    post      Post     @relation(fields: [postId], references: [id])
-    postId    Int
+    id           Int      @id @default(autoincrement())
+    content      String
+    commentLikes Int      @default(0)
+    createdAt    DateTime @default(now())
+    author       User     @relation(fields: [authorId], references: [id])
+    authorId     String
+    post         Post     @relation(fields: [postId], references: [id])
+    postId       Int
 }
 
 // Necessary for Next auth
@@ -78,6 +89,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    likedPosts    Int[]      @default([])
     Comments      Comments[]
 }
 

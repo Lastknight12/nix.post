@@ -1,51 +1,44 @@
 "use client";
 
+// next ui / components
 import { Button } from "@nextui-org/button";
-import { Textarea } from "@nextui-org/input";
-import React, { useState } from "react";
-import { api } from "~/trpc/react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+
+// hooks and etc...
+import { useState } from "react";
+
+// trpc api caller
+import { api } from "~/trpc/react";
+
+// toast
 import toast from "react-hot-toast";
-import { type Comment, addCommentSchema } from "~/types/types";
+
+// types / Schemas
+import { addCommentSchema } from "~/types/zodSchemas";
 import { ZodError } from "zod";
 
-function formatDate(date: Date) {
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const diffMinutes = Math.floor(diff / 60000);
+// utils
+import { formatDate } from "~/utils/utils";
 
-  if (diffMinutes < 1) {
-    return "now";
-  } else if (diffMinutes < 60) {
-    return `${diffMinutes} min ago`;
-  } else if (diffMinutes < 1440) {
-    return `${Math.floor(diffMinutes / 60)} hours ago`;
-  } else if (diffMinutes < 2880) {
-    return "yesterday";
-  } else if (diffMinutes < 10080) {
-    return date.toLocaleString("en-US", { weekday: "short" });
-  } else {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  }
+export interface CommentProps {
+  postId: number;
 }
-
-export default function Comments({ postId, post }: Comment) {
-  const router = useRouter();
+export default function Comments({ postId }: CommentProps) {
   const [comment, setComment] = useState("");
 
-  const createPost = api.post.createComment.useMutation({
-    onSuccess: () => {
+  const utils = api.useUtils();
+  const createPost = api.comment.createComment.useMutation({
+    onSuccess: async () => {
+      await utils.comment.getCommentsByPostId.invalidate({ postId: postId });
       setComment("");
-      router.refresh();
     },
     onError: (error) => {
       toast.error(error.message);
     },
+  });
+
+  const { data: comments } = api.comment.getCommentsByPostId.useQuery({
+    postId: postId,
   });
 
   function handleClick() {
@@ -54,8 +47,6 @@ export default function Comments({ postId, post }: Comment) {
     } catch (error) {
       if (error instanceof ZodError) {
         toast.error(error.errors[0]!.message);
-      } else {
-        throw new Error(String(error));
       }
     }
     createPost.mutate({ postID: postId, content: comment });
@@ -64,63 +55,61 @@ export default function Comments({ postId, post }: Comment) {
   return (
     <>
       <div className="mb-10 px-4">
-        <div className=" mx-auto max-w-[1024px]">
-          <div className=" mb-4 flex items-center justify-center gap-4">
-            <Textarea
-              placeholder="Enter your comment"
-              value={comment}
+        <div className="mx-auto max-w-[1024px]">
+          <div className="mb-4 flex flex-col items-end gap-4">
+            <textarea
               onChange={(e) => setComment(e.target.value)}
-              classNames={{
-                input: "light light:text-black dark:text-white",
-                inputWrapper:
-                  " bg-transparent text-white dark:border-[#646464] light light:border-[#000] light:hover:border-[#000] dark:hover:border-[#646464]",
-              }}
-              color="secondary"
-              variant="underlined"
+              value={comment}
+              placeholder="Write a comment"
+              className="h-[calc(50vh-100px)] w-full resize-none rounded bg-[#202020] p-4 text-white focus:outline-none dark:bg-[#2a2a2a] dark:text-white"
             />
             <Button
               variant="shadow"
-              color="success"
+              color="primary"
               isLoading={createPost.isPending}
               onClick={() => handleClick()}
             >
               Comment
             </Button>
           </div>
-          <div className=" mt-5 flex w-full flex-col justify-center gap-5">
-            {post.comments.map((comment) => {
-              return (
-                <div
-                  key={comment.id}
-                  className=" flex flex-col rounded bg-[#202020] p-4"
-                >
-                  <div>
-                    <div className=" flex items-center gap-2 mb-3">
-                      <Image
-                        alt="user picture"
-                        src={comment.author.image}
-                        width={45}
-                        height={45}
-                        className=" rounded-full"
-                      />
-                      <div className=" flex flex-col">
-                        <h1 className=" font-montserrat text-[#ebe2d6]">
-                          {comment.author.name}
-                        </h1>
-                        <p className=" font-montserrat text-gray-400">
-                          {formatDate(comment.createdAt)}
-                        </p>
+          <div className="mt-5 flex w-full flex-col justify-center gap-5">
+            {comments ? (
+              comments.map((comment) => {
+                return (
+                  <div
+                    key={comment.id}
+                    className="flex flex-col rounded bg-[#202020] p-4"
+                  >
+                    <div>
+                      <div className="mb-3 flex items-center gap-2">
+                        <Image
+                          alt="user picture"
+                          src={comment.author.image}
+                          width={45}
+                          height={45}
+                          className="rounded-full"
+                        />
+                        <div className="flex flex-col">
+                          <h1 className="font-montserrat text-[#ebe2d6]">
+                            {comment.author.name}
+                          </h1>
+                          <p className="font-montserrat text-gray-400">
+                            {formatDate(comment.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        <pre className="mb-1 text-wrap break-words font-[inherit] light light:text-black dark:text-white">
+                          {comment.content}
+                        </pre>
                       </div>
                     </div>
-                    <div className=" flex flex-col">
-                      <pre className=" mb-1 text-wrap font-[inherit] break-words">
-                        {comment.content}
-                      </pre>
-                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div>Failed to load comment</div>
+            )}
           </div>
         </div>
       </div>

@@ -48,7 +48,7 @@ export function UserDescription({ user, session }: ProfileUser) {
         alt="user avatar"
         className="mb-2 rounded-full"
       />
-      <h1 className=" mb-3 text-xl font-semibold dark:text-white">
+      <h1 className="mb-3 text-xl font-semibold dark:text-white">
         {user?.name}
       </h1>
       {session?.user.id === user?.id ? (
@@ -65,15 +65,16 @@ export function UserDescription({ user, session }: ProfileUser) {
             }}
           />
           <Button
-            className={`${!changed && "hidden"}`}
+            className={`${!changed || (updateDescription.isSuccess && "hidden")}`}
             color="success"
+            isLoading={updateDescription.isPending}
             onClick={() => onDescriptionUpdate()}
           >
             Save
           </Button>
         </>
       ) : (
-        <p className=" text-2xl dark:text-white">
+        <p className="text-2xl dark:text-white">
           {user?.description ? user.description : "No Bio"}
         </p>
       )}

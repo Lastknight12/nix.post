@@ -1,76 +1,75 @@
+// next ui / components
 import { Button } from "@nextui-org/react";
 import type { Editor } from "@tiptap/react";
-import { useRouter } from "next/navigation";
+
+// toast
+import { showError } from "~/utils/utils";
+
+// types / Schemas
+import { addPostSchema } from "~/types/zodSchemas";
 import { ZodError } from "zod";
 import { api } from "~/trpc/react";
-import { addPostSchema } from "~/types/types";
-import { showError, showLoadingPromise  } from "~/utils/utils";
+import { useRouter } from "next/navigation";
+
+interface SubmitButtonProps {
+  editor: Editor;
+  title: string;
+  tags: { id: number; displayName: string }[];
+  perviewSrc: string;
+}
 
 export default function SubmitButton({
   editor,
   title,
-  isLoading,
-}: {
-  editor: Editor;
-  title: string;
-  isLoading: boolean;
-}) {
-  const createPost = api.post.createPost.useMutation({});
-
-  const router = useRouter();
-
+  tags,
+  perviewSrc,
+}: SubmitButtonProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+  const charsCount = editor.storage.characterCount.characters();
+  const roter = useRouter();
   const utils = api.useUtils();
+
+  const createPost = api.post.createPost.useMutation({
+    onSuccess: async () => {
+      await utils.post.getPosts.invalidate();
+      roter.push("/");
+    },
+    onError: (error) => {
+      showError(error.message);
+    },
+  });
 
   async function handleClick() {
     try {
-      addPostSchema.parse({ content: editor.getText(), title });
-      const createPostPromise = new Promise<void>((resolve, reject) => {
-        createPost.mutate(
-          { title, content: editor.getJSON() },
-          {
-            onSuccess: () => resolve(),
-            onError: (error) => {
-              showError(`Error when creating post: ${error.message}`);
-              reject();
-            },
-          },
-        );
+      addPostSchema.parse({
+        content: editor.getJSON(),
+        title,
+        tags,
+        perviewSrc,
       });
-  
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      showLoadingPromise({
-        promise: createPostPromise,
-        successMsg: "Success add post",
-        loadingMsg: "loading...",
-        errorMsg: "Error when adding post",
-        action: async () => {
-          router.push("/");
-          await utils.post.getBatch.invalidate();
-        },
-        toastOptions: undefined
-      });
+
+      createPost.mutate({ content: editor.getJSON(), title, tags, perviewSrc });
     } catch (error) {
       if (error instanceof ZodError) {
         showError(error.errors[0]!.message);
-      } else {
-        showError(error as string)
       }
     }
-  }  
+  }
 
   return (
     <Button
       onClick={() => handleClick()}
       color="success"
       variant="shadow"
+      isLoading={createPost.isPending}
       className={
-        isLoading
+        createPost.isPending || charsCount < 35 || title.length < 5
           ? "opacity-30 transition-opacity hover:!opacity-30"
           : "opacity-100"
       }
-      disabled={isLoading}
+      disabled={createPost.isPending || charsCount < 35 || title.length < 5}
     >
-      Add Post
+      Save
     </Button>
   );
 }

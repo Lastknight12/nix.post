@@ -1,22 +1,27 @@
 import "~/styles/globals.css";
-import { Inter } from "next/font/google";
+import { Comfortaa, Montserrat, Open_Sans } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import { NextUI } from "./providers/NextUI";
 import NextAuthProvider from "./providers/NextAuth";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { NavigationProvider } from "./providers/NavigationProvider";
-import { Montserrat } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
 
 const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-montserrat",
+  display: "swap",
+});
+const comfortaa = Comfortaa({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-comfortaa",
+  display: "swap",
+});
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-open-sans",
   display: "swap",
 });
 
@@ -34,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans ${inter.variable} ${montserrat.variable} relative z-[1] h-full bg-transparent bg-gradient-to-r text-gray-200`}
+        className={`font-openSans ${openSans.variable} ${montserrat.variable} ${comfortaa.variable} relative z-[1] h-full text-gray-200 light light:bg-white dark:bg-[#1c1c1c]`}
       >
         <TRPCReactProvider>
           <NextUI>
@@ -42,13 +47,8 @@ export default function RootLayout({
               <NextThemesProvider attribute="class" defaultTheme="dark">
                 <Toaster />
                 <NavigationProvider />
-                <div className=" pointer-events-none fixed top-0 -z-[1] h-full w-full blur-[100px] light light:bg-white dark:bg-black">
-                  <div className=" fixed right-28 top-20 h-[430px] w-[430px] rounded-full light light:bg-[#b32bb142] dark:bg-[#b32bb12e]"></div>
-                  <div className=" fixed right-28 top-96 h-[430px] w-[430px] rounded-full light light:bg-[#292ec13b] dark:bg-[#292ec12b]"></div>
-                  <div className=" fixed bottom-0 left-12 h-96 w-44 -rotate-45 light light:bg-[#3129c149] dark:bg-[#3129c144]"></div>
-                </div>
-                <main className="my-4w-full z-1 z-10 justify-center">
-                  <div className="mx-auto mb-4 max-w-[1000px] flex-col gap-20 px-5">
+                <main className="w-full">
+                  <div className="mx-auto mt-3 h-full max-w-[1000px] flex-col gap-20 px-5">
                     {children}
                   </div>
                 </main>

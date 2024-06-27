@@ -25,17 +25,15 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       role: "User" | "Admin";
+      likedPosts: number[];
     } & DefaultSession["user"];
-  }
-
-  interface User {
-    role: "User" | "Admin";
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     role: "User" | "Admin";
+    likedPosts: number[];
   }
 }
 
@@ -51,7 +49,14 @@ export const authOptions: NextAuthOptions = {
   },
   session: { strategy: "jwt", maxAge: 99999 },
   callbacks: {
-    jwt: async ({ token }): Promise<JWT> => {
+    jwt: async ({ token, trigger, session }): Promise<JWT> => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (trigger == "update" && session?.likedPosts) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        token.likedPosts.push(session?.likedPosts);
+
+        return token;
+      }
       const dbuser = await db.user.findUnique({
         where: {
           id: token.sub,
@@ -62,9 +67,23 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
+      const user = await db.user.findFirst({
+        where: {
+          id: token.sub,
+        },
+        select: {
+          likedPosts: true,
+        },
+      });
+
+      if (!token.likedPosts && user?.likedPosts) {
+        token.likedPosts = user.likedPosts;
+      }
+
       return {
         ...token,
         role: `${dbuser.role}`,
+        likedPosts: token.likedPosts ?? [],
       };
     },
     session: ({ session, token }) => ({
@@ -73,6 +92,7 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: token.sub,
         role: token.role,
+        likedPosts: token.likedPosts.length > 0 ? token.likedPosts : [],
       },
     }),
   },

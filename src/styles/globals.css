@@ -2,11 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  width: 6px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 .tiptap {
   padding: 14px;
   font-size: 20px;
-  line-height: 2rem;
+  line-height: 3rem;
+  letter-spacing: 1px;
+  font-family: var(--font-comfotaa);
 
   .empty-paragraph {
     min-height: 1em;
@@ -14,7 +33,6 @@
   }
 
   .is-editor-empty:first-child::before {
-    color: #adb5bd;
     content: attr(data-placeholder);
     float: left;
     height: 0;
@@ -22,28 +40,32 @@
   }
 
   img {
-    margin: 10px 0 10px 0
+    margin: 10px auto 10px auto;
   }
 
   pre {
     background: #0d0d0d;
     border-radius: 0.5rem;
     font-family: "JetBrainsMono", monospace;
-    padding: 0.75rem 1rem;
-    line-height: normal;
+    margin: 10px 0 10px 0;
+    padding: 1rem 1rem;
+    display: flex;
+    align-items: center;
+    line-height: 1.2rem;
 
     code {
       background: none;
       color: inherit;
-      font-size: 14px;
       padding: 0;
+      line-height: normal;
+      font-size: 14px;
       text-wrap: wrap;
     }
   }
 
   blockquote {
     border-left: 3px solid gray;
-    margin: 1rem 0 0 1rem;
+    margin: 1rem 0 1rem 1rem;
     font-style: italic;
     padding: 1rem;
   }
@@ -61,21 +83,52 @@
 
 .light {
   .tiptap {
-    color: black;
+    color: #262626;
+
+    .is-editor-empty:first-child::before {
+      color: #262626;
+    }
 
     pre {
-      color: white;
+      background: #2d2d2d;
+      color: #ececec;
     }
 
     blockquote {
       color: gray;
     }
   }
+
+  .ag-root-wrapper {
+    background: transparent;
+    border: none;
+    .ag-header {
+      background: transparent;
+    }
+    .ag-row {
+      background: transparent;
+    }
+    .ag-picker-field-wrapper {
+      background: transparent;
+    }
+    .ag-popup {
+      background: transparent;
+      display: block;
+    }
+
+    .ag-rich-select-value {
+      background: transparent;
+    }
+  }
 }
 
 .dark {
   .tiptap {
-    color: white;
+    color: #ececec;
+
+    .is-editor-empty:first-child::before {
+      color: #ececec;
+    }
 
     pre {
       background: #2d2d2d;
@@ -83,6 +136,17 @@
 
     blockquote {
       color: rgb(154, 154, 154);
+    }
+  }
+
+  .ag-root-wrapper {
+    background: transparent;
+    border: none;
+    .ag-header {
+      background: transparent;
+    }
+    .ag-row {
+      background: transparent;
     }
   }
 }
