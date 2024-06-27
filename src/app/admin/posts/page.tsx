@@ -9,6 +9,7 @@ import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
 import toast from "react-hot-toast";
 import type { AdminPosts, ColDefHelper } from "~/types/types";
 import { updatePost } from "~/actions/mutation/mutaiton";
+import { showLoading } from "~/utils/utils";
 
 export default function Posts() {
   const [rowData, setRowData] = useState<AdminPosts[]>([]);
@@ -23,7 +24,7 @@ export default function Posts() {
 
   const updateSinglePost = updatePost("Success", "field can't be null");
 
-  const { data, isFetched, isLoading } = api.admin.getAllPosts.useQuery();
+  const { data, isLoading } = api.admin.getAllPosts.useQuery();
 
   function CellValueChanged(event: CellValueChangedEvent<AdminPosts>) {
     const { id, title, createdAt, content } = event.data;
@@ -38,7 +39,7 @@ export default function Posts() {
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Loading...");
+      showLoading("Loading...")
     }
     if (data) {
       setRowData([
@@ -58,7 +59,7 @@ export default function Posts() {
       toast.dismiss();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetched]);
+  }, [data]);
 
   return (
     <div className="mt-6 overflow-x-auto">

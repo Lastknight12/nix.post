@@ -10,7 +10,7 @@ export default async function PostInfo(req: {
   return (
     <>
       <Suspense fallback={<SinglePostSkeleton />}>
-        <SinglePost postId={req.params.id}></SinglePost>
+        <SinglePost postPublicId={req.params.id} />
       </Suspense>
     </>
   );

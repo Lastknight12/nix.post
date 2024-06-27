@@ -1,80 +1,60 @@
 "use client";
 
+// editor hooks / components / extensions
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
+import Placeholder from "@tiptap/extension-placeholder";
+import CharacterCount from "@tiptap/extension-character-count";
+
+// components
 import Toolbar from "./Tolbar";
-import { Button } from "@nextui-org/button";
-import { api } from "~/trpc/react";
-import toast from "react-hot-toast";
-import { ZodError } from "zod";
-import { addPostSchema } from "~/types/types";
-import { useRouter } from "next/navigation";
-import { Textarea } from "@nextui-org/input";
+
+// hooks
 import { useState } from "react";
+import { Spinner } from "@nextui-org/react";
+import PushModal from "./PushModal";
 
 export default function Tiptap() {
   const editor = useEditor({
-    extensions: [StarterKit],
-    content: "<p>My first Post! 🔥</p>",
+    extensions: [
+      CharacterCount,
+      StarterKit,
+      Image,
+      Placeholder.configure({ placeholder: "Tell your story" }),
+    ],
   });
-  const [title, setTitle] = useState("My Post title");
-
-  const router = useRouter();
-
-  const createPost = api.post.createPost.useMutation({
-    onSuccess: () => {
-      toast.success("Seccess!");
-      router.push("/");
-    },
-  });
+  const [title, setTitle] = useState("");
 
   if (!editor) {
     return null;
   }
 
-  function handleClick() {
-    try {
-      addPostSchema.parse({ content: editor?.getHTML(), title });
-    } catch (error) {
-      if (error instanceof ZodError) {
-        toast.error(error.errors[0]!.message);
-      } else {
-        throw new Error(String(error));
-      }
-    }
-    createPost.mutate({ title, content: editor!.getJSON() });
-  }
-
   return (
     <>
       <Toolbar editor={editor} />
-      <Textarea
-        minRows={1}
-        maxRows={4}
+      <PushModal
+        editor={editor}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        charsCount={editor.storage.characterCount.characters() as number}
+        title={title}
+        setTitle={setTitle}
+      />
+      <input
         onChange={(e) => setTitle(e.target.value)}
-        value={title}
-        className=" mb-3"
+        value={title.trimStart()}
         color="secondary"
-        classNames={{
-          input: "text-2xl font-bold",
-        }}
-      ></Textarea>
-      <div className=" mb-1 rounded-3xl border-1 p-2 light light:border-gray-400 dark:border-[#868b9366]">
-        <EditorContent editor={editor} />
+        maxLength={100}
+        placeholder="Title"
+        className="w-full bg-transparent p-3 font-comfortaa text-3xl outline-none light light:text-defaultLight light:placeholder:text-defaultLight dark:text-defaultDark dark:placeholder:text-defaultDark"
+      ></input>
+      <div className="mb-1 rounded-3xl font-comfortaa light">
+        {!editor ? (
+          <Spinner className="mx-auto" />
+        ) : (
+          <EditorContent editor={editor} />
+        )}
       </div>
-      <Button
-        onClick={() => handleClick()}
-        color="success"
-        variant="shadow"
-        className={
-          editor.getText().length < 10
-            ? " opacity-30 transition-opacity hover:!opacity-30"
-            : " opacity-100"
-        }
-        disabled={editor.getText().length < 10}
-      >
-        Add Post
-      </Button>
     </>
   );
 }

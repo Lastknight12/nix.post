@@ -11,6 +11,7 @@ const config = {
       "cdn.discordapp.com",
       "lh3.googleusercontent.com",
       "nix-post.vercel.app",
+      "iuqipxloifipusrsorab.supabase.co",
     ],
   },
 };

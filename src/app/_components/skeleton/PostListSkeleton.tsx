@@ -1,23 +1,28 @@
-import { Card, Skeleton } from "@nextui-org/react";
+import { Skeleton } from "@nextui-org/react";
 
 export default function PostListSkeleton() {
   return (
-    <>
-      {Array.from({ length: 3 }).map((_, index) => (
-        <Card
-          key={index}
-          className="w-full space-y-5 rounded-3xl bg-transparent px-5 py-10 shadow-none"
-        >
-          <div className="mb-3 flex items-center gap-2">
-            <Skeleton className="h-[50px] w-[50px] rounded-full light light:bg-[#0000000a] dark:bg-[#ffffff0d] before:from-transparent light:before:via-[#a9a9a985] dark:before:via-[#e4e4e71a] before:to-transparent before:border-transparent after:content-none" />
-            <Skeleton className="h-5 w-24 rounded-lg light light:bg-[#0000000a] dark:bg-[#ffffff0d] before:from-transparent light:before:via-[#a9a9a985] dark:before:via-[#e4e4e71a] before:to-transparent before:border-transparent after:content-none" />
+    <div className="flex flex-col">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <div key={index} className="flex max-w-[800px] justify-center">
+          <div className="flex w-full items-center justify-between">
+            <div className="w-full px-5 py-10">
+              <div>
+                <div className="mb-3 flex items-center gap-2">
+                  <Skeleton className="h-[25px] w-[25px] rounded-full light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
+                  <Skeleton className="h-3 w-16 light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
+                </div>
+                <Skeleton className="mb-5 h-6 w-[500px] light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
+              </div>
+
+              <div>
+                <Skeleton className="h-4 w-11 light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
+              </div>
+            </div>
+            <Skeleton className="h-[100px] w-40 light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
           </div>
-          <div className="">
-            <Skeleton className="mb-3 h-6 w-44 rounded-lg light light:bg-[#0000000a] dark:bg-[#ffffff0d] before:from-transparent light:before:via-[#a9a9a985] dark:before:via-[#e4e4e71a] before:to-transparent before:border-transparent after:content-none" />
-            <Skeleton className="h-3 w-20 rounded-lg light light:bg-[#0000000a] dark:bg-[#ffffff0d] before:from-transparent light:before:via-[#a9a9a985] dark:before:via-[#e4e4e71a] before:to-transparent before:border-transparent after:content-none" />
-          </div>
-        </Card>
+        </div>
       ))}
-    </>
+    </div>
   );
 }

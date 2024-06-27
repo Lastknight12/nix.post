@@ -1,34 +1,24 @@
 "use client";
 
-import { Button, DropdownItem, DropdownMenu } from "@nextui-org/react";
-import { signOut } from "next-auth/react";
+// next ui / components
+import { DropdownItem, DropdownMenu } from "@nextui-org/react";
 import Link from "next/link";
 import Image from "next/image";
-import { useTheme } from "next-themes";
 
-export function DropDownMenu({
-  userName,
-  email,
-  image,
-}: {
-  userName: string | null | undefined;
-  email: string | null | undefined;
-  image: string | null | undefined;
-}) {
-  const { theme, setTheme, forcedTheme } = useTheme();
-  console.log(forcedTheme)
+// auth
+import { signOut } from "next-auth/react";
 
-  function handleThemeSwitch() {
-    setTheme(theme == "dark" ? "light" : "dark");
-  }
+// hooks
+import type { MainDropDown } from "~/types/types";
 
+export function DropDownMenu({ userName, email, image }: MainDropDown) {
   return (
     <>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem key="user">
-          <div className=" flex items-center gap-3 border-b-1 border-[#353434] pb-3">
+          <div className="flex items-center gap-3 border-b-1 pb-3 light light:border-[#eaeaea] dark:border-[#353434]">
             <Image
-              className=" rounded-full"
+              className="rounded-full"
               src={`${image}`}
               width={50}
               height={50}
@@ -42,29 +32,26 @@ export function DropDownMenu({
             </div>
           </div>
         </DropdownItem>
+
         <DropdownItem
           key="profile"
-          className=" transition-colors light dark:hover:bg-[#2c2c2c] light:hover:bg-[#ece8e8]"
+          className="transition-colors light light:hover:bg-[#ece8e8] dark:hover:bg-[#2c2c2c]"
         >
           <Link
             href={"/profile/" + userName}
-            className=" light light:text-[#000] dark:text-[#fff]"
+            className="light light:text-[#000] dark:text-[#fff]"
           >
             Profile
           </Link>
         </DropdownItem>
+
         <DropdownItem
           key="delete"
-          className="text-danger transition-colors light dark:hover:bg-[#2c2c2c] light:hover:bg-[#ece8e8]"
+          className="text-danger transition-colors light light:hover:bg-[#ece8e8] dark:hover:bg-[#2c2c2c]"
           color="danger"
           onClick={() => signOut()}
         >
           Log out
-        </DropdownItem>
-        <DropdownItem>
-          <Button className=" w-full light light:bg-[#62626b] dark:bg-[#3f3f46] text-white" onClick={handleThemeSwitch}>
-            Theme: <span className=" font-semibold">{theme}</span>
-          </Button>
         </DropdownItem>
       </DropdownMenu>
     </>

@@ -1,34 +1,45 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Prisma } from "@prisma/client";
 import type { Session } from "next-auth";
 import type { ColDef } from "ag-grid-community";
-import { z } from "zod";
 
-export const addPostSchema = z.object({
-  title: z
-    .string()
-    .min(5, "Title must be at least 5 characters")
-    .max(20, "max title lenght 20"),
-  content: z.string().min(10, "content must be at least 10 characters"),
-});
-
-export const addCommentSchema = z.object({
-  content: z.string().min(1, "Comment cannot be empty"),
-});
+// TODO describe types and sort imports in components
 
 // MAIN
 
-export interface MainPostProps {
-  post: {
+export interface Post {
+  id: number;
+  publicId: string;
+  perviewSrc: string | null;
+  title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createdAt: Date;
+  likes: number;
+  tags: JsonValue[];
+  createdBy: {
+    name: string;
+    image: string;
+  };
+}
+
+export interface PostWithComments {
+  id: number;
+  title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: any;
+  createdAt: Date;
+  createdBy: {
+    name: string;
+    image: string;
+  };
+  comments: {
     id: number;
-    title: string;
-    content: any;
+    content: string;
     createdAt: Date;
-    createdBy: {
+    author: {
       name: string;
       image: string;
     };
-  };
+  }[];
 }
 
 export interface MainPostsSkeleton {
@@ -37,11 +48,17 @@ export interface MainPostsSkeleton {
 
 //
 
-// MODAL
+// DROPDOWN
 
 export interface ModalLogout {
   isOpen: boolean | undefined;
   onOpenChange: ((isOpen: boolean) => void) | undefined;
+}
+
+export interface MainDropDown {
+  userName: string | null | undefined;
+  email: string | null | undefined;
+  image: string | null | undefined;
 }
 
 //
@@ -185,6 +202,15 @@ export interface orderedList {
   content: Array<Node>;
 }
 
+export interface img {
+  type: "image";
+  attrs: {
+    alt: string;
+    src: string;
+    title: string;
+  };
+}
+
 export type Node =
   | TextNode
   | ParagraphNode
@@ -192,6 +218,7 @@ export type Node =
   | DocumentNode
   | CodeNode
   | orderedList
-  | listItem;
+  | listItem
+  | img;
 
 export type ColDefHelper<T> = ColDef<T>[];
