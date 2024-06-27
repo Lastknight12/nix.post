@@ -32,9 +32,6 @@ export default function Comments({ postId }: CommentProps) {
       await utils.comment.getCommentsByPostId.invalidate({ postId: postId });
       setComment("");
     },
-    onError: (error) => {
-      toast.error(error.message);
-    },
   });
 
   const { data: comments } = api.comment.getCommentsByPostId.useQuery({
@@ -99,7 +96,7 @@ export default function Comments({ postId }: CommentProps) {
                         </div>
                       </div>
                       <div className="flex flex-col">
-                        <pre className="mb-1 text-wrap break-words font-[inherit] light light:text-black dark:text-white">
+                        <pre className="mb-1 text-wrap break-words font-[inherit] text-white">
                           {comment.content}
                         </pre>
                       </div>

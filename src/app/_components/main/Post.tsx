@@ -98,13 +98,13 @@ export default memo(function Post({
             )}
           </div>
         </div>
-
         {post.perviewSrc && (
           <Image
             src={post.perviewSrc}
             alt="post preview image"
+            className="max-h-[125px] object-contain"
             width={160}
-            height={150}
+            height={125}
           />
         )}
       </div>
