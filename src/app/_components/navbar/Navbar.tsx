@@ -12,12 +12,17 @@ import {
 import Link from "next/link";
 import UserInfo from "./UserInfo";
 import { useState } from "react";
-import type { Burger, NavUser } from "~/types/types";
+import type { Burger } from "~/types/types";
 import LoginDropdown from "../dropdown/LoginDropDown";
 import { LiaEditSolid, LiaMoon, LiaSun } from "react-icons/lia";
 import { useTheme } from "next-themes";
+import type { Session } from "next-auth";
 
-export default function Navigation({ session }: NavUser) {
+interface NavUserProps {
+  session: Session | null;
+}
+
+export default function Navigation({ session }: NavUserProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems: Burger = [

@@ -2,7 +2,13 @@ import { notFound } from "next/navigation";
 import Post from "~/app/_components/main/Post";
 import { api } from "~/trpc/server";
 
-export default async function Tag({ params }: { params: { tag: string } }) {
+interface TagProps {
+  params: {
+    tag: string;
+  };
+}
+
+export default async function Tag({ params }: TagProps) {
   const tagName = params.tag;
 
   const posts = await api.post.getPostsByTag({ tagName: tagName });

@@ -8,10 +8,13 @@ import Image from "next/image";
 // auth
 import { signOut } from "next-auth/react";
 
-// hooks
-import type { MainDropDown } from "~/types/types";
+interface DropDownMenuProps {
+  userName: string | null | undefined;
+  email: string | null | undefined;
+  image: string | null | undefined;
+}
 
-export function DropDownMenu({ userName, email, image }: MainDropDown) {
+export function DropDownMenu({ userName, email, image }: DropDownMenuProps) {
   return (
     <>
       <DropdownMenu aria-label="Static Actions">

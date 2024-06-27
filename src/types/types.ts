@@ -1,8 +1,5 @@
 import type { Prisma } from "@prisma/client";
-import type { Session } from "next-auth";
 import type { ColDef } from "ag-grid-community";
-
-// TODO describe types and sort imports in components
 
 // MAIN
 
@@ -20,72 +17,6 @@ export interface Post {
     image: string;
   };
 }
-
-export interface PostWithComments {
-  id: number;
-  title: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content: any;
-  createdAt: Date;
-  createdBy: {
-    name: string;
-    image: string;
-  };
-  comments: {
-    id: number;
-    content: string;
-    createdAt: Date;
-    author: {
-      name: string;
-      image: string;
-    };
-  }[];
-}
-
-export interface MainPostsSkeleton {
-  isFetched: boolean;
-}
-
-//
-
-// DROPDOWN
-
-export interface ModalLogout {
-  isOpen: boolean | undefined;
-  onOpenChange: ((isOpen: boolean) => void) | undefined;
-}
-
-export interface MainDropDown {
-  userName: string | null | undefined;
-  email: string | null | undefined;
-  image: string | null | undefined;
-}
-
-//
-
-// NAVBAR
-
-export interface NavNavbar {
-  session: Session | null;
-}
-
-export interface NavUser {
-  session: Session | null;
-}
-
-export interface UserInfo {
-  session: Session | null;
-}
-
-type BurgerItems = {
-  name: string;
-  href?: string;
-  type: "link" | "admin";
-};
-
-export type Burger = BurgerItems[];
-
-//
 
 // ADMIN DASHBOARD
 
@@ -108,47 +39,6 @@ export interface AdminUsers {
   emailVerified: Date | null;
   image: string;
 }
-
-//
-
-export interface Comment {
-  postId: number;
-  post: {
-    comments: {
-      content: string;
-      id: number;
-      createdAt: Date;
-      author: {
-        name: string;
-        image: string;
-      };
-    }[];
-    title: string;
-    content: Prisma.JsonValue;
-    createdBy: {
-      name: string;
-      image: string;
-    };
-  };
-}
-
-// PROFILE
-export interface Profile {
-  params: {
-    name: string;
-  };
-}
-
-export interface ProfileUser {
-  user: {
-    id: string;
-    name: string;
-    image: string;
-    description: string | null;
-  } | null;
-  session: Session | null;
-}
-//
 
 export type JsonObject = { [Key in string]?: JsonValue };
 export type JsonArray = JsonValue[];

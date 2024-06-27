@@ -35,6 +35,7 @@ export default function PostsList() {
 
   return (
     <>
+    
       {data ? (
         data?.pages.map((page) =>
           page.items.map((post) => {

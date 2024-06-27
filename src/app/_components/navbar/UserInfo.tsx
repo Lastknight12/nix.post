@@ -2,10 +2,14 @@ import { Dropdown, DropdownTrigger } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { MdAdminPanelSettings } from "react-icons/md";
-import type { UserInfo } from "~/types/types";
 import { DropDownMenu } from "../dropdown/DropDownMenu";
+import type { Session } from "next-auth";
 
-export default function UserInfo({ session }: UserInfo) {
+interface UserInfoProps {
+  session: Session | null;
+}
+
+export default function UserInfo({ session }: UserInfoProps) {
   return (
     <div className="flex items-center gap-3 max-sm:gap-1">
       {session?.user.role == "Admin" ? (

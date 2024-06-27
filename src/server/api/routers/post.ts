@@ -232,6 +232,7 @@ export const postRouter = createTRPCRouter({
         },
         select: {
           id: true,
+          publicId: true,
           title: true,
           createdAt: true,
           createdBy: {

@@ -56,7 +56,7 @@ export default async function SinglePost({
               </div>
 
               <div className="flex gap-2 text-sm text-[#6B6B6B]">
-                5 mins read ~ {getDayAndMonth(post.createdAt)} ~ Tags:
+                5 mins read ~ {getDayAndMonth(post.createdAt)}
               </div>
             </div>
           </div>

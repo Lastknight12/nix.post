@@ -102,7 +102,7 @@ export default memo(function Post({
           <Image
             src={post.perviewSrc}
             alt="post preview image"
-            className="max-h-[125px] object-fill max-md:max-w-24 max-sm:max-w-20"
+            className="max-h-[125px] rounded object-fill max-md:max-w-24 max-sm:max-w-20"
             width={150}
             height={125}
           />

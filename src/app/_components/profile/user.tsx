@@ -6,9 +6,19 @@ import { useState, useEffect, type ChangeEvent } from "react";
 import toast from "react-hot-toast";
 import { api } from "~/trpc/react";
 import { RiEditFill } from "react-icons/ri";
-import type { ProfileUser } from "~/types/types";
+import type { Session } from "next-auth";
 
-export function UserDescription({ user, session }: ProfileUser) {
+interface ProfileUserProps {
+  user: {
+    id: string;
+    name: string;
+    image: string;
+    description: string | null;
+  } | null;
+  session: Session | null;
+}
+
+export function UserDescription({ user, session }: ProfileUserProps) {
   const [description, setDescription] = useState(user?.description ?? "No Bio");
   const [changed, setChanged] = useState(false);
   const updateDescription = api.post.updateUserDescription.useMutation({

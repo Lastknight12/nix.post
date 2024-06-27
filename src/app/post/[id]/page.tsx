@@ -2,13 +2,16 @@ import SinglePost from "~/app/_components/singlePost/SinglePost";
 import { Suspense } from "react";
 import SinglePostSkeleton from "~/app/_components/skeleton/SinglePostSkeleton";
 
-export default async function PostInfo(req: {
+interface Props {
   params: {
     id: string;
   };
-}) {
+}
+
+export default async function PostInfo(req: Props) {
   return (
     <>
+      <SinglePostSkeleton />
       <Suspense fallback={<SinglePostSkeleton />}>
         <SinglePost postPublicId={req.params.id} />
       </Suspense>

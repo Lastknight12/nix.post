@@ -1,11 +1,16 @@
 import { Link } from "@nextui-org/react";
 import { api } from "~/trpc/server";
-import type { Profile } from "~/types/types";
 import Image from "next/image";
 import { getServerAuthSession } from "~/server/auth";
 import { UserDescription } from "~/app/_components/profile/user";
 
-export default async function Profile(req: Profile) {
+interface Props {
+  params: {
+    name: string;
+  };
+}
+
+export default async function Profile(req: Props) {
   const userName = req.params.name;
   const session = await getServerAuthSession();
 
@@ -24,23 +29,23 @@ export default async function Profile(req: Profile) {
           {posts.map((post) => {
             return (
               <Link
-                href={"/post/" + post.id}
+                href={`/post/${post.publicId}`}
                 key={post.id}
                 className="flex w-full flex-col items-start border-b-1 border-[#808080a8] p-6 hover:bg-[#84838333] max-md:hover:bg-transparent"
               >
-                <div className="mb-2 gap-2">
+                <div className="mb-2 flex items-center gap-2">
                   <Image
                     src={post.createdBy.image}
                     alt="post creator avatar"
                     width={25}
                     height={25}
                     className="rounded-full"
-                  ></Image>
+                  />
                   <p className="text-lg font-medium light light:text-[#000] dark:text-[#ffffff]">
                     {post.createdBy.name}
                   </p>
                 </div>
-                <h1 className="mb-3 text-3xl font-bold light light:text-black dark:text-white">
+                <h1 className="mb-3 font-comfortaa text-3xl light light:text-black dark:text-white">
                   {post.title}
                 </h1>
                 <p className="text-[#808080a8]">
