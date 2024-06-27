@@ -13,7 +13,7 @@ export default async function Tag({ params }: { params: { tag: string } }) {
 
   return (
     <div>
-      <h1 className="font-montserrat text-3xl font-bold">
+      <h1 className="font-montserrat text-3xl font-bold light light:text-black dark:text-white">
         All posts by tag: {tagName}
       </h1>
 

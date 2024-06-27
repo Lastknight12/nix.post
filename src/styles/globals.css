@@ -25,6 +25,7 @@
   font-size: 20px;
   line-height: 3rem;
   letter-spacing: 1px;
+  word-break: break-word;
   font-family: var(--font-comfotaa);
 
   .empty-paragraph {
