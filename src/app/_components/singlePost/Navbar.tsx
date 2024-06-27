@@ -36,15 +36,23 @@ interface NavbarProps {
 }
 
 export default function Navbar({ post, loggedIn }: NavbarProps) {
+  const utils = api.useUtils();
+
+  const [likes, setLikes] = useState(post.likes);
+
+  const { update } = useSession();
+
   const incrementLikes = api.post.incrementLike.useMutation({
+    onSuccess: async () => {
+      await utils.post.isPostLiked.invalidate({ postId: post.id });
+    },
+
     onError: (error) => {
+      setLikes((prevLikes) => prevLikes - 1);
       return showError(error.message);
     },
   });
 
-  const { update } = useSession();
-
-  const [likes, setLikes] = useState(post.likes);
   // i can disable button if isPendeing and in getIndividualPost check if user.likedPosts.includes(post.id) and it still work like that, but i like this solution wich looks like in medium.com :D
   const {
     data: postLikedData,
@@ -59,7 +67,6 @@ export default function Navbar({ post, loggedIn }: NavbarProps) {
   );
 
   useEffect(() => {
-    console.log(postLikedData);
     setIsPostNowLiked(postLikedData ?? false);
   }, [postLikedData]);
 
@@ -90,7 +97,7 @@ export default function Navbar({ post, loggedIn }: NavbarProps) {
               <button
                 onClick={handleClick}
                 className="bg-transparent"
-                disabled={isPostNowLiked}
+                disabled={isPostNowLiked && !loggedIn}
               >
                 <FaHeart
                   className={`mr-1 text-[#6b6b6b] transition-colors hover:text-red-500 ${isPostNowLiked ? "text-red-500" : "text-[#6b6b6b]"}`}
