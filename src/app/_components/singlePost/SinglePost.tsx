@@ -38,27 +38,29 @@ export default async function SinglePost({
       </div>
 
       <div>
-        <div className="flex items-center gap-3">
-          <div>
-            <Image
-              src={post.createdBy.image}
-              width={40}
-              height={40}
-              alt="post author image"
-              className="rounded-full"
-            />
-          </div>
-
-          <div>
-            <div className="text-lg light light:text-defaultLight dark:text-defaultDark">
-              {post.createdBy.name}
+        <Link href={`/profile/${post.createdBy.name}`}>
+          <div className="flex items-center gap-3">
+            <div>
+              <Image
+                src={post.createdBy.image}
+                width={40}
+                height={40}
+                alt="post author image"
+                className="rounded-full"
+              />
             </div>
 
-            <div className="flex gap-2 text-sm text-[#6B6B6B]">
-              5 mins read ~ {getDayAndMonth(post.createdAt)} ~ Tags:
+            <div>
+              <div className="text-lg light light:text-defaultLight dark:text-defaultDark">
+                {post.createdBy.name}
+              </div>
+
+              <div className="flex gap-2 text-sm text-[#6B6B6B]">
+                5 mins read ~ {getDayAndMonth(post.createdAt)} ~ Tags:
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
       <div className="mt-10 flex gap-2">
         {post.tags.map((tag) => (

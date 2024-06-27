@@ -58,7 +58,7 @@ export default function Comments({ postId }: CommentProps) {
               onChange={(e) => setComment(e.target.value)}
               value={comment}
               placeholder="Write a comment"
-              className="h-[calc(50vh-100px)] w-full resize-none rounded bg-[#202020] p-4 text-white focus:outline-none dark:bg-[#2a2a2a] dark:text-white"
+              className="h-[calc(50vh-150px)] w-full resize-none rounded bg-[#202020] p-4 text-white focus:outline-none dark:bg-[#2a2a2a] dark:text-white"
             />
             <Button
               variant="shadow"

@@ -12,7 +12,7 @@ export default function PostListSkeleton() {
                   <Skeleton className="h-[25px] w-[25px] rounded-full light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
                   <Skeleton className="h-3 w-16 light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
                 </div>
-                <Skeleton className="mb-5 h-6 w-[500px] light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
+                <Skeleton className="mb-5 h-6 w-[calc(100%-250px)] light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d] max-sm:w-full" />
               </div>
 
               <div>
