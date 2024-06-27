@@ -12,7 +12,6 @@ import {
 import Link from "next/link";
 import UserInfo from "./UserInfo";
 import { useState } from "react";
-import type { Burger } from "~/types/types";
 import LoginDropdown from "../dropdown/LoginDropDown";
 import { LiaEditSolid, LiaMoon, LiaSun } from "react-icons/lia";
 import { useTheme } from "next-themes";
@@ -21,6 +20,12 @@ import type { Session } from "next-auth";
 interface NavUserProps {
   session: Session | null;
 }
+
+type Burger = {
+  name: string;
+  href: string;
+  type: "link" | "admin";
+}[];
 
 export default function Navigation({ session }: NavUserProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -143,7 +148,7 @@ export default function Navigation({ session }: NavUserProps) {
             >
               <Link
                 className="w-full light:text-black dark:text-white"
-                href={item.href!}
+                href={item.href}
                 aria-label={item.name}
               >
                 {item.name}
