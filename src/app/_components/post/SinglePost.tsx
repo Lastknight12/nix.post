@@ -4,6 +4,7 @@ import type { JsonValue } from "~/types/types";
 import Comments from "../comments/Comments";
 import { notFound } from "next/navigation";
 import {
+  calcReadTime,
   getDayAndMonth,
   isValidNode,
   parseTiptapJsonToHtml,
@@ -27,6 +28,8 @@ export default async function SinglePost({
 
   const content = post.content as JsonValue;
   const parsedHtml = isValidNode(content) ? parseTiptapJsonToHtml(content) : "";
+
+  const readTime = calcReadTime(parsedHtml);
 
   const session = await getServerAuthSession();
   return (
@@ -56,7 +59,7 @@ export default async function SinglePost({
               </div>
 
               <div className="flex gap-2 text-sm text-[#6B6B6B]">
-                5 mins read ~ {getDayAndMonth(post.createdAt)}
+                {readTime} to read ~ {getDayAndMonth(post.createdAt)}
               </div>
             </div>
           </div>

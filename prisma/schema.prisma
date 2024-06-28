@@ -36,14 +36,13 @@ model Tags {
 }
 
 model Comments {
-    id           Int      @id @default(autoincrement())
-    content      String
-    commentLikes Int      @default(0)
-    createdAt    DateTime @default(now())
-    author       User     @relation(fields: [authorId], references: [id])
-    authorId     String
-    post         Post     @relation(fields: [postId], references: [id])
-    postId       Int
+    id        Int      @id @default(autoincrement())
+    content   String
+    createdAt DateTime @default(now())
+    author    User     @relation(fields: [authorId], references: [id])
+    authorId  String
+    post      Post     @relation(fields: [postId], references: [id])
+    postId    Int
 }
 
 // Necessary for Next auth

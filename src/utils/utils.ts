@@ -12,6 +12,24 @@ export function truncateString(str: string, maxLength: number): string {
   }
 }
 
+export function calcReadTime(htmlString: string) {
+  const wordCount = htmlString
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s*/g, "").length;
+
+  const readTime = wordCount / 200;
+
+  if (readTime < 1) {
+    const readTimeInSeconds = Math.ceil(readTime * 60);
+    return `${readTimeInSeconds} sec`;
+  } else if (readTime < 60) {
+    return `${Math.ceil(readTime)} mins`;
+  } else {
+    const readTimeInHours = Math.ceil(readTime / 60);
+    return `${readTimeInHours} hours`;
+  }
+}
+
 export function randomName(lenght: number) {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
