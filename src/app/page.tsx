@@ -1,9 +1,9 @@
 "use client";
 
-import Post from "./_components/main/Post";
+import Post from "./_components/postsList/Post";
 import { api } from "~/trpc/react";
 import { useEffect } from "react";
-import PostListSkeleton from "./_components/skeleton/PostListSkeleton";
+import PostListSkeleton from "./_components/skeletons/PostListSkeleton";
 import { showError } from "~/utils/utils";
 
 export default function PostsList() {
@@ -35,7 +35,6 @@ export default function PostsList() {
 
   return (
     <>
-    
       {data ? (
         data?.pages.map((page) =>
           page.items.map((post) => {

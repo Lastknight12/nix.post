@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
 import toast from "react-hot-toast";
 import type { AdminUsers } from "~/types/types";
-import { updateUser } from "~/actions/mutation/mutaiton";
+import { updateUser } from "~/adminActions/mutations/mutaiton";
 
 export default function Posts() {
   const [rowData, setRowData] = useState<AdminUsers[]>([]);

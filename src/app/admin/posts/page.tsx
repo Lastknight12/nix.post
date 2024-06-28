@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
 import toast from "react-hot-toast";
 import type { AdminPosts, ColDefHelper } from "~/types/types";
-import { updatePost } from "~/actions/mutation/mutaiton";
+import { updatePost } from "~/adminActions/mutations/mutaiton";
 import { showLoading } from "~/utils/utils";
 
 export default function Posts() {
@@ -39,7 +39,7 @@ export default function Posts() {
 
   useEffect(() => {
     if (isLoading) {
-      showLoading("Loading...")
+      showLoading("Loading...");
     }
     if (data) {
       setRowData([

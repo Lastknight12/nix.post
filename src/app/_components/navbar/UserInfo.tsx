@@ -2,7 +2,7 @@ import { Dropdown, DropdownTrigger } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { MdAdminPanelSettings } from "react-icons/md";
-import { DropDownMenu } from "../dropdown/DropDownMenu";
+import { ProfileDownMenu } from "../dropdown/ProfileDropDown";
 import type { Session } from "next-auth";
 
 interface UserInfoProps {
@@ -38,7 +38,7 @@ export default function UserInfo({ session }: UserInfoProps) {
             />
           </div>
         </DropdownTrigger>
-        <DropDownMenu
+        <ProfileDownMenu
           userName={session?.user.name}
           email={session?.user.email}
           image={session?.user.image}

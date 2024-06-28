@@ -5,13 +5,9 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
-  NavbarMenuToggle,
 } from "@nextui-org/navbar";
 import Link from "next/link";
 import UserInfo from "./UserInfo";
-import { useState } from "react";
 import LoginDropdown from "../dropdown/LoginDropDown";
 import { LiaEditSolid, LiaMoon, LiaSun } from "react-icons/lia";
 import { useTheme } from "next-themes";
@@ -21,20 +17,7 @@ interface NavUserProps {
   session: Session | null;
 }
 
-type Burger = {
-  name: string;
-  href: string;
-  type: "link" | "admin";
-}[];
-
 export default function Navigation({ session }: NavUserProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const menuItems: Burger = [
-    { name: "Admin Dashboard", href: "/admin", type: "admin" },
-    { name: "Profile", href: `/profile/${session?.user.name}`, type: "link" },
-  ];
-
   const { theme, setTheme } = useTheme();
 
   function handleThemeSwitch() {
@@ -43,15 +26,10 @@ export default function Navigation({ session }: NavUserProps) {
 
   return (
     <Navbar
-      onMenuOpenChange={setIsMenuOpen}
       className="border-b-2 light light:border-none light:bg-transparent light:text-black dark:border-b-[#4f4f4fc9] dark:text-white"
       isBlurred
     >
       <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className={`sm:hidden ${!session && "hidden"}`}
-        />
         <NavbarBrand>
           <Link href="/" className="flex items-center">
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
@@ -128,35 +106,6 @@ export default function Navigation({ session }: NavUserProps) {
           {!session ? <LoginDropdown /> : <UserInfo session={session} />}
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu className="bg-transparent">
-        {menuItems.map((item, index) => {
-          {
-            if (!session) {
-              return null;
-            }
-
-            if (item.type === "admin" && session?.user.role !== "Admin") {
-              return null;
-            }
-          }
-          return (
-            <NavbarMenuItem
-              key={index}
-              className={
-                "rounded-xl p-2 light light:bg-[#2e2e2e33] dark:bg-[#ffffff1a]"
-              }
-            >
-              <Link
-                className="w-full light:text-black dark:text-white"
-                href={item.href}
-                aria-label={item.name}
-              >
-                {item.name}
-              </Link>
-            </NavbarMenuItem>
-          );
-        })}
-      </NavbarMenu>
     </Navbar>
   );
 }

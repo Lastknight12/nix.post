@@ -1,4 +1,4 @@
-import Tiptap from "~/app/_components/createPost/Tiptap";
+import Tiptap from "~/app/_components/write/Tiptap";
 import { getServerAuthSession } from "~/server/auth";
 
 export default async function CreatePost() {
@@ -7,7 +7,7 @@ export default async function CreatePost() {
   if (!session) {
     return (
       <div className="flex h-full w-full items-center justify-center">
-        <div className="light:text-defaultLight dark:text-defaultDark text-2xl font-medium light">
+        <div className="text-2xl font-medium light light:text-defaultLight dark:text-defaultDark">
           Login to create posts
         </div>
       </div>

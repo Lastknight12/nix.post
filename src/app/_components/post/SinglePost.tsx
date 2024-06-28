@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { JsonValue } from "~/types/types";
-import Comments from "../comment/Comments";
+import Comments from "../comments/Comments";
 import { notFound } from "next/navigation";
 import {
   getDayAndMonth,

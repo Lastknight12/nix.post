@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Post from "~/app/_components/main/Post";
+import Post from "~/app/_components/postsList/Post";
 import { api } from "~/trpc/server";
 
 interface TagProps {

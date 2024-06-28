@@ -18,7 +18,7 @@ import { addCommentSchema } from "~/types/zodSchemas";
 import { ZodError } from "zod";
 
 // utils
-import { formatDate } from "~/utils/utils";
+import { formatDate, showError } from "~/utils/utils";
 
 export interface CommentProps {
   postId: number;
@@ -27,10 +27,13 @@ export default function Comments({ postId }: CommentProps) {
   const [comment, setComment] = useState("");
 
   const utils = api.useUtils();
-  const createPost = api.comment.createComment.useMutation({
+  const createComment = api.comment.createComment.useMutation({
     onSuccess: async () => {
       await utils.comment.getCommentsByPostId.invalidate({ postId: postId });
       setComment("");
+    },
+    onError: (error) => {
+      showError(error.message);
     },
   });
 
@@ -40,13 +43,13 @@ export default function Comments({ postId }: CommentProps) {
 
   function handleClick() {
     try {
-      addCommentSchema.parse({ content: comment });
+      addCommentSchema.parse({ content: comment.trim() });
     } catch (error) {
       if (error instanceof ZodError) {
         toast.error(error.errors[0]!.message);
       }
     }
-    createPost.mutate({ postID: postId, content: comment });
+    createComment.mutate({ postID: postId, content: comment });
   }
 
   return (
@@ -63,7 +66,7 @@ export default function Comments({ postId }: CommentProps) {
             <Button
               variant="shadow"
               color="primary"
-              isLoading={createPost.isPending}
+              isLoading={createComment.isPending}
               onClick={() => handleClick()}
             >
               Comment

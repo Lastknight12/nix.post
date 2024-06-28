@@ -14,7 +14,7 @@ interface DropDownMenuProps {
   image: string | null | undefined;
 }
 
-export function DropDownMenu({ userName, email, image }: DropDownMenuProps) {
+export function ProfileDownMenu({ userName, email, image }: DropDownMenuProps) {
   return (
     <>
       <DropdownMenu aria-label="Static Actions">

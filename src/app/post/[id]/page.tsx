@@ -1,6 +1,6 @@
-import SinglePost from "~/app/_components/singlePost/SinglePost";
+import SinglePost from "~/app/_components/post/SinglePost";
 import { Suspense } from "react";
-import SinglePostSkeleton from "~/app/_components/skeleton/SinglePostSkeleton";
+import SinglePostSkeleton from "~/app/_components/skeletons/SinglePostSkeleton";
 
 interface Props {
   params: {
@@ -11,7 +11,6 @@ interface Props {
 export default async function PostInfo(req: Props) {
   return (
     <>
-      <SinglePostSkeleton />
       <Suspense fallback={<SinglePostSkeleton />}>
         <SinglePost postPublicId={req.params.id} />
       </Suspense>
