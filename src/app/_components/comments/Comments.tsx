@@ -46,7 +46,7 @@ export default function Comments({ postId }: CommentProps) {
       addCommentSchema.parse({ content: comment.trim() });
     } catch (error) {
       if (error instanceof ZodError) {
-        toast.error(error.errors[0]!.message);
+        return toast.error(error.errors[0]!.message);
       }
     }
     createComment.mutate({ postID: postId, content: comment });
