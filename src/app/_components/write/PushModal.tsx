@@ -23,20 +23,34 @@ interface PushModalProps {
   editor: Editor;
   charsCount: number;
   title: string;
-  setTitle: (title: string) => void;
+  handleInputChange: (title: string) => void;
 }
 
 export default function PushModal({
   editor,
   charsCount,
   title,
-  setTitle,
+  handleInputChange,
 }: PushModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [tags, setTags] = useState<{ id: number; displayName: string }[]>([]);
 
   const [perviewSrc, setPerviewSrc] = useState<string>("");
+
+  function handleAddTag(tagName: string) {
+    setTags((prevTags) => [
+      ...prevTags,
+      {
+        id: prevTags.length + 1,
+        displayName: tagName,
+      },
+    ]);
+  }
+
+  function handleRemoveTag(id: number) {
+    setTags((prevTags) => prevTags.filter((tag) => tag.id !== id));
+  }
 
   return (
     <div className="flex justify-end">
@@ -70,13 +84,22 @@ export default function PushModal({
               </ModalHeader>
               <ModalBody>
                 <div className="flex flex-wrap justify-between p-2 text-black max-sm:border-b-1 max-sm:border-[#eeeeee]">
-                  <PostSettings title={title} setTitle={setTitle} />
+                  <PostSettings
+                    title={title}
+                    onInputChange={(inputTitle) =>
+                      handleInputChange(inputTitle)
+                    }
+                  />
                   <div className="flex flex-col max-[915px]:w-full">
                     <PostPerview
                       perviewSrc={perviewSrc}
-                      setPerviewSrc={setPerviewSrc}
+                      onImageLoaded={(data) => setPerviewSrc(data as string)}
                     />
-                    <ReaderInterests tags={tags} setTags={setTags} />
+                    <ReaderInterests
+                      tags={tags}
+                      onTagAdd={handleAddTag}
+                      onTagDelete={handleRemoveTag}
+                    />
                   </div>
                 </div>
               </ModalBody>

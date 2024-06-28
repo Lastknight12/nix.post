@@ -1,22 +1,17 @@
-import {
-  type ChangeEvent,
-  useEffect,
-  useRef,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { type ChangeEvent, useEffect, useRef } from "react";
 import { api } from "~/trpc/react";
 import Image from "next/image";
 import { showError } from "~/utils/utils";
 
 interface PostPerviewProps {
   perviewSrc: string;
-  setPerviewSrc: Dispatch<SetStateAction<string>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onImageLoaded: (data: any) => void;
 }
 
 export default function PostPerview({
   perviewSrc,
-  setPerviewSrc,
+  onImageLoaded,
 }: PostPerviewProps) {
   const blurDataURL = useRef("");
 
@@ -48,7 +43,7 @@ export default function PostPerview({
 
   useEffect(() => {
     if (uploadImagePerview.data) {
-      setPerviewSrc(
+      onImageLoaded(
         `https://iuqipxloifipusrsorab.supabase.co/storage/v1/object/public/image/${uploadImagePerview.data}`,
       );
     }

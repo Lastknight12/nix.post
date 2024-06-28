@@ -38,7 +38,7 @@ export default function Tiptap() {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         charsCount={editor.storage.characterCount.characters() as number}
         title={title}
-        setTitle={setTitle}
+        handleInputChange={(inputTitle) => setTitle(inputTitle)}
       />
       <input
         onChange={(e) => setTitle(e.target.value)}

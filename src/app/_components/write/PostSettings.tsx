@@ -9,10 +9,13 @@ import { FaComment, FaHeart } from "react-icons/fa";
 
 interface PostSettingsProps {
   title: string;
-  setTitle: (title: string) => void;
+  onInputChange: (title: string) => void;
 }
 
-export default function PostSettings({ title, setTitle }: PostSettingsProps) {
+export default function PostSettings({
+  title,
+  onInputChange,
+}: PostSettingsProps) {
   const session = useSession();
 
   return (
@@ -72,7 +75,7 @@ export default function PostSettings({ title, setTitle }: PostSettingsProps) {
             value={title.trimStart()}
             maxLength={100}
             placeholder="Add title"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => onInputChange(e.target.value)}
           />
         </div>
       </div>

@@ -50,40 +50,37 @@ export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt", maxAge: 99999 },
   callbacks: {
     jwt: async ({ token, trigger, session }): Promise<JWT> => {
+      // check if like pressed
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (trigger == "update" && session?.likedPosts) {
+        // set liked posts and adapter auto update db user liked posts
+
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         token.likedPosts.push(session?.likedPosts);
 
         return token;
       }
+
+      // find user in db
       const dbuser = await db.user.findUnique({
         where: {
           id: token.sub,
         },
       });
 
+      // if user not exist in db return default generated token
       if (!dbuser) {
-        return token;
+        return {
+          ...token,
+          likedPosts: [],
+        };
       }
-
-      const user = await db.user.findFirst({
-        where: {
-          id: token.sub,
-        },
-        select: {
-          likedPosts: true,
-        },
-      });
-
-      if (!token.likedPosts && user?.likedPosts) {
-        token.likedPosts = user.likedPosts;
-      }
-
+      // if user exist in db return default generated token and info from db
       return {
         ...token,
         role: `${dbuser.role}`,
-        likedPosts: token.likedPosts ?? [],
+        likedPosts: dbuser.likedPosts,
       };
     },
     session: ({ session, token }) => ({
@@ -92,7 +89,7 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: token.sub,
         role: token.role,
-        likedPosts: token.likedPosts.length > 0 ? token.likedPosts : [],
+        likedPosts: token.likedPosts,
       },
     }),
   },

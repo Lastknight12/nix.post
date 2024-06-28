@@ -1,11 +1,4 @@
-import {
-  type Dispatch,
-  type SetStateAction,
-  useEffect,
-  useState,
-  memo,
-  useCallback,
-} from "react";
+import { useEffect, useState, memo, useCallback } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import useDebounce from "~/hooks/useDebounce";
 import { api } from "~/trpc/react";
@@ -13,19 +6,15 @@ import { showError } from "~/utils/utils";
 
 interface PostSettingsProps {
   tags: { id: number; displayName: string }[];
-  setTags: Dispatch<
-    SetStateAction<
-      {
-        id: number;
-        displayName: string;
-      }[]
-    >
-  >;
+  onTagAdd: (tagName: string) => void;
+  onTagDelete: (id: number) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }
 
 export default memo(function ReaderInterests({
   tags,
-  setTags,
+  onTagAdd,
+  onTagDelete,
 }: PostSettingsProps) {
   const [inputTagName, setInputTagName] = useState("");
   const debouncedInputTagName = useDebounce(inputTagName, 500);
@@ -44,29 +33,19 @@ export default memo(function ReaderInterests({
   }, [debouncedInputTagName, findTagsQuery.data]);
 
   const handleAddTag = useCallback(
-    (id: number, displayName: string) => {
+    (displayName: string) => {
       const filteredTags = tags.filter(
         (tag) => tag.displayName === displayName,
       );
 
       if (filteredTags.length === 0 && tags.length < 5) {
-        setTags((prevTags) => [
-          ...prevTags,
-          { id: prevTags.length + 1, displayName },
-        ]);
+        onTagAdd(displayName);
       } else {
         showError("Tag already exists");
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [tags],
-  );
-
-  const handleDeleteTag = useCallback(
-    (id: number) =>
-      setTags((prevTags) => prevTags.filter((tag) => tag.id !== id)),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -76,6 +55,7 @@ export default memo(function ReaderInterests({
       (tag) => tag.displayName === normalizedInputTagName,
     );
 
+    // check if tagName is valid and tag doesn't exist
     if (
       e.key === "Enter" &&
       normalizedInputTagName.length > 0 &&
@@ -83,11 +63,11 @@ export default memo(function ReaderInterests({
       !tagExists &&
       tags.length < 5
     ) {
-      setTags((prevTags) => [
-        ...prevTags,
-        { id: prevTags.length + 1, displayName: normalizedInputTagName },
-      ]);
+      onTagAdd(normalizedInputTagName);
+
       setInputTagName("");
+
+      // check if tag contains invalid characters
     } else if (
       e.key === "Enter" &&
       !/^[a-zA-Z0-9\s-]+$/.test(normalizedInputTagName) &&
@@ -96,6 +76,8 @@ export default memo(function ReaderInterests({
       showError(
         "Unallowed characters. Only letters, numbers, spaces and dashes are allowed",
       );
+
+      // check if tag already exists
     } else if (
       e.key === "Enter" &&
       normalizedInputTagName.length > 0 &&
@@ -123,7 +105,7 @@ export default memo(function ReaderInterests({
               key={id}
             >
               <p className="mr-2">{displayName}</p>
-              <button onClick={() => handleDeleteTag(id)}>
+              <button onClick={() => onTagDelete(id)}>
                 <IoIosCloseCircleOutline
                   size={20}
                   className="transition-colors hover:text-red-500"
@@ -149,7 +131,7 @@ export default memo(function ReaderInterests({
             <button
               className="flex w-full items-center justify-between p-2 px-3 py-2 text-start text-lg transition-colors light light:hover:bg-[#43434347] dark:hover:bg-[#66666680]"
               key={id}
-              onClick={() => handleAddTag(id, displayName)}
+              onClick={() => handleAddTag(displayName)}
               disabled={tags.length === 5}
             >
               {displayName}
