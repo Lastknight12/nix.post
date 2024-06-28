@@ -11,7 +11,6 @@ interface Props {
 export default async function PostInfo(req: Props) {
   return (
     <>
-      <SinglePostSkeleton />
       <Suspense fallback={<SinglePostSkeleton />}>
         <SinglePost postPublicId={req.params.id} />
       </Suspense>
