@@ -165,7 +165,7 @@ export const postRouter = createTRPCRouter({
       return postStats;
     }),
 
-  isPostLiked: publicProcedure
+  getPostStats: publicProcedure
     .input(
       z.object({
         postId: z.number(),
@@ -183,7 +183,25 @@ export const postRouter = createTRPCRouter({
           },
         }));
 
-      return userLikedPosts?.likedPosts.includes(input.postId) ?? false;
+      const currentPostLikesAndComments = await ctx.db.post.findUnique({
+        where: {
+          id: input.postId,
+        },
+        select: {
+          likes: true,
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+        },
+      });
+
+      return {
+        isPostLiked: userLikedPosts?.likedPosts.includes(input.postId) ?? false,
+        likes: currentPostLikesAndComments?.likes ?? 0,
+        comments: currentPostLikesAndComments?._count?.comments ?? 0,
+      };
     }),
 
   getPostsByTag: publicProcedure
@@ -403,8 +421,8 @@ export const postRouter = createTRPCRouter({
 
       if (userLikedPosts?.likedPosts.includes(input.postId)) {
         throw new TRPCError({
-          message: "You have already liked this post",
           code: "BAD_REQUEST",
+          message: "You already liked this post",
         });
       }
 

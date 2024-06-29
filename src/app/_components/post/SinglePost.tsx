@@ -77,7 +77,7 @@ export default async function SinglePost({
         ))}
       </div>
 
-      <Navbar post={post} loggedIn={session?.user ? true : false} />
+      <Navbar postId={post.id} loggedIn={session?.user ? true : false} />
 
       <div className="mb-6 mt-10">
         <div
