@@ -44,7 +44,7 @@ export default function Navbar({ post, loggedIn }: NavbarProps) {
 
   const incrementLikes = api.post.incrementLike.useMutation({
     onSuccess: async () => {
-      await utils.post.isPostLiked.prefetch({ postId: post.id });
+      await utils.post.isPostLiked.invalidate({ postId: post.id });
     },
 
     onError: (error) => {
