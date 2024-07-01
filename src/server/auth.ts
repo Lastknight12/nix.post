@@ -28,6 +28,10 @@ declare module "next-auth" {
       likedPosts: number[];
     } & DefaultSession["user"];
   }
+
+  interface User {
+    given_name: string;
+  }
 }
 
 declare module "next-auth/jwt" {
@@ -47,7 +51,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/",
     signOut: "/",
   },
-  session: { strategy: "jwt", maxAge: 99999 },
+  session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 * 30 },
   callbacks: {
     jwt: async ({ token, trigger, session }): Promise<JWT> => {
       // check if like pressed
@@ -62,36 +66,31 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
-      // find user in db
+      // find user in db ( adapter Prisma спочатку створить юзера якшо його немає. Тому він завжди є )
       const dbuser = await db.user.findUnique({
         where: {
           id: token.sub,
         },
       });
 
-      // if user not exist in db return default generated token
-      if (!dbuser) {
-        return {
-          ...token,
-          likedPosts: [],
-        };
-      }
-      // if user exist in db return default generated token and info from db
+      // return to session default token and role, likedPosts
       return {
         ...token,
-        role: `${dbuser.role}`,
-        likedPosts: dbuser.likedPosts,
+        role: dbuser!.role,
+        likedPosts: dbuser!.likedPosts,
       };
     },
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub,
-        role: token.role,
-        likedPosts: token.likedPosts,
-      },
-    }),
+    session: ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.sub,
+          role: token.role,
+          likedPosts: token.likedPosts,
+        },
+      };
+    },
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [

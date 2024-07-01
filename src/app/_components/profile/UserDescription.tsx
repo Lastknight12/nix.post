@@ -14,7 +14,7 @@ interface ProfileUserProps {
     name: string;
     image: string;
     description: string | null;
-  } | null;
+  };
   session: Session | null;
 }
 
@@ -31,10 +31,10 @@ export function UserDescription({ user, session }: ProfileUserProps) {
   });
 
   useEffect(() => {
-    if (user?.description) {
+    if (user.description) {
       setDescription(user.description);
     }
-  }, [user?.description]);
+  }, [user.description]);
 
   const onChangeDescription = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -52,16 +52,16 @@ export function UserDescription({ user, session }: ProfileUserProps) {
   return (
     <div className="sticky top-20">
       <Image
-        src={user!.image}
+        src={user.image}
         width={65}
         height={65}
         alt="user avatar"
         className="mb-2 rounded-full"
       />
       <h1 className="mb-3 text-xl font-semibold dark:text-white">
-        {user?.name}
+        {user.name}
       </h1>
-      {session?.user.id === user?.id ? (
+      {session?.user.id === user.id ? (
         <>
           <Textarea
             value={description}
@@ -85,7 +85,7 @@ export function UserDescription({ user, session }: ProfileUserProps) {
         </>
       ) : (
         <p className="text-2xl dark:text-white">
-          {user?.description ? user.description : "No Bio"}
+          {user.description ? user.description : "No Bio"}
         </p>
       )}
     </div>

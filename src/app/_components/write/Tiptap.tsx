@@ -1,19 +1,19 @@
 "use client";
 
-// editor hooks / components / extensions
-import { useEditor, EditorContent } from "@tiptap/react";
+// editor / components / extensions
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
+import PushModal from "./PushModal";
 
 // components
 import Toolbar from "./Tolbar";
 
 // hooks
 import { useState } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
 import { Spinner } from "@nextui-org/react";
-import PushModal from "./PushModal";
 
 export default function Tiptap() {
   const editor = useEditor({
@@ -27,7 +27,11 @@ export default function Tiptap() {
   const [title, setTitle] = useState("");
 
   if (!editor) {
-    return null;
+    return (
+      <div className="flex h-[calc(100vh-116px)] w-full items-center justify-center">
+        <Spinner color="default" size="lg" />
+      </div>
+    );
   }
 
   return (
@@ -49,11 +53,7 @@ export default function Tiptap() {
         className="w-full bg-transparent p-3 font-comfortaa text-3xl outline-none light light:text-defaultLight light:placeholder:text-defaultLight dark:text-defaultDark dark:placeholder:text-defaultDark"
       ></input>
       <div className="mb-1 rounded-3xl font-comfortaa light">
-        {!editor ? (
-          <Spinner className="mx-auto" />
-        ) : (
-          <EditorContent editor={editor} />
-        )}
+        <EditorContent editor={editor} />
       </div>
     </>
   );
