@@ -4,17 +4,11 @@ import Profile from "~/app/_components/profile/Profile";
 
 interface Props {
   params: {
-    name: string;
+    subname: string;
   };
 }
 
 export default async function Prof(req: Props) {
-  // replace _ to default space
-  const normalUserName = decodeURIComponent(req.params.name).replace(
-    /\_/g,
-    " ",
-  );
-
   return (
     <Suspense
       fallback={
@@ -23,7 +17,7 @@ export default async function Prof(req: Props) {
         </div>
       }
     >
-      <Profile userName={normalUserName} />
+      <Profile subName={decodeURIComponent(req.params.subname)} />
     </Suspense>
   );
 }

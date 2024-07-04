@@ -18,6 +18,8 @@ export default function Posts() {
     { field: "email", editable: true },
     { field: "image", editable: true },
     { field: "role" },
+    { field: "subname", editable: true },
+    { field: "description", editable: true },
   ] as ColDef<AdminUsers>[]);
 
   const updateSinglePost = updateUser("Success", "field cann't be null");

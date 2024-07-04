@@ -22,9 +22,8 @@
 
 .tiptap {
   padding: 14px;
-  font-size: 20px;
-  line-height: 3rem;
-  letter-spacing: 1px;
+  font-size: 18px;
+  line-height: 36px;
   word-break: break-word;
   font-family: var(--font-comfotaa);
 
@@ -66,9 +65,9 @@
 
   blockquote {
     border-left: 3px solid gray;
-    margin: 1rem 0 1rem 1rem;
+    margin: 2rem 0 2rem 1rem;
     font-style: italic;
-    padding: 1rem;
+    padding-left: 1rem;
   }
 
   ul,

@@ -4,7 +4,7 @@ import { supabaseServer } from "~/server/supabase/server";
 import { randomName } from "~/utils/utils";
 import { TRPCError } from "@trpc/server";
 
-const imageType = z.enum(["postsImages", "postPerviewImages"]);
+const imageType = z.enum(["postsImages", "postPerviewImages", "userAvatar"]);
 
 export const imagesRouter = createTRPCRouter({
   uploadImage: protectedProcedure

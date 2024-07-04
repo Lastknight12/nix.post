@@ -42,7 +42,7 @@ export default async function SinglePost({
 
       <div>
         {/* replace spaces from name (decode this in /profile) */}
-        <Link href={`/profile/${post.createdBy.name.replace(/\s+/g, "_")}`}>
+        <Link href={`/profile/${post.createdBy.subname}`}>
           <div className="flex items-center gap-3">
             <div>
               <Image

@@ -159,7 +159,7 @@ export async function showLoadingPromise({
   action?.();
 }
 
-export function showSuccess(successMsg: string, action: () => unknown) {
+export function showSuccess(successMsg: string, action?: () => unknown) {
   toast.success(successMsg);
   action?.();
 }

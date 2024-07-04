@@ -14,6 +14,7 @@ export interface Post {
   tags: JsonValue[];
   createdBy: {
     name: string;
+    subname: string | null;
     image: string;
   };
 }

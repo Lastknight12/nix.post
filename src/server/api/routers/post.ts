@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -116,6 +115,7 @@ export const postRouter = createTRPCRouter({
           createdBy: {
             select: {
               name: true,
+              subname: true,
               image: true,
             },
           },
@@ -236,119 +236,6 @@ export const postRouter = createTRPCRouter({
       return posts;
     }),
 
-  getAllUserPosts: publicProcedure
-    .input(
-      z.object({
-        userName: z.string().min(1, "User name cannot be empty"),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      const posts = await ctx.db.post.findMany({
-        where: { createdBy: { name: input.userName } },
-        orderBy: {
-          id: "desc",
-        },
-        select: {
-          id: true,
-          publicId: true,
-          title: true,
-          createdAt: true,
-          createdBy: {
-            select: {
-              name: true,
-              image: true,
-            },
-          },
-        },
-      });
-      return posts;
-    }),
-
-  getUserInfo: publicProcedure
-    .input(
-      z.object({ userName: z.string().min(1, "User name cannot be empty") }),
-    )
-    .query(async ({ ctx, input }) => {
-      const user = await ctx.db.user.findUnique({
-        where: {
-          name: input.userName,
-        },
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          description: true,
-        },
-      });
-
-      return user;
-    }),
-
-  updateUserDescription: publicProcedure
-    .input(
-      z.object({
-        userId: z.string().min(1, "User ID cannot be empty"),
-        description: z.string().min(1, "Description cannot be empty"),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      await ctx.db.user.update({
-        where: {
-          id: input.userId,
-        },
-        data: {
-          description: input.description,
-        },
-      });
-
-      return "Successfully updated description";
-    }),
-
-  updateSingleUser: protectedProcedure
-    .input(
-      z.object({
-        id: z.string().min(1, "ID cannot be empty"),
-        name: z.string().min(1, "Name cannot be empty"),
-        email: z.string().email("Invalid email address"),
-        image: z.string().url("Invalid URL"),
-        role: z.string().min(1, "Role cannot be empty"),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      await ctx.db.user.update({
-        where: { id: input.id },
-        data: {
-          name: input.name,
-          email: input.email,
-          image: input.image,
-        },
-      });
-    }),
-
-  updateSinglePost: protectedProcedure
-    .input(
-      z.object({
-        id: z.number().min(1, "ID must be a positive number"),
-        title: z
-          .string()
-          .min(5, "Title must be at least 5 characters long")
-          .max(20, "Title must be no more than 20 characters long"),
-        content: z.custom<Prisma.JsonValue>(),
-        createdAt: z.date(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      await ctx.db.post.update({
-        where: { id: input.id },
-        data: {
-          title: input.title,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          content: JSON.parse(input.content as string),
-          createdAt: input.createdAt,
-        },
-      });
-    }),
-
   getIndividualPost: publicProcedure
     .input(
       z.object({ publicId: z.string().max(11).min(1, "post id is reqired") }),
@@ -376,6 +263,7 @@ export const postRouter = createTRPCRouter({
           createdBy: {
             select: {
               name: true,
+              subname: true,
               image: true,
             },
           },

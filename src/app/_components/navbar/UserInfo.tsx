@@ -2,7 +2,7 @@ import { Dropdown, DropdownTrigger } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { MdAdminPanelSettings } from "react-icons/md";
-import { ProfileDownMenu } from "../dropdown/ProfileDropDown";
+import ProfileDropDown from "../dropdown/ProfileDropDown";
 import type { Session } from "next-auth";
 
 interface UserInfoProps {
@@ -11,7 +11,7 @@ interface UserInfoProps {
 
 export default function UserInfo({ session }: UserInfoProps) {
   return (
-    <div className="flex items-center gap-3 max-sm:gap-1">
+    <div className="ml-2 flex items-center gap-3 max-sm:gap-1">
       {session?.user.role == "Admin" ? (
         <Link href="/admin" className="max-[640px]:hidden">
           <MdAdminPanelSettings
@@ -38,11 +38,7 @@ export default function UserInfo({ session }: UserInfoProps) {
             />
           </div>
         </DropdownTrigger>
-        <ProfileDownMenu
-          userName={session?.user.name}
-          email={session?.user.email}
-          image={session?.user.image}
-        />
+        <ProfileDropDown user={session!.user} />
       </Dropdown>
     </div>
   );

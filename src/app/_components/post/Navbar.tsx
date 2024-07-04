@@ -1,4 +1,5 @@
 "use client";
+
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { FaComment, FaHeart } from "react-icons/fa";
@@ -26,6 +27,9 @@ export default function Navbar({ postId, loggedIn }: NavbarProps) {
   const { update } = useSession();
 
   const incrementLikes = api.post.incrementLike.useMutation({
+    onSuccess: async () => {
+      await utils.post.getPostStats.refetch({ postId });
+    },
     onError: (error) => {
       setLikes((prevLikes) => prevLikes - 1);
       return showError(error.message);
@@ -52,7 +56,6 @@ export default function Navbar({ postId, loggedIn }: NavbarProps) {
     setIsPostNowLiked(true);
     incrementLikes.mutate({ postId });
     await update({ likedPosts: postId });
-    await utils.post.getPostStats.refetch({ postId });
   }
 
   return (

@@ -9,8 +9,7 @@ import {
 import Link from "next/link";
 import UserInfo from "./UserInfo";
 import LoginDropdown from "../dropdown/LoginDropDown";
-import { LiaEditSolid, LiaMoon, LiaSun } from "react-icons/lia";
-import { useTheme } from "next-themes";
+import { LiaEditSolid } from "react-icons/lia";
 import type { Session } from "next-auth";
 
 interface NavUserProps {
@@ -18,12 +17,6 @@ interface NavUserProps {
 }
 
 export default function Navigation({ session }: NavUserProps) {
-  const { theme, setTheme } = useTheme();
-
-  function handleThemeSwitch() {
-    setTheme(theme == "dark" ? "light" : "dark");
-  }
-
   return (
     <Navbar
       className="border-b-2 light light:border-none light:bg-transparent light:text-black dark:border-b-[#4f4f4fc9] dark:text-white"
@@ -39,15 +32,6 @@ export default function Navigation({ session }: NavUserProps) {
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent justify="end" className="max-[440px]:gap-2">
-        <NavbarItem>
-          <button
-            className="mr-2 flex items-center justify-center"
-            onClick={handleThemeSwitch}
-          >
-            <LiaMoon size={24} className="light light:block dark:hidden" />
-            <LiaSun size={22} className="light light:hidden dark:block" />
-          </button>
-        </NavbarItem>
         <NavbarItem>
           <Link href="/write" className="flex items-end">
             <LiaEditSolid

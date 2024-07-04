@@ -26,11 +26,9 @@ declare module "next-auth" {
       // ...other properties
       role: "User" | "Admin";
       likedPosts: number[];
+      subname: string;
+      description: string;
     } & DefaultSession["user"];
-  }
-
-  interface User {
-    given_name: string;
   }
 }
 
@@ -38,6 +36,8 @@ declare module "next-auth/jwt" {
   interface JWT {
     role: "User" | "Admin";
     likedPosts: number[];
+    subname: string;
+    description: string;
   }
 }
 
@@ -66,6 +66,8 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
+      const subname = token.email ? "@" + token.email.split("@")[0] : "";
+
       // find user in db ( adapter Prisma спочатку створить юзера якшо його немає. Тому він завжди є )
       const dbuser = await db.user.findUnique({
         where: {
@@ -73,21 +75,42 @@ export const authOptions: NextAuthOptions = {
         },
       });
 
+      // idk how tell next auth create user with subname from token
+      if (dbuser && !dbuser.subname) {
+        await db.user.update({
+          where: {
+            id: dbuser.id,
+          },
+          data: {
+            subname: subname,
+          },
+        });
+      }
+
       // return to session default token and role, likedPosts
       return {
-        ...token,
+        sub: token.sub,
+        name: dbuser!.name,
+        email: dbuser!.email,
+        image: dbuser!.image,
         role: dbuser!.role,
         likedPosts: dbuser!.likedPosts,
+        subname: dbuser!.subname!,
+        description: dbuser!.description!,
       };
     },
     session: ({ session, token }) => {
       return {
         ...session,
         user: {
-          ...session.user,
           id: token.sub,
+          name: token.name,
+          email: token.email,
+          image: token.image as string,
           role: token.role,
           likedPosts: token.likedPosts,
+          subname: token.subname,
+          description: token.description,
         },
       };
     },

@@ -12,7 +12,6 @@ import { Skeleton } from "@nextui-org/react";
 import { FaHeart } from "react-icons/fa6";
 import { motion } from "framer-motion";
 
-// Define the props interface for the Post component //TODO: refactor and add into new file logic with comments and likes count
 interface PostProps {
   post: PostType;
   fetchNextPage?: () => void;

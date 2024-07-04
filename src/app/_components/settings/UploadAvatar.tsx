@@ -1,20 +1,13 @@
 import { type ChangeEvent, useEffect, useRef } from "react";
 import { api } from "~/trpc/react";
-import Image from "next/image";
 import { showError } from "~/utils/utils";
 
 interface PostPerviewProps {
-  perviewSrc: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onImageLoaded: (imgSrc: string) => void;
 }
 
-export default function PostPerview({
-  perviewSrc,
-  onImageLoaded,
-}: PostPerviewProps) {
-  const blurDataURL = useRef("");
-
+export default function UploadAvatar({ onImageLoaded }: PostPerviewProps) {
   const uploadImagePerview = api.image.uploadImage.useMutation({
     onError: (err) => showError(err.message),
   });
@@ -27,12 +20,11 @@ export default function PostPerview({
       const reader = new FileReader();
       reader.onload = (loadEvent) => {
         const fileContent = loadEvent.target?.result as string;
-        blurDataURL.current = fileContent;
 
         uploadImagePerview.mutate({
           imageFile: {
             file: fileContent,
-            type: "postPerviewImages",
+            type: "userAvatar",
           },
         });
       };
@@ -55,10 +47,7 @@ export default function PostPerview({
   };
 
   return (
-    <div className="mb-9">
-      <p className="mb-3 text-xl font-medium light light:text-black dark:text-white">
-        Strory perview image
-      </p>
+    <div className="mr-4">
       <input
         type="file"
         ref={fileInputRef}
@@ -66,37 +55,9 @@ export default function PostPerview({
         onChange={handleFileChange}
         accept="image/png, image/jpeg"
       />
-      <button
-        className={`${perviewSrc ? "block" : "hidden"}`}
-        onClick={handleClick}
-      >
-        Edit image
+      <button onClick={handleClick} className="text-success-500">
+        Upload
       </button>
-      <div className="flex h-[107px] w-[160px] flex-col items-center justify-center overflow-hidden shadow-md light light:bg-[#f3f3f3] dark:bg-[#2a2a2a]">
-        {!perviewSrc || uploadImagePerview.error ? (
-          <>
-            <p className="mb-2 text-center light light:text-black dark:text-white">
-              No image selected
-            </p>
-            <button
-              onClick={handleClick}
-              className="rounded-sm bg-primary-500 p-2 text-white"
-            >
-              Upload
-            </button>
-          </>
-        ) : (
-          <Image
-            src={perviewSrc}
-            className="relative object-contain before:absolute before:right-0 before:top-0 before:bg-black before:content-['']"
-            alt="image"
-            width={300}
-            height={150}
-            placeholder="blur"
-            blurDataURL={blurDataURL.current}
-          />
-        )}
-      </div>
     </div>
   );
 }

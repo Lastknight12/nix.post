@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import type { AdminPosts, ColDefHelper } from "~/types/types";
 import { updatePost } from "~/adminActions/mutations/mutaiton";
 import { showLoading } from "~/utils/utils";
+import type { JSONContent } from "@tiptap/react";
 
 export default function Posts() {
   const [rowData, setRowData] = useState<AdminPosts[]>([]);
@@ -32,7 +33,7 @@ export default function Posts() {
     return updateSinglePost.mutate({
       id,
       title,
-      content: content,
+      content: content as JSONContent,
       createdAt,
     });
   }

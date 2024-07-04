@@ -48,12 +48,12 @@ export default function SubmitButton({
         perviewSrc,
       });
 
-      createPost.mutate({ content: editor.getJSON(), title, tags, perviewSrc });
     } catch (error) {
       if (error instanceof ZodError) {
-        showError(error.errors[0]!.message);
+        return showError(error.errors[0]!.message);
       }
     }
+    createPost.mutate({ content: editor.getJSON(), title, tags, perviewSrc });
   }
 
   return (

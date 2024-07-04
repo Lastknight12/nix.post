@@ -5,8 +5,17 @@ import { api } from "~/trpc/react";
 import { useEffect } from "react";
 import PostListSkeleton from "./_components/skeletons/PostListSkeleton";
 import { showError } from "~/utils/utils";
+import { useSearchParams } from "next/navigation";
 
 export default function PostsList() {
+  const nextAuthError = useSearchParams().get("error");
+
+  useEffect(() => {
+    if (nextAuthError === "OAuthAccountNotLinked") {
+      showError("Account with email already exists.");
+    }
+  }, [nextAuthError]);
+
   const {
     data,
     fetchNextPage,

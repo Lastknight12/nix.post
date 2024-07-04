@@ -7,14 +7,15 @@ import Image from "next/image";
 
 // auth
 import { signOut } from "next-auth/react";
+import type { Session } from "next-auth";
 
 interface DropDownMenuProps {
-  userName: string | null | undefined;
-  email: string | null | undefined;
-  image: string | null | undefined;
+  user: Session["user"];
 }
 
-export function ProfileDownMenu({ userName, email, image }: DropDownMenuProps) {
+export default function ProfileDropDown({ user }: DropDownMenuProps) {
+  const { name: userName, email, image, subname } = user;
+
   return (
     <>
       <DropdownMenu aria-label="Static Actions">
@@ -41,10 +42,22 @@ export function ProfileDownMenu({ userName, email, image }: DropDownMenuProps) {
           className="transition-colors light light:hover:bg-[#ece8e8] dark:hover:bg-[#2c2c2c]"
         >
           <Link
-            href={"/profile/" + userName}
+            href={"/profile/" + subname}
             className="light light:text-[#000] dark:text-[#fff]"
           >
             Profile
+          </Link>
+        </DropdownItem>
+
+        <DropdownItem
+          key="settings"
+          className="transition-colors light light:hover:bg-[#ece8e8] dark:hover:bg-[#2c2c2c]"
+        >
+          <Link
+            href="/settings"
+            className="light light:text-[#000] dark:text-[#fff]"
+          >
+            Settings
           </Link>
         </DropdownItem>
 
