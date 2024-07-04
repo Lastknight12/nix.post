@@ -49,7 +49,7 @@ export default memo(function Post({
       className="cursor-pointe flex max-w-[800px] justify-center border-b-1 light light:border-[#f2f2f2] dark:border-[#212121]"
     >
       <div className="flex w-full items-center justify-between">
-        <div className="w-full rounded-3xl px-5 py-10">
+        <div className="w-full pr-5 py-10">
           <Link href={"/post/" + post.publicId}>
             <div className="mb-3 flex items-center gap-2">
               <Image
