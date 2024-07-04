@@ -2,12 +2,12 @@
 
 // next ui / components
 import { DropdownItem, DropdownMenu } from "@nextui-org/react";
-import Link from "next/link";
 import Image from "next/image";
 
 // auth
 import { signOut } from "next-auth/react";
 import type { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 
 interface DropDownMenuProps {
   user: Session["user"];
@@ -15,6 +15,8 @@ interface DropDownMenuProps {
 
 export default function ProfileDropDown({ user }: DropDownMenuProps) {
   const { name: userName, email, image, subname } = user;
+
+  const router = useRouter();
 
   return (
     <>
@@ -39,26 +41,18 @@ export default function ProfileDropDown({ user }: DropDownMenuProps) {
 
         <DropdownItem
           key="profile"
-          className="transition-colors light light:hover:bg-[#ece8e8] dark:hover:bg-[#2c2c2c]"
+          className="transition-colors light light:text-black light:hover:bg-[#ece8e8] dark:text-white dark:hover:bg-[#2c2c2c]"
+          onClick={() => router.push("/profile/" + subname)}
         >
-          <Link
-            href={"/profile/" + subname}
-            className="light light:text-[#000] dark:text-[#fff]"
-          >
-            Profile
-          </Link>
+          Profile
         </DropdownItem>
 
         <DropdownItem
           key="settings"
-          className="transition-colors light light:hover:bg-[#ece8e8] dark:hover:bg-[#2c2c2c]"
+          className="transition-colors light light:text-black light:hover:bg-[#ece8e8] dark:text-white dark:hover:bg-[#2c2c2c]"
+          onClick={() => router.push("/settings")}
         >
-          <Link
-            href="/settings"
-            className="light light:text-[#000] dark:text-[#fff]"
-          >
-            Settings
-          </Link>
+          Settings
         </DropdownItem>
 
         <DropdownItem
