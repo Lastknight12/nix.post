@@ -24,7 +24,7 @@ export default async function Profile({ subName }: { subName: string }) {
               <Link
                 href={`/post/${post.publicId}`}
                 key={post.id}
-                className="flex w-full flex-col items-start border-b-1 border-[#808080a8] p-6 hover:bg-[#84838333] max-md:hover:bg-transparent"
+                className="flex w-full flex-col items-start border-b-1 border-[#808080a8] py-6 hover:bg-[#84838333] max-md:hover:bg-transparent"
               >
                 <div className="flex w-full items-center justify-between">
                   <div className="mr-6">
