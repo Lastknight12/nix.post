@@ -77,8 +77,11 @@ export default function EditSettings({ user }: SettingsProps) {
     <div className="flex flex-col">
       <div className="mb-2 flex items-center">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isUserChanged ? 1 : 0 }}
+          initial={{ opacity: 0, display: "none" }}
+          animate={{
+            opacity: isUserChanged ? 1 : 0,
+            display: isUserChanged ? "block" : "none",
+          }}
           transition={{ duration: 0.2 }}
           className="fixed right-0 top-0 z-40 w-full p-3 py-3 backdrop-blur-lg light light:bg-[#000c] dark:bg-[#0b0b0ba6]"
         >
