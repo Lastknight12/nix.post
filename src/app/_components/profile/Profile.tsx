@@ -53,7 +53,7 @@ export default async function Profile({ subName }: { subName: string }) {
                         src={post.perviewSrc}
                         alt="user avatar"
                         width={150}
-                        height={125}
+                        height={80}
                         className="max-h-[125px] rounded object-fill max-md:max-w-24"
                       />
                     )}
