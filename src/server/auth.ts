@@ -96,7 +96,7 @@ export const authOptions: NextAuthOptions = {
         role: dbuser!.role,
         likedPosts: dbuser!.likedPosts,
         subname: dbuser!.subname!,
-        description: dbuser!.description!,
+        description: dbuser!.description,
       };
     },
     session: ({ session, token }) => {

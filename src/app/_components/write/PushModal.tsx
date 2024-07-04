@@ -93,7 +93,7 @@ export default function PushModal({
                   <div className="flex flex-col max-[915px]:w-full">
                     <PostPerview
                       perviewSrc={perviewSrc}
-                      onImageLoaded={(data) => setPerviewSrc(data as string)}
+                      onImageLoaded={(data) => setPerviewSrc(data)}
                     />
                     <ReaderInterests
                       tags={tags}
