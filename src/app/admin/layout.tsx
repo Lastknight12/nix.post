@@ -13,8 +13,8 @@ export default async function AdminPanel({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getServerAuthSession();
-  if (!user?.user || user.user.role !== "Admin") {
+  const session = await getServerAuthSession();
+  if (!session || session.user.role !== "Admin") {
     return notFound();
   }
   return (

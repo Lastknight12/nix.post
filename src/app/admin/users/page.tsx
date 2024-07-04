@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
 import toast from "react-hot-toast";
 import type { AdminUsers } from "~/types/types";
-import { showError } from "~/utils/utils";
+import { showError, showLoading } from "~/utils/utils";
 
 export default function Posts() {
   const [rowData, setRowData] = useState<AdminUsers[]>([]);
@@ -19,9 +19,8 @@ export default function Posts() {
     { field: "email", editable: true },
     { field: "description", editable: true },
     { field: "role", editable: true },
-    { field: "emailVerified", editable: true },
     { field: "image", editable: true },
-    { field: "likedPosts", editable: true },
+    { field: "likedPosts", editable: false },
   ] as ColDef<AdminUsers>[]);
 
   const updateSingleUser = api.admin.updateSingleUser.useMutation({
@@ -33,20 +32,10 @@ export default function Posts() {
     },
   });
 
-  const { data, isFetched } = api.admin.getAllUsers.useQuery();
+  const { data, isFetching } = api.admin.getAllUsers.useQuery();
 
   function CellValueChanged(event: CellValueChangedEvent<AdminUsers>) {
-    const {
-      id,
-      name,
-      subname,
-      email,
-      description,
-      role,
-      emailVerified,
-      image,
-      likedPosts,
-    } = event.data;
+    const { id, name, subname, email, description, role, image } = event.data;
 
     if (!subname) {
       return showError("subname cannot be empty");
@@ -59,19 +48,20 @@ export default function Posts() {
       email,
       description,
       role,
-      emailVerified,
       image,
-      likedPosts,
     });
   }
 
   useEffect(() => {
+    if (isFetching) {
+      showLoading("Fetching users...");
+    }
     if (data) {
       setRowData([...data.flatMap((page) => page)]);
       toast.dismiss();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetched]);
+  }, [data]);
 
   return (
     <div className="mt-6 overflow-x-auto">

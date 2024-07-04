@@ -8,7 +8,8 @@ import { useEffect, useState } from "react";
 import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
 import type { AdminPosts, ColDefHelper } from "~/types/types";
 import type { JSONContent } from "@tiptap/react";
-import { showError, showSuccess } from "~/utils/utils";
+import { showError, showLoading, showSuccess } from "~/utils/utils";
+import toast from "react-hot-toast";
 
 export default function Posts() {
   const [rowData, setRowData] = useState<AdminPosts[]>([]);
@@ -35,7 +36,7 @@ export default function Posts() {
     },
   });
 
-  const { data } = api.admin.getAllPosts.useQuery();
+  const { data, isFetching } = api.admin.getAllPosts.useQuery();
 
   function CellValueChanged(event: CellValueChangedEvent<AdminPosts>) {
     const { id, title, content, perviewSrc, likes } = event.data;
@@ -50,6 +51,9 @@ export default function Posts() {
   }
 
   useEffect(() => {
+    if (isFetching) {
+      showLoading("Fetching posts...");
+    }
     if (data) {
       setRowData([
         ...data.flatMap((page) => {
@@ -65,6 +69,7 @@ export default function Posts() {
             tags,
             _count: { comments },
           } = page;
+          toast.dismiss();
 
           return {
             id,

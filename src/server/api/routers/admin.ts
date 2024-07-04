@@ -75,8 +75,6 @@ export const adminRouter = createTRPCRouter({
             message: "Invalid role. Should be USER or ADMIN",
           }),
         ),
-        likedPosts: z.array(z.number()),
-        emailVerified: z.date().nullish(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -90,8 +88,6 @@ export const adminRouter = createTRPCRouter({
             subname: input.subname,
             description: input.description,
             role: input.role,
-            likedPosts: input.likedPosts,
-            emailVerified: input.emailVerified,
           },
         });
       } catch (error) {
