@@ -49,7 +49,7 @@ export default memo(function Post({
       className="cursor-pointe flex max-w-[800px] justify-center border-b-1 light light:border-[#f2f2f2] dark:border-[#212121]"
     >
       <div className="flex w-full items-center justify-between">
-        <div className="w-full pr-5 py-10">
+        <div className="w-full py-10 pr-5">
           <Link href={"/post/" + post.publicId}>
             <div className="mb-3 flex items-center gap-2">
               <Image
@@ -63,7 +63,7 @@ export default memo(function Post({
                 {post.createdBy.name}
               </h1>
             </div>
-            <p className="mb-3 max-w-[550px] break-words font-comfortaa text-2xl font-bold light light:text-defaultLight dark:text-defaultDark">
+            <p className="mb-3 max-w-[550px] break-words font-comfortaa text-2xl font-bold light light:text-defaultLight dark:text-defaultDark max-[500px]:text-white">
               {post.title}
             </p>
           </Link>
@@ -104,8 +104,8 @@ export default memo(function Post({
           <Image
             src={post.perviewSrc}
             alt="post preview image"
-            className="max-h-[90px] rounded object-fill max-md:max-w-24"
-            width={150}
+            className="max-h-[90px] rounded object-fill max-[550px]:max-w-24"
+            width={140}
             height={80}
           />
         )}

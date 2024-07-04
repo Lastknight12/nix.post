@@ -14,9 +14,11 @@ export default async function AdminPanel({
   children: React.ReactNode;
 }) {
   const session = await getServerAuthSession();
+
   if (!session || session.user.role !== "Admin") {
     return notFound();
   }
+
   return (
     <main className="my-3 w-full">
       <div className="mx-auto max-w-screen-2xl p-3">

@@ -15,7 +15,7 @@ export default async function Profile({ subName }: { subName: string }) {
 
   return (
     <div className="flex justify-between text-black max-[800px]:flex-col-reverse">
-      <div className="grow-[1] max-[800px]:w-full">
+      <div className="grow-[1] max-[800px]:w-full min-[800px]:mr-20">
         <div className="flex flex-col">
           <p>{!posts.length ? "User does not have any posts" : null}</p>
           {posts.map((post) => {
@@ -27,7 +27,7 @@ export default async function Profile({ subName }: { subName: string }) {
                 className="flex w-full flex-col items-start border-b-1 border-[#808080a8] p-6 hover:bg-[#84838333] max-md:hover:bg-transparent"
               >
                 <div className="flex w-full items-center justify-between">
-                  <div className="mr-4">
+                  <div className="mr-6">
                     <div className="mb-2 flex items-center gap-2">
                       <Image
                         src={post.createdBy.image}
@@ -52,9 +52,9 @@ export default async function Profile({ subName }: { subName: string }) {
                       <Image
                         src={post.perviewSrc}
                         alt="user avatar"
-                        width={150}
+                        width={120}
                         height={80}
-                        className="max-h-[125px] rounded object-fill max-md:max-w-24"
+                        className="max-h-[125px] max-w-max rounded object-fill"
                       />
                     )}
                   </div>
@@ -65,7 +65,7 @@ export default async function Profile({ subName }: { subName: string }) {
         </div>
       </div>
 
-      <div className="max-w-[400px] grow-[1] p-7 light max-[800px]:mb-10 max-[800px]:w-full max-[800px]:max-w-full max-[800px]:border-b-1 max-[800px]:light:border-[#e3e3e3a8] max-[800px]:dark:border-[#242424a8]">
+      <div className="max-w-[400px] grow-[1] light max-[800px]:w-full max-[800px]:max-w-full max-[800px]:border-b-1 max-[800px]:pb-7 max-[800px]:light:border-[#e3e3e3a8] max-[800px]:dark:border-[#242424a8]">
         <div className="sticky top-20">
           <Image
             src={user.image}

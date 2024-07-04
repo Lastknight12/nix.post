@@ -48,7 +48,7 @@ export default function RootLayout({
                 <Toaster />
                 <NavigationProvider />
                 <main className="w-full">
-                  <div className="mx-auto mt-3 h-full max-w-[1000px] flex-col gap-20 px-5">
+                  <div className="mx-auto mt-3 h-full max-w-[1024px] flex-col gap-20 px-6">
                     {children}
                   </div>
                 </main>
