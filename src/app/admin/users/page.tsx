@@ -8,40 +8,64 @@ import { useEffect, useState } from "react";
 import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
 import toast from "react-hot-toast";
 import type { AdminUsers } from "~/types/types";
-import { updateUser } from "~/adminActions/mutations/mutaiton";
+import { showError } from "~/utils/utils";
 
 export default function Posts() {
   const [rowData, setRowData] = useState<AdminUsers[]>([]);
   const [colDefs] = useState([
     { field: "id", editable: false },
     { field: "name", editable: true },
-    { field: "email", editable: true },
-    { field: "image", editable: true },
-    { field: "role" },
     { field: "subname", editable: true },
+    { field: "email", editable: true },
     { field: "description", editable: true },
+    { field: "role", editable: true },
+    { field: "emailVerified", editable: true },
+    { field: "image", editable: true },
+    { field: "likedPosts", editable: true },
   ] as ColDef<AdminUsers>[]);
 
-  const updateSinglePost = updateUser("Success", "field cann't be null");
+  const updateSingleUser = api.admin.updateSingleUser.useMutation({
+    onSuccess: () => {
+      toast.success("User updated successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
-  const { data, isFetched, isLoading } = api.admin.getAllUsers.useQuery();
+  const { data, isFetched } = api.admin.getAllUsers.useQuery();
 
   function CellValueChanged(event: CellValueChangedEvent<AdminUsers>) {
-    const { id, name, email, image, role } = event.data;
-
-    return updateSinglePost.mutate({
+    const {
       id,
       name,
+      subname,
       email,
-      image,
+      description,
       role,
+      emailVerified,
+      image,
+      likedPosts,
+    } = event.data;
+
+    if (!subname) {
+      return showError("subname cannot be empty");
+    }
+
+    return updateSingleUser.mutate({
+      id,
+      name,
+      subname,
+      email,
+      description,
+      role,
+      emailVerified,
+      image,
+      likedPosts,
     });
   }
 
   useEffect(() => {
-    if (isLoading) {
-      toast.loading("Loading...");
-    }
     if (data) {
       setRowData([...data.flatMap((page) => page)]);
       toast.dismiss();

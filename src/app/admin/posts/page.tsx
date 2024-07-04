@@ -6,11 +6,9 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from "react";
 import type { CellValueChangedEvent, ColDef } from "ag-grid-community";
-import toast from "react-hot-toast";
 import type { AdminPosts, ColDefHelper } from "~/types/types";
-import { updatePost } from "~/adminActions/mutations/mutaiton";
-import { showLoading } from "~/utils/utils";
 import type { JSONContent } from "@tiptap/react";
+import { showError, showSuccess } from "~/utils/utils";
 
 export default function Posts() {
   const [rowData, setRowData] = useState<AdminPosts[]>([]);
@@ -18,46 +16,71 @@ export default function Posts() {
     { field: "id", editable: false },
     { field: "title", editable: true },
     { field: "content", editable: true },
-    { field: "createdAt" },
-    { field: "updatedAt" },
-    { headerName: "createdBy", field: "createdBy.name" },
+    { field: "perviewSrc", editable: true },
+    { field: "createdAt", editable: false },
+    { field: "updatedAt", editable: false },
+    { headerName: "createdByName", field: "name", editable: false },
+    { headerName: "createdBySubname", field: "subname", editable: false },
+    { field: "likes", editable: true },
+    { field: "comments" },
+    { field: "tags", editable: false },
   ] as ColDef<AdminPosts>[]);
 
-  const updateSinglePost = updatePost("Success", "field can't be null");
+  const updateSinglePost = api.admin.updateSinglePost.useMutation({
+    onSuccess: () => {
+      showSuccess("Post updated successfully");
+    },
+    onError: (error) => {
+      showError(error.message);
+    },
+  });
 
-  const { data, isLoading } = api.admin.getAllPosts.useQuery();
+  const { data } = api.admin.getAllPosts.useQuery();
 
   function CellValueChanged(event: CellValueChangedEvent<AdminPosts>) {
-    const { id, title, createdAt, content } = event.data;
+    const { id, title, content, perviewSrc, likes } = event.data;
 
     return updateSinglePost.mutate({
       id,
       title,
-      content: content as JSONContent,
-      createdAt,
+      content: JSON.parse(content as unknown as string) as JSONContent,
+      perviewSrc,
+      likes,
     });
   }
 
   useEffect(() => {
-    if (isLoading) {
-      showLoading("Loading...");
-    }
     if (data) {
       setRowData([
         ...data.flatMap((page) => {
-          const { id, content, title, createdAt, createdBy, updatedAt } = page;
+          const {
+            id,
+            content,
+            title,
+            perviewSrc,
+            createdAt,
+            createdBy: { name, subname },
+            updatedAt,
+            likes,
+            tags,
+            _count: { comments },
+          } = page;
 
           return {
             id,
             title,
             content: JSON.stringify(content),
+            perviewSrc,
             createdAt,
             updatedAt,
-            createdBy,
+            name,
+            subname: subname ?? "user without subname",
+            likes,
+            comments,
+            tags: JSON.stringify(tags) as unknown as { displayName: string }[],
           };
         }),
       ]);
-      toast.dismiss();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);

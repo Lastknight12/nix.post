@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { zodContentValidator } from "~/types/zodSchemas";
+import { adminProcedure } from "../trpc";
+import { TRPCError } from "@trpc/server";
 
 export const adminRouter = createTRPCRouter({
   getAllPosts: protectedProcedure.query(async ({ ctx }) => {
@@ -9,10 +11,20 @@ export const adminRouter = createTRPCRouter({
         id: true,
         title: true,
         content: true,
+        perviewSrc: true,
         createdAt: true,
         updatedAt: true,
         createdBy: {
-          select: { name: true },
+          select: { name: true, subname: true },
+        },
+        tags: {
+          select: {
+            displayName: true,
+          },
+        },
+        likes: true,
+        _count: {
+          select: { comments: true },
         },
       },
     });
@@ -40,48 +52,85 @@ export const adminRouter = createTRPCRouter({
     return post;
   }),
 
-  updateSingleUser: protectedProcedure
+  updateSingleUser: adminProcedure
     .input(
       z.object({
         id: z.string().min(1, "ID cannot be empty"),
-        name: z.string().min(1, "Name cannot be empty"),
+        name: z
+          .string()
+          .min(1, "Name cannot be empty")
+          .max(30, "name cannot be longer than 30 characters"),
+        subname: z
+          .string()
+          .min(1, "Subname cannot be empty")
+          .max(30, "subname cannot be longer than 30 characters"),
         email: z.string().email("Invalid email address"),
+        description: z
+          .string()
+          .min(1, "Description cannot be empty")
+          .max(160, "Description cannot be longer than 160 characters"),
         image: z.string().url("Invalid URL"),
-        role: z.string().min(1, "Role cannot be empty"),
+        role: z.optional(
+          z.enum(["User", "Admin"], {
+            message: "Invalid role. Should be USER or ADMIN",
+          }),
+        ),
+        likedPosts: z.array(z.number()),
+        emailVerified: z.date().nullish(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.user.update({
-        where: { id: input.id },
-        data: {
-          name: input.name,
-          email: input.email,
-          image: input.image,
-        },
-      });
+      try {
+        await ctx.db.user.update({
+          where: { id: input.id },
+          data: {
+            name: input.name,
+            email: input.email,
+            image: input.image,
+            subname: input.subname,
+            description: input.description,
+            role: input.role,
+            likedPosts: input.likedPosts,
+            emailVerified: input.emailVerified,
+          },
+        });
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong while updating user",
+        });
+      }
     }),
 
-  updateSinglePost: protectedProcedure
+  updateSinglePost: adminProcedure
     .input(
       z.object({
         id: z.number().min(1, "ID must be a positive number"),
         title: z
           .string()
           .min(5, "Title must be at least 5 characters long")
-          .max(20, "Title must be no more than 20 characters long"),
+          .max(100, "Title must be no more than 100 characters long"),
         content: zodContentValidator,
-        createdAt: z.date(),
+        perviewSrc: z.string().url("Invalid URL").nullish(),
+        likes: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.post.update({
-        where: { id: input.id },
-        data: {
-          title: input.title,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          content: input.content,
-          createdAt: input.createdAt,
-        },
-      });
+      try {
+        await ctx.db.post.update({
+          where: { id: input.id },
+          data: {
+            title: input.title,
+            content: input.content,
+            perviewSrc: input.perviewSrc,
+            likes: input.likes,
+          },
+        });
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong while updating post",
+        });
+      }
     }),
 });

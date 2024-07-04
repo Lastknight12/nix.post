@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Post as PostType } from "~/types/types";
 import { memo, useEffect, useRef } from "react";
-import { getDayAndMonth } from "~/utils/utils";
+import { getDayAndMonth, parseNumber } from "~/utils/utils";
 import { useInView } from "framer-motion";
 import { FaComment } from "react-icons/fa";
 import { api } from "~/trpc/react";
@@ -25,10 +25,9 @@ export default memo(function Post({
 }: PostProps): React.ReactElement {
   const postDate = getDayAndMonth(post.createdAt);
 
-  const { data, isLoading, isRefetching } =
-    api.post.getLikesAndCommentsCount.useQuery({
-      postId: post.id,
-    });
+  const { data, isLoading, isRefetching } = api.post.getPostStats.useQuery({
+    postId: post.id,
+  });
 
   const FetchNextRef = useRef<HTMLDivElement>(null);
 
@@ -84,14 +83,18 @@ export default memo(function Post({
               >
                 <div className="mr-2 flex items-center gap-1">
                   <FaComment className="ml-3 light light:text-[#6b6b6b]" />
-                  <p className="text-[#6b6b6b]">{data?._count.comments}</p>
+                  <p className="text-[#6b6b6b]">
+                    {parseNumber(data?.comments ?? 0)}
+                  </p>
                 </div>
                 <div className="flex items-center gap-1">
                   <FaHeart
                     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
                     className="ml-3 text-[#6b6b6b] transition-colors"
                   />
-                  <p className="text-[#6b6b6b]">{post.likes}</p>
+                  <p className="text-[#6b6b6b]">
+                    {parseNumber(data?.likes ?? 0)}
+                  </p>
                 </div>
               </motion.div>
             )}
@@ -101,7 +104,7 @@ export default memo(function Post({
           <Image
             src={post.perviewSrc}
             alt="post preview image"
-            className="max-h-[125px] rounded object-fill max-md:max-w-24"
+            className="max-h-[90px] rounded object-fill max-md:max-w-24"
             width={150}
             height={80}
           />

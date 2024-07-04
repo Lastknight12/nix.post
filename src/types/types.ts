@@ -25,20 +25,25 @@ export interface AdminPosts {
   id: number;
   title: string;
   content: Prisma.JsonValue;
+  perviewSrc: string | null;
   createdAt: Date;
   updatedAt: Date;
-  createdBy: {
-    name: string;
-  };
+  name: string;
+  subname: string | null;
+  likes: number;
+  tags: { displayName: string }[];
 }
 
 export interface AdminUsers {
   id: string;
   name: string;
+  subname: string | null;
   email: string;
+  description: string;
   role: "Admin" | "User";
   emailVerified: Date | null;
   image: string;
+  likedPosts: number[];
 }
 
 export type JsonObject = { [Key in string]?: JsonValue };

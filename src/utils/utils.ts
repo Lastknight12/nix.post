@@ -127,6 +127,14 @@ export function parseTiptapJsonToHtml(node: Node | undefined): string {
   }
 }
 
+export function parseNumber(number: number) {
+  if(number > 1000) {
+    return (number / 1000).toFixed(1) + "k";
+  } else {
+    return number
+  }
+}
+
 type ShowSuccessParams = {
   successMsg: string;
   loadingMsg: string | Renderable;

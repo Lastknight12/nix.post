@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { FaComment, FaHeart } from "react-icons/fa";
 import { api } from "~/trpc/react";
-import { showError } from "~/utils/utils";
+import { parseNumber, showError } from "~/utils/utils";
 import { motion } from "framer-motion";
 
 interface NavbarProps {
@@ -82,7 +82,7 @@ export default function Navbar({ postId, loggedIn }: NavbarProps) {
                 />
               </button>
               <p className="inline-block text-base light light:text-defaultLight dark:text-defaultDark">
-                {likes}
+                {parseNumber(likes)}
               </p>
             </motion.div>
           )}
@@ -91,7 +91,7 @@ export default function Navbar({ postId, loggedIn }: NavbarProps) {
         <div className="flex items-center">
           <FaComment className="mr-1 text-[#6b6b6b]" size={17} />
           <p className="inline-block text-base light light:text-defaultLight dark:text-defaultDark">
-            {postStats?.comments}
+            {parseNumber(postStats?.comments ?? 0)}
           </p>
         </div>
       </div>

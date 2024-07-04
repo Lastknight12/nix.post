@@ -9,14 +9,15 @@ export const zodContentValidator = z.custom<JSONContent>(
         { message: "Content can't be empty", code: "custom", path: [""] },
       ]);
     }
-    if (typeof val === "object" && val.type == "doc") {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (val.type == "doc") {
       return val;
     } else {
       throw new ZodError([
         {
-          message: "Invalid content type",
+          message: "Object type must be doc",
           code: "custom",
-          path: [],
+          path: [""],
         },
       ]);
     }

@@ -5,12 +5,18 @@ import { FaUser } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
 import { Suspense } from "react";
 import { Spinner } from "@nextui-org/react";
+import { getServerAuthSession } from "~/server/auth";
+import { notFound } from "next/navigation";
 
 export default async function AdminPanel({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getServerAuthSession();
+  if (!user?.user || user.user.role !== "Admin") {
+    return notFound();
+  }
   return (
     <main className="my-3 w-full">
       <div className="mx-auto max-w-screen-2xl p-3">
