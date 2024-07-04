@@ -6,7 +6,7 @@ export default function PostListSkeleton() {
       {Array.from({ length: 4 }).map((_, index) => (
         <div key={index} className="flex max-w-[800px] justify-center">
           <div className="flex w-full items-center justify-between">
-            <div className="w-full px-5 py-10">
+            <div className="w-full py-10 pr-5">
               <div>
                 <div className="mb-3 flex items-center gap-2">
                   <Skeleton className="h-[25px] w-[25px] rounded-full light before:border-transparent before:from-transparent before:to-transparent after:content-none light:bg-[#0000000a] light:before:via-[#ececec85] dark:bg-[#ffffff0d] dark:before:via-[#3333333d]" />
