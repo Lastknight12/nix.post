@@ -22,8 +22,8 @@
 
 .tiptap {
   padding: 14px;
-  font-size: 18px;
-  line-height: 36px;
+  font-size: 20px;
+  line-height: 40px;
   word-break: break-word;
   font-family: var(--font-comfotaa);
 
@@ -57,7 +57,7 @@
       background: none;
       color: inherit;
       padding: 0;
-      line-height: normal;
+      line-height: 28px;
       font-size: 14px;
       text-wrap: wrap;
     }
