@@ -53,8 +53,8 @@ export default function PostsList() {
                 post={post}
                 fetchNextPage={fetchNextPage}
                 fetchNextTargetId={
-                  hasNextPage && page.items[page.items.length - 18]?.id
-                    ? page.items[page.items.length - 18]!.id
+                  hasNextPage && page.items[page.items.length - 8]?.id
+                    ? page.items[page.items.length - 8]!.id
                     : undefined
                 }
               />
