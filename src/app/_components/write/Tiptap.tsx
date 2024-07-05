@@ -50,7 +50,7 @@ export default function Tiptap() {
         color="secondary"
         maxLength={100}
         placeholder="Title"
-        className="w-full bg-transparent p-3 font-comfortaa text-3xl outline-none light light:text-defaultLight light:placeholder:text-defaultLight dark:text-defaultDark dark:placeholder:text-defaultDark"
+        className="w-full bg-transparent py-3 font-comfortaa text-3xl outline-none light light:text-defaultLight light:placeholder:text-defaultLight dark:text-defaultDark dark:placeholder:text-defaultDark"
       ></input>
       <div className="mb-1 rounded-3xl font-comfortaa light">
         <EditorContent editor={editor} />
