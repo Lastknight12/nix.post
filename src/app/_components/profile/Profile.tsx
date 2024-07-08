@@ -26,7 +26,7 @@ export default async function Profile({ subName }: { subName: string }) {
                 key={post.id}
                 className="flex w-full flex-col items-start border-b-1 border-[#808080a8] py-6 hover:bg-[#84838333] max-md:hover:bg-transparent"
               >
-                <div className="flex w-full items-center justify-between">
+                <div className="flex w-full items-center justify-between px-[8px] max-[800px]:px-[0]">
                   <div className="mr-6">
                     <div className="mb-2 flex items-center gap-2">
                       <Image
