@@ -102,17 +102,30 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.user.update({
-        where: {
-          id: ctx.session.user.id,
-        },
-        data: {
-          name: input.name,
-          subname: "@" + input.subname,
-          image: input.image,
-          description: input.description,
-        },
-      });
-      return user;
-    }),
+      try {
+        const user = await ctx.db.user.update({
+          where: {
+            id: ctx.session.user.id,
+          },
+          data: {
+            name: input.name,
+            subname: "@" + input.subname,
+            image: input.image,
+            description: input.description,
+          },
+        });
+        return user;
+      } catch (error) {
+        if (error.code === 'P2002' && error.meta.target.includes('subname')) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Subname already taken!",
+          });
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to update user sttings! Try again later",
+          });;
+        }
+    }
 });
