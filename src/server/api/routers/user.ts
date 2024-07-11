@@ -115,18 +115,6 @@ export const userRouter = createTRPCRouter({
           },
         });
       } catch (error) {
-        if (error.code === "P2002" && error.meta?.target.includes("subname")) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Subname already taken!",
-          });
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to update user settings! Try again later",
-          });
-        }
-
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
           if (error.code === "P2002") {
             throw new TRPCError({
@@ -141,6 +129,7 @@ export const userRouter = createTRPCRouter({
           });
         }
       }
-      return "Success!";
+
+      return user;
     }),
 });
