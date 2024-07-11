@@ -21,10 +21,10 @@
 }
 
 .tiptap {
-  font-size: 20px;
-  line-height: 40px;
+  font-size: 17px;
+  line-height: 33px;
   word-break: break-word;
-  font-family: var(--font-comfotaa);
+  font-family: var(--font-comfortaa);
 
   .empty-paragraph {
     min-height: 1em;
