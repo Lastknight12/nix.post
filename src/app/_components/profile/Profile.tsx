@@ -17,7 +17,7 @@ export default async function Profile({ subName }: { subName: string }) {
     <div className="flex justify-between text-black max-[800px]:flex-col-reverse">
       <div className="grow-[1] max-[800px]:w-full min-[800px]:mr-20">
         <div className="flex flex-col">
-          <p>{!posts.length ? "User does not have any posts" : null}</p>
+          <p className="text-white">{!posts.length ? "User does not have any posts" : null}</p>
           {posts.map((post) => {
             // rebuild this
             return (

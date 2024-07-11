@@ -5,7 +5,7 @@ import { TRPCError } from "@trpc/server";
 export const userRouter = createTRPCRouter({
   getUserInfo: publicProcedure
     .input(
-      z.object({ subName: z.string().min(1, "User name cannot be empty") }),
+      z.object({ subName: z.string().min(1, "User name cannot be empty") })
     )
     .query(async ({ ctx, input }) => {
       const user = await ctx.db.user.findUnique({
@@ -27,7 +27,7 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         subName: z.string().min(1, "User name cannot be empty"),
-      }),
+      })
     )
     .query(async ({ ctx, input }) => {
       const posts = await ctx.db.post.findMany({
@@ -86,11 +86,11 @@ export const userRouter = createTRPCRouter({
         name: z
           .string()
           .min(1, "Name cannot be empty")
-          .max(30, "name cannot be longer than 30 characters"),
+          .max(30, "Name cannot be longer than 30 characters"),
         subname: z
           .string()
-          .min(1, "subname cannot be empty")
-          .max(30, "subname cannot be longer than 30 characters"),
+          .min(1, "Subname cannot be empty")
+          .max(30, "Subname cannot be longer than 30 characters"),
         image: z
           .string()
           .url("Image must be a valid URL")
@@ -99,7 +99,7 @@ export const userRouter = createTRPCRouter({
           .string()
           .min(1, "Description cannot be empty")
           .max(160, "Description cannot be longer than 160 characters"),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       try {
@@ -114,9 +114,8 @@ export const userRouter = createTRPCRouter({
             description: input.description,
           },
         });
-        return user;
       } catch (error) {
-        if (error.code === 'P2002' && error.meta?.target.includes('subname')) {
+        if (error.code === "P2002" && error.meta?.target.includes("subname")) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Subname already taken!",
@@ -127,7 +126,21 @@ export const userRouter = createTRPCRouter({
             message: "Failed to update user settings! Try again later",
           });
         }
+
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          if (error.code === "P2002") {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: "Subname already taken!",
+            });
+          }
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to update user settings! Try again later",
+          });
+        }
       }
-      return "Success!"
+      return "Success!";
     }),
 });
