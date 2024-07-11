@@ -116,16 +116,18 @@ export const userRouter = createTRPCRouter({
         });
         return user;
       } catch (error) {
-        if (error.code === 'P2002' && error.meta.target.includes('subname')) {
+        if (error.code === 'P2002' && error.meta?.target.includes('subname')) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Subname already taken!",
-          })
+          });
         } else {
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to update user sttings! Try again later",
-          })
+            message: "Failed to update user settings! Try again later",
+          });
         }
-    }
-})
+      }
+      return "Success!"
+    }),
+});
