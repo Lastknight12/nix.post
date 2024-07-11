@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 export const userRouter = createTRPCRouter({
