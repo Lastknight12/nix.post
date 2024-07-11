@@ -115,6 +115,8 @@ export const userRouter = createTRPCRouter({
             description: input.description,
           },
         });
+
+        return user
       } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
           if (error.code === "P2002") {
@@ -130,7 +132,5 @@ export const userRouter = createTRPCRouter({
           });
         }
       }
-
-      return user;
     }),
 });
