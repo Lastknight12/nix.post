@@ -120,7 +120,7 @@ export const userRouter = createTRPCRouter({
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Subname already taken!",
-          });
+          })
         } else {
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
@@ -128,4 +128,4 @@ export const userRouter = createTRPCRouter({
           })
         }
     }
-});
+})
