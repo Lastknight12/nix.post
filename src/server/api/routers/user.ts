@@ -125,7 +125,7 @@ export const userRouter = createTRPCRouter({
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
             message: "Failed to update user sttings! Try again later",
-          });
+          })
         }
     }
 });
