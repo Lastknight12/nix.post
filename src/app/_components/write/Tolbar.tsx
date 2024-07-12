@@ -1,11 +1,10 @@
 "use client";
 
-// next ui / components
-import { Button } from "@nextui-org/button";
+// components
 import NextImage from "next/image";
 
 // icons
-import { LuCode2 } from "react-icons/lu";
+import { LuCode2, LuHighlighter } from "react-icons/lu";
 import { GoListUnordered } from "react-icons/go";
 import { BsListNested } from "react-icons/bs";
 import { FaQuoteLeft } from "react-icons/fa";
@@ -119,42 +118,50 @@ export default function Toolbar({ editor }: ToolbarProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton ${editor.isActive("bold") && "bg-[#4e4e4e]"}`}
+              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton`}
             >
               <MdOutlineFormatBold size={20} />
             </button>
             <button
               onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton ${editor.isActive("codeBlock") && "bg-[#4e4e4e]"}`}
+              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton`}
             >
               <LuCode2 size={20} />
             </button>
             <button
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
-              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton ${editor.isActive("blockquote") && "bg-[#4e4e4e]"}`}
+              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton`}
             >
               <FaQuoteLeft size={20} />
             </button>
             <button
+              onClick={() =>
+                editor.chain().focus().toggleHighlight().run()
+              }
+              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton`}
+            >
+              <LuHighlighter size={20} />
+            </button>
+            <button
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
-              className={`rounded-md px-3 py-1 light light:bg-[#848484] dark:bg-[#353535] ${editor.isActive("orderedList") && "bg-[#4e4e4e]"}`}
+              className={`rounded-md px-3 py-1 light light:bg-[#848484] dark:bg-[#353535]`}
             >
               <GoListUnordered size={20} />
             </button>
-            <Button
+            <button
               onClick={() =>
                 editor.chain().focus().sinkListItem("listItem").run()
               }
               disabled={!editor.can().sinkListItem("listItem")}
-              className={`${editor.can().sinkListItem("listItem") ? "block" : "hidden"}`}
+              className={`rounded-md px-3 py-1 light light:bg-[#848484] dark:bg-[#353535] ${editor.can().sinkListItem("listItem") ? "block" : "hidden"}`}
             >
               <BsListNested size={20} />
-            </Button>
+            </button>
           </div>
 
           <div className="mx-auto flex items-center gap-2">
             <button
-              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton ${editor.isActive("bold") && "bg-[#4e4e4e]"}`}
+              className={`rounded-md px-3 py-1 light light:bg-lightButton dark:bg-darkButton`}
               onClick={() => fileInputRef.current?.click()}
             >
               Upload Image

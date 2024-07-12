@@ -239,7 +239,7 @@ export const postRouter = createTRPCRouter({
 
   getIndividualPost: publicProcedure
     .input(
-      z.object({ publicId: z.string().max(11).min(1, "post id is reqired") }),
+      z.object({ publicId: z.string().min(1, "post id is reqired") }),
     )
     .query(async ({ ctx, input }) => {
       if (!input.publicId) {

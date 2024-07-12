@@ -1,10 +1,11 @@
 "use client";
 
 // editor / components / extensions
-import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
+import Highlight from '@tiptap/extension-highlight'
 import PushModal from "./PushModal";
 
 // components
@@ -20,6 +21,7 @@ export default function Tiptap() {
     extensions: [
       CharacterCount,
       StarterKit,
+      Highlight,
       Image,
       Placeholder.configure({ placeholder: "Tell your story" }),
     ],
@@ -50,9 +52,9 @@ export default function Tiptap() {
         color="secondary"
         maxLength={100}
         placeholder="Title"
-        className="w-full bg-transparent py-3 font-comfortaa text-3xl outline-none light light:text-defaultLight light:placeholder:text-defaultLight dark:text-defaultDark dark:placeholder:text-defaultDark"
+        className="w-full mb-1 bg-transparent py-3 font-comfortaa text-[36px] outline-none light light:text-defaultLight light:placeholder:text-defaultLight dark:text-defaultDark dark:placeholder:text-defaultDark"
       ></input>
-      <div className="mb-1 rounded-3xl font-comfortaa light">
+      <div className=" mb-10 rounded-3xl font-comfortaa light">
         <EditorContent editor={editor} />
       </div>
     </>
