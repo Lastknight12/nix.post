@@ -18,6 +18,7 @@ export default async function SinglePost({
 }: {
   postPublicId: string;
 }) {
+  console.log("rerender")
   const post = await api.post.getIndividualPost({
     publicId: postPublicId,
   });
@@ -27,6 +28,7 @@ export default async function SinglePost({
   }
 
   const content = post.content as JsonValue;
+
   const parsedHtml = isValidNode(content) ? parseTiptapJsonToHtml(content) : "";
 
   const readTime = calcReadTime(parsedHtml);

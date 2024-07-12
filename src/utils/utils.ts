@@ -121,6 +121,16 @@ export function parseTiptapJsonToHtml(node: Node | undefined): string {
       return `<p${classAttr}>${content}</p>`;
 
     case "text":
+      const marks = node.marks ?? [];
+
+      if (marks[0]?.type == "bold") {
+        return `<strong>${node.text}</strong>`;
+      }
+
+      if (marks[0]?.type == "highlight") {
+        return `<mark>${node.text}</mark>`;
+      }
+
       return node.text;
     default:
       return "";
@@ -128,10 +138,10 @@ export function parseTiptapJsonToHtml(node: Node | undefined): string {
 }
 
 export function parseNumber(number: number) {
-  if(number > 1000) {
+  if (number > 1000) {
     return (number / 1000).toFixed(1) + "k";
   } else {
-    return number
+    return number;
   }
 }
 

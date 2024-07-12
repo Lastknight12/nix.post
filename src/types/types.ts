@@ -19,6 +19,8 @@ export interface Post {
   };
 }
 
+//
+
 // ADMIN DASHBOARD
 
 export interface AdminPosts {
@@ -46,8 +48,10 @@ export interface AdminUsers {
   likedPosts: number[];
 }
 
+//
+
 export type JsonObject = { [Key in string]?: JsonValue };
-export type JsonArray = JsonValue[];
+type JsonArray = JsonValue[];
 export type JsonValue =
   | string
   | number
@@ -57,27 +61,28 @@ export type JsonValue =
   | null
   | Node;
 
-export interface TextNode {
+interface TextNode {
   type: "text";
   text: string;
+  marks: { type: string }[];
 }
 
-export interface ParagraphNode {
+interface ParagraphNode {
   type: "paragraph";
   content?: Array<Node>;
 }
 
-export interface BlockquoteNode {
+interface BlockquoteNode {
   type: "blockquote";
   content?: Array<Node>;
 }
 
-export interface DocumentNode {
+interface DocumentNode {
   type: "doc";
   content: Array<Node>;
 }
 
-export interface CodeNode {
+interface CodeNode {
   type: "codeBlock";
   attrs: {
     language: string | null;
@@ -85,12 +90,12 @@ export interface CodeNode {
   content: Array<TextNode>;
 }
 
-export interface listItem {
+interface listItem {
   type: "listItem";
   content: Array<Node>;
 }
 
-export interface orderedList {
+interface orderedList {
   type: "orderedList";
   attrs: {
     start: number;
@@ -98,7 +103,7 @@ export interface orderedList {
   content: Array<Node>;
 }
 
-export interface img {
+interface img {
   type: "image";
   attrs: {
     alt: string;
