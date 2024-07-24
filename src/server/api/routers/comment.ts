@@ -9,7 +9,6 @@ export const commentRouter = createTRPCRouter({
         content: z
           .string()
           .min(1, "Comment cannot be empty")
-          .max(120, "Comment must be no more than 120 characters long"),
       }),
     )
     .mutation(async ({ ctx, input }) => {
