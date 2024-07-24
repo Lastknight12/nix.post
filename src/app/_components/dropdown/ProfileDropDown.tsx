@@ -24,7 +24,7 @@ export default function ProfileDropDown({ user }: DropDownMenuProps) {
         <DropdownItem key="user">
           <div className="flex items-center gap-3 border-b-1 pb-3 light light:border-[#eaeaea] dark:border-[#353434]">
             <div
-              className="rounded-full w-[50px] h-[50px] object-cover bg-center bg-no-repeat"
+              className="rounded-full w-[50px] h-[50px] bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url(${image})`
               }}

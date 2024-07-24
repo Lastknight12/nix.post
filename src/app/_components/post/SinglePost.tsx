@@ -50,7 +50,7 @@ export default async function SinglePost({
                 style={{
                   backgroundImage: `url(${post.createdBy.image})`
                 }}
-                className="rounded-full w-[40px] h-[40px] object-cover bg-center bg-no-repeat"
+                className="rounded-full w-[40px] h-[40px] bg-cover bg-center bg-no-repeat"
               />
             </div>
 

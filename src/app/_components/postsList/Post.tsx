@@ -53,7 +53,7 @@ export default memo(function Post({
           <Link href={"/post/" + post.publicId}>
             <div className="mb-3 flex items-center gap-2">
               <div
-                className="rounded-full w-[25px] h-[25px] object-cover bg-center bg-no-repeat"
+                className="rounded-full w-[25px] h-[25px] bg-cover bg-center bg-no-repeat"
                 style={{
                   backgroundImage: `url(${post.createdBy.image})`
                 }}

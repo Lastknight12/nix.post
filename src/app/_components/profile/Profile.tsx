@@ -33,7 +33,7 @@ export default async function Profile({ subName }: { subName: string }) {
                         style={{
                           backgroundImage: `url${post.createdBy.image}`
                         }}
-                        className="rounded-full w-[25px] h-[25px] object-cover bg-center bg-no-repeat"
+                        className="rounded-full w-[25px] h-[25px] bg-cover bg-center bg-no-repeat"
                       />
                       <p className="text-md font-medium light light:text-[#000] dark:text-[#ffffff]">
                         {post.createdBy.name}
@@ -70,7 +70,7 @@ export default async function Profile({ subName }: { subName: string }) {
             style={{
               backgroundImage: `url(${user.image})`
             }}
-            className="mb-2 rounded-full w-[65px] h-[65px] object-cover bg-center bg-no-repeat"
+            className="mb-2 rounded-full w-[65px] h-[65px] bg-cover bg-center bg-no-repeat"
           />
           <h1 className="text-xl font-semibold dark:text-white">{user.name}</h1>
           <h1 className="mb-3 text-[13px] font-semibold text-[#7c7c7c]">

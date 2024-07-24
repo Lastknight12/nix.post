@@ -121,7 +121,7 @@ export default function EditSettings({ user }: SettingsProps) {
           </div>
         </motion.div>
         <div
-          className="mr-3 max-h-[50px] max-w-[50px] rounded-full w-[50px] h-[50px] object-cover bg-center bg-no-repeat"
+          className="mr-3 max-h-[50px] max-w-[50px] rounded-full w-[50px] h-[50px] bg-center bg-cover bg-no-repeat"
           style={{
             backgroundImage: `url(${image})`
           }}

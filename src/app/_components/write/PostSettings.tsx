@@ -29,7 +29,7 @@ export default function PostSettings({
                 style={{
                   backgroundImage: `${session.data?.user.image}`
                 }}
-                className="mr-2 rounded-full w-[20px] h-[20px] object-cover bg-center bg-no-repeat"
+                className="mr-2 rounded-full w-[20px] h-[20px] bg-cover bg-center bg-no-repeat"
               />
               <div className="font-montserrat text-sm">
                 {session.data?.user.name}

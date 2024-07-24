@@ -83,11 +83,12 @@ export default function Comments({ postId }: CommentProps) {
                     <div>
                       <div className="mb-3 flex items-center gap-2">
                         <Image
-                          alt="user picture"
-                          src={comment.author.image}
+                          style={{
+                            backgroundImage: `url(${comment.author.image})`
+                          }}
                           width={45}
                           height={45}
-                          className="rounded-full"
+                          className="rounded-full w-[45px] h-[45px] bg-cover bg-center bg-no-repeat"
                         />
                         <div className="flex flex-col">
                           <h1 className="font-montserrat text-[#ebe2d6]">
