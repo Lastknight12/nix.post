@@ -23,12 +23,11 @@ export default function ProfileDropDown({ user }: DropDownMenuProps) {
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem key="user">
           <div className="flex items-center gap-3 border-b-1 pb-3 light light:border-[#eaeaea] dark:border-[#353434]">
-            <Image
-              className="rounded-full"
-              src={`${image}`}
-              width={50}
-              height={50}
-              alt="user image"
+            <div
+              className="rounded-full w-[50px] h-[50px] object-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${image})`
+              }}
             />
             <div>
               <p className="light light:text-black dark:text-white">

@@ -18,7 +18,6 @@ export default async function SinglePost({
 }: {
   postPublicId: string;
 }) {
-  console.log("rerender")
   const post = await api.post.getIndividualPost({
     publicId: postPublicId,
   });
@@ -47,12 +46,11 @@ export default async function SinglePost({
         <Link href={`/profile/${post.createdBy.subname}`}>
           <div className="flex items-center gap-3">
             <div>
-              <Image
-                src={post.createdBy.image}
-                width={40}
-                height={40}
-                alt="post author image"
-                className="rounded-full"
+              <div
+                style={{
+                  backgroundImage: `url(${post.createdBy.image})`
+                }}
+                className="rounded-full w-[40px] h-[40px] object-cover bg-center bg-no-repeat"
               />
             </div>
 

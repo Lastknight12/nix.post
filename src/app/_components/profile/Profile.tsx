@@ -29,12 +29,11 @@ export default async function Profile({ subName }: { subName: string }) {
                 <div className="flex w-full items-center justify-between px-[8px] max-[800px]:px-[0]">
                   <div className="mr-6">
                     <div className="mb-2 flex items-center gap-2">
-                      <Image
-                        src={post.createdBy.image}
-                        alt="post creator avatar"
-                        width={25}
-                        height={25}
-                        className="rounded-full"
+                      <div
+                        style={{
+                          backgroundImage: `url${post.createdBy.image}`
+                        }}
+                        className="rounded-full w-[25px] h-[25px] object-cover bg-center bg-no-repeat"
                       />
                       <p className="text-md font-medium light light:text-[#000] dark:text-[#ffffff]">
                         {post.createdBy.name}
@@ -67,12 +66,11 @@ export default async function Profile({ subName }: { subName: string }) {
 
       <div className="max-w-[400px] grow-[1] light max-[800px]:w-full max-[800px]:max-w-full max-[800px]:border-b-1 max-[800px]:pb-7 max-[800px]:light:border-[#e3e3e3a8] max-[800px]:dark:border-[#242424a8]">
         <div className="sticky top-20">
-          <Image
-            src={user.image}
-            width={65}
-            height={65}
-            alt="user avatar"
-            className="mb-2 rounded-full"
+          <div
+            style={{
+              backgroundImage: `url(${user.image})`
+            }}
+            className="mb-2 rounded-full w-[65px] h-[65px] object-cover bg-center bg-no-repeat"
           />
           <h1 className="text-xl font-semibold dark:text-white">{user.name}</h1>
           <h1 className="mb-3 text-[13px] font-semibold text-[#7c7c7c]">

@@ -120,12 +120,11 @@ export default function EditSettings({ user }: SettingsProps) {
             </div>
           </div>
         </motion.div>
-        <Image
-          className="mr-3 max-h-[50px] max-w-[50px] rounded-full object-cover"
-          src={`${image}`}
-          width={50}
-          height={50}
-          alt="user image"
+        <div
+          className="mr-3 max-h-[50px] max-w-[50px] rounded-full w-[50px] h-[50px] object-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${image})`
+          }}
         />
         <UploadAvatar
           onImageLoaded={(imgSrc) => {

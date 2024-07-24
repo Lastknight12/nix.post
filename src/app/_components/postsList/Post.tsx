@@ -52,12 +52,11 @@ export default memo(function Post({
         <div className="w-full py-10 pr-5">
           <Link href={"/post/" + post.publicId}>
             <div className="mb-3 flex items-center gap-2">
-              <Image
-                src={post.createdBy.image}
-                alt="User profile picture"
-                width={25}
-                height={25}
-                className="rounded-full"
+              <div
+                className="rounded-full w-[25px] h-[25px] object-cover bg-center bg-no-repeat"
+                style={{
+                  backgroundImage: `url(${post.createdBy.image})`
+                }}
               />
               <h1 className="font-montserrat text-sm light light:text-[#242424] dark:text-[#ffffff]">
                 {post.createdBy.name}

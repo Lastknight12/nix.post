@@ -25,12 +25,11 @@ export default function PostSettings({
           <p className="mb-8 text-xl font-medium">Story perview</p>
           <div className="mb-4 min-w-full max-w-[510px] cursor-not-allowed p-8 shadow-xl light light:bg-[#f3f3f3] dark:bg-[#2a2a2a]">
             <div className="mb-3 flex items-center">
-              <Image
-                src={`${session.data?.user.image}`}
-                width={20}
-                height={20}
-                alt="user picture"
-                className="mr-2 rounded-full"
+              <div
+                style={{
+                  backgroundImage: `${session.data?.user.image}`
+                }}
+                className="mr-2 rounded-full w-[20px] h-[20px] object-cover bg-center bg-no-repeat"
               />
               <div className="font-montserrat text-sm">
                 {session.data?.user.name}
